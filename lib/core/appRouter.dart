@@ -14,6 +14,6 @@ final appRouter = GoRouter(
       name: AgregarObraSocial.name,
       path: '/agregarObraSocial',
       builder: (context, state) => AgregarObraSocial(),
-    )
+    ),
   ]
 );

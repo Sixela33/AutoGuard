@@ -14,6 +14,7 @@ const List<MenuItem> menuItems = [
     title: "agregarObraSocial", 
     subtitle: "agregar una nueva obra social", 
     icon: Icons.movie, 
-    link: '/agregarObraSocial'),
+    link: '/agregarObraSocial'
+  ),
 
 ];
