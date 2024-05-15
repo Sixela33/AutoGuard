@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/screens/AgregarObraSocial.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,6 +9,11 @@ final appRouter = GoRouter(
       name: HomeScreen.name,
       path: '/',
       builder: (context, state) => HomeScreen()
-      )
+    ),
+    GoRoute(
+      name: AgregarObraSocial.name,
+      path: '/agregarObraSocial',
+      builder: (context, state) => AgregarObraSocial(),
+    )
   ]
 );

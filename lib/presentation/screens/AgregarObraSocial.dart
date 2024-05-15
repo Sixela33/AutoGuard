@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AgregarObraSocial extends StatefulWidget {
+  static String name = "Agregar Obra Social";
+
   const AgregarObraSocial({super.key});
 
   @override
