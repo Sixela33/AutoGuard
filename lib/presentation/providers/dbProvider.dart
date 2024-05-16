@@ -6,13 +6,26 @@ class Database {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth _auth = FirebaseAuth.instance;
 
+  ///////////////////////////////////
+  ///           AUTH
+  ///////////////////////////////////
+
   String? getCurrentUserId() {
     return _auth.currentUser?.uid;
   }
 
   Future<void> registerWithEmailAndPassword(String email, String password) async {
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+
+      String userId = userCredential.user!.uid;
+
+      await _firestore.collection('users').doc(userId).set({
+        'id': userId,
+        'email': email,
+      });
+
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       print('Error en registro: $e');
       throw e;
@@ -28,14 +41,20 @@ class Database {
     }
   }
 
+  ///////////////////////////////////
+  ///         FIRESTORE
+  ///////////////////////////////////
+
   Future<void> addObraSocial(String nombreObraSocial) async {
     try {
       String? userId = getCurrentUserId();
       if (userId != null) {
-        var response = await _firestore.collection('users/$userId/obraSocial').add({
+        DocumentReference docRef = _firestore.collection('obraSocial').doc();
+        await docRef.set({
+          'id': docRef.id, 
           'nombre': nombreObraSocial,
-        });
-        print(response);
+      });
+      print('Obra social agregada con ID: ${docRef.id}');
       } else {
         throw Exception('Usuario no autenticado');
       }

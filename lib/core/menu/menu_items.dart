@@ -16,5 +16,17 @@ const List<MenuItem> menuItems = [
     icon: Icons.movie, 
     link: '/agregarObraSocial'
   ),
+  MenuItem(
+    title: "Register", 
+    subtitle: "Registrar nuevo usuario", 
+    icon: Icons.movie, 
+    link: '/register'
+  ),
+    MenuItem(
+    title: "Login", 
+    subtitle: "Iniciar sesion", 
+    icon: Icons.movie, 
+    link: '/login'
+  ),
 
 ];

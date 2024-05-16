@@ -2,18 +2,18 @@ import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AgregarObraSocial extends StatelessWidget {
+class AgregarNuevaObraSocial extends StatelessWidget {
     static String name = 'Agregar obra social';
-  const AgregarObraSocial({super.key});
+  const AgregarNuevaObraSocial({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return _AgregarObraSocial();
+    return _AgregarNuevaObraSocial();
   }
 }
 
-class _AgregarObraSocial extends ConsumerWidget {
-  _AgregarObraSocial({
+class _AgregarNuevaObraSocial extends ConsumerWidget {
+  _AgregarNuevaObraSocial({
     super.key,
   });
 
