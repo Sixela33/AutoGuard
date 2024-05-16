@@ -10,30 +10,80 @@ class AgregarObraSocial extends StatefulWidget {
 }
 
 class _AgregarObraSocialState extends State<AgregarObraSocial> {
+  final TextEditingController numeroObraSocialController = TextEditingController();
+  String? obraSocialSeleccionada;
 
-  static TextEditingController nombreNuevaObraSocial = TextEditingController();
+  final List<String> obrasSociales = [
+    'OSDE',
+    'Swiss Medical',
+    'Galeno',
+    'Medifé',
+    'IOMA',
+    'PAMI',
+    'Hospital Italiano'
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cargar obra social"),),
-        body: Column(
+        title: const Text("Agregar obra social"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Insertar nombre dela la obra social: "),
-            TextField(
-              controller: nombreNuevaObraSocial,
+            const Text("Seleccioná tu obra social:"),
+            DropdownButtonFormField<String>(
               decoration: const InputDecoration(
-                hintText: 'Nombre',
-                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
+                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                hintText: 'Obra Social',
+              ),
+              value: obraSocialSeleccionada,
+              onChanged: (String? newValue) {
+                setState(() {
+                  obraSocialSeleccionada = newValue;
+                });
+              },
+              items: obrasSociales.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16.0),
+            const Text("Ingresa tu número de obra social:"),
+            TextField(
+              controller: numeroObraSocialController,
+              decoration: const InputDecoration(
+                hintText: 'Número de obra social',
+                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
               ),
             ),
-            FilledButton(
-              onPressed: () {}, 
-              child: Text("Guardar"))
-            
+            const SizedBox(height: 16.0),
+            Center(
+              child: FilledButton(
+                onPressed: () {
+                  final obraSocial = obraSocialSeleccionada;
+                  final numeroObraSocial = numeroObraSocialController.text;
+                  if (obraSocial != null && numeroObraSocial.isNotEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Obra social guardada: $obraSocial - $numeroObraSocial')),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Por favor, completá todos los campos')),
+                    );
+                  }
+                },
+                child: const Text("Guardar"),
+              ),
+            ),
           ],
-        ),  
-      );
+        ),
+      ),
+    );
   }
 }
