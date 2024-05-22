@@ -1,6 +1,7 @@
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:autoguard/presentation/screens/RecuperarContrasenia.dart';
 
 class LoginScreen extends StatelessWidget {
   static String name = "Iniciar sesión";
@@ -60,9 +61,28 @@ class _LoginScreen extends ConsumerWidget {
               },
               child: Text('Iniciar sesión'),
             ),
-          ],
-        ),
+            SizedBox(height: 10),
+               GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                    return RecuperarContrasenia();
+                    }
+                  ),
+                );
+              },
+              child: Text('Olvidaste tu contraseña?',
+              style: TextStyle(
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }
