@@ -1,5 +1,6 @@
 import 'package:autoguard/presentation/screens/AgregarNevaObraSocial.dart';
 import 'package:autoguard/presentation/screens/AgregarObraSocialUsuario.dart';
+import 'package:autoguard/presentation/screens/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
@@ -28,5 +29,10 @@ final appRouter = GoRouter(
       path: '/login',
       builder: (context, state) => LoginScreen(),
     ),
-  ]
+    GoRoute(
+      path: '/especialista',
+      builder: (context, state) => ConsultarEspecialista()
+    )
+  ],
+  
 );

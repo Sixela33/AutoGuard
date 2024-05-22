@@ -28,5 +28,11 @@ const List<MenuItem> menuItems = [
     icon: Icons.movie, 
     link: '/login'
   ),
+  MenuItem(
+    title: "Consultar especialista", 
+    subtitle: "Ya tu sabes", 
+    icon: Icons.movie, 
+    link: '/especialista'
+  ),
 
 ];

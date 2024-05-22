@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AgregarNuevaObraSocial extends StatelessWidget {
-    static String name = 'Agregar obra social';
+  static String name = 'Agregar obra social';
   const AgregarNuevaObraSocial({super.key});
 
   @override
@@ -18,6 +18,7 @@ class _AgregarNuevaObraSocial extends ConsumerWidget {
   });
 
   final TextEditingController nombreNuevaObraSocial = TextEditingController();
+  final TextEditingController nombreNuevaEspecialidad = TextEditingController();
 
   @override
   Widget build(BuildContext context, ref) {
@@ -25,25 +26,47 @@ class _AgregarNuevaObraSocial extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cargar obra social"),),
-        body: Column(
-          children: [
-            const Text("Insertar nombre dela la obra social: "),
-            TextField(
-              controller: nombreNuevaObraSocial,
-              decoration: const InputDecoration(
-                hintText: 'Nombre',
-                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)))
-              ),
+        title: const Text("Cargar obra social y especialidad"),
+      ),
+      body: Column(
+        children: [
+          const Text("Insertar nombre de la obra social: "),
+          TextField(
+            controller: nombreNuevaObraSocial,
+            decoration: const InputDecoration(
+              hintText: 'Nombre',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
             ),
-            FilledButton(
+          ),
+          FilledButton(
+            onPressed: () async {
+              await databaseNotifier.addObraSocial(nombreNuevaObraSocial.text);
+            },
+            child: const Text("Guardar Obra Social"),
+          ),
+          const SizedBox(height: 10),
+          const Text("Insertar nombre de la especialidad: "),
+          TextField(
+            controller: nombreNuevaEspecialidad,
+            decoration: const InputDecoration(
+              hintText: 'Nombre',
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+            ),
+          ),
+          FilledButton(
               onPressed: () async {
-                await databaseNotifier.addObraSocial(nombreNuevaObraSocial.text);
-              }, 
-              child: Text("Guardar"))
-            
-          ],
-        ),  
-      );
+                await databaseNotifier.addEspecialidad(nombreNuevaEspecialidad.text);
+              },
+              child: const Text("Guardar Especialidad"),
+          ),
+          const SizedBox(height: 10),
+          FilledButton(
+            onPressed: () {}, 
+            child: Text('Añadir Medico'))
+        ],
+      ),
+    );
   }
 }

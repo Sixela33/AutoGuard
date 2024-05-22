@@ -63,6 +63,30 @@ class Database {
       throw e;
     }
   }
+
+  // GetObrasSociales
+
+  // Agregar Especialidad
+    Future<void> addEspecialidad(String nombreEspecialidad) async {
+    try {
+      String? userId = getCurrentUserId();
+      if (userId != null) {
+        DocumentReference docRef = _firestore.collection('especialidad').doc();
+        await docRef.set({
+          'id': docRef.id, 
+          'nombre': nombreEspecialidad,
+      });
+      print('especialidad agregada con ID: ${docRef.id}');
+      } else {
+        throw Exception('Usuario no autenticado');
+      }
+    } catch (e) {
+      print('Error al agregar obra social: $e');
+      throw e;
+    }
+  }
+  // Get especialidades
+  // 
 }
 
 final databaseNotifierProvider = StateNotifierProvider<DatabaseNotifier, Database>((ref) => DatabaseNotifier());
