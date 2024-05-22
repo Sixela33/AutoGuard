@@ -11,10 +11,10 @@ class MenuItem {
 
 const List<MenuItem> menuItems = [
   MenuItem(
-    title: "agregarObraSocial", 
+    title: "Admin panel", 
     subtitle: "agregar una nueva obra social", 
     icon: Icons.movie, 
-    link: '/agregarObraSocial'
+    link: '/Admin'
   ),
   MenuItem(
     title: "Register", 
@@ -34,5 +34,4 @@ const List<MenuItem> menuItems = [
     icon: Icons.movie, 
     link: '/especialista'
   ),
-
 ];
