@@ -32,7 +32,11 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/especialista',
       builder: (context, state) => ConsultarEspecialista()
-    )
+    ),
+    GoRoute(
+      path: '/asociarObraSocial',
+      builder: (context, state) => AgregarObraSocial()
+    ),
   ],
   
 );
