@@ -53,7 +53,10 @@ final appRouter = GoRouter(
           path: 'register',
           builder: (context, state) => RegistrationScreen(),
         ),
-        
+        GoRoute(
+          path: 'asociarObraSocial',
+          builder: (context, state) => AgregarObraSocial()
+        ),
       ]
     )
     

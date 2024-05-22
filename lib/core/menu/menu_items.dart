@@ -34,4 +34,10 @@ const List<MenuItem> menuItems = [
     icon: Icons.movie, 
     link: '/especialista'
   ),
+    MenuItem(
+    title: "Asociar obra social", 
+  subtitle:  "Asociá tu obra social", 
+  icon: Icons.youtube_searched_for_outlined, 
+  link: "/asociarObraSocial"
+  ),
 ];
