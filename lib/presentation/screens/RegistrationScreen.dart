@@ -1,11 +1,10 @@
 import 'package:autoguard/presentation/providers/dbProvider.dart';
+import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
-
 class RegistrationScreen extends StatelessWidget {
-  static String name = "Registrat usuario";
+  static String name = "Registrar usuario";
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,6 @@ class _RegistrationScreen extends ConsumerWidget {
 
   final TextEditingController controller_email = TextEditingController();
   final TextEditingController controller_password = TextEditingController();
-
 
   @override
   Widget build(BuildContext context, ref) {
@@ -49,12 +47,20 @@ class _RegistrationScreen extends ConsumerWidget {
               onPressed: () async {
                 try {
                   await databaseNotifier.registerWithEmailAndPassword(
-                      controller_email.text,
-                      controller_password.text
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('¡Registro exitoso!')),
-                    );
+                    controller_email.text,
+                    controller_password.text
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('¡Registro exitoso!')),
+                  );
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return LoginScreen();
+                     },
+                   ),
+                 );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error en el registro: $e')),

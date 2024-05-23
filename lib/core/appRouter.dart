@@ -1,5 +1,5 @@
 import 'package:autoguard/presentation/components/ScaffoldWithNavbar.dart';
-import 'package:autoguard/presentation/screens/AgregarNevaObraSocial.dart';
+import 'package:autoguard/presentation/screens/AgregarNuevaObraSocial.dart';
 import 'package:autoguard/presentation/screens/AgregarObraSocialUsuario.dart';
 import 'package:autoguard/presentation/screens/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
@@ -20,8 +20,13 @@ final appRouter = GoRouter(
           path: 'login',
           builder: (context, state) => LoginScreen(),
         ),
+        GoRoute(
+          name: RegistrationScreen.name,
+          path: 'register',
+          builder: (context, state) => RegistrationScreen(),
+        ),
         StatefulShellRoute.indexedStack(
-          builder: ((context, state, navigationShell) => ScaffoldWithNavBar(navigationShell: navigationShell)),
+          builder: (context, state, navigationShell) => ScaffoldWithNavBar(navigationShell: navigationShell),
           branches: [
             StatefulShellBranch(
               routes: [
@@ -31,36 +36,31 @@ final appRouter = GoRouter(
                   builder: (context, state) => HomeScreen(),
                 ),
               ],
-              ),
-            StatefulShellBranch(routes: [
-              GoRoute(
-                name: AgregarNuevaObraSocial.name,
-                path: 'Admin',
-                builder: (context, state) => AgregarNuevaObraSocial(),
-              ),
-            ]),
-            StatefulShellBranch(routes: [
-              GoRoute(
-                path: 'especialista',
-                builder: (context, state) => ConsultarEspecialista()
-              )
-            ])
-          ]    
-        ),
-      
-        GoRoute(
-          name: RegistrationScreen.name,
-          path: 'register',
-          builder: (context, state) => RegistrationScreen(),
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  name: AgregarNuevaObraSocial.name,
+                  path: 'Admin',
+                  builder: (context, state) => AgregarNuevaObraSocial(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: 'especialista',
+                  builder: (context, state) => ConsultarEspecialista(),
+                ),
+              ],
+            ),
+          ],
         ),
         GoRoute(
           path: 'asociarObraSocial',
-          builder: (context, state) => AgregarObraSocial()
+          builder: (context, state) => AgregarObraSocial(),
         ),
-      ]
-    )
-    
+      ],
+    ),
   ],
-  
-  
 );

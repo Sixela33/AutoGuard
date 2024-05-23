@@ -40,4 +40,10 @@ const List<MenuItem> menuItems = [
     icon: Icons.youtube_searched_for_outlined, 
     link: "/asociarObraSocial"
   ),
+  MenuItem(
+    title: "Home",
+    subtitle: "Home",
+    icon: Icons.home, 
+    link: "/home"
+    ),
 ];

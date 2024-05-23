@@ -1,4 +1,5 @@
 import 'package:autoguard/presentation/providers/dbProvider.dart';
+import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/screens/RecuperarContrasenia.dart';
@@ -53,6 +54,14 @@ class _LoginScreen extends ConsumerWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('¡Inicio de sesión exitoso!')),
                   );
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return HomeScreen();
+                     },
+                   ),
+                 );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error al iniciar sesión: $e')),
@@ -62,27 +71,28 @@ class _LoginScreen extends ConsumerWidget {
               child: Text('Iniciar sesión'),
             ),
             SizedBox(height: 10),
-               GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                    return RecuperarContrasenia();
-                    }
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return RecuperarContrasenia();
+                    },
                   ),
                 );
               },
-              child: Text('Olvidaste tu contraseña?',
-              style: TextStyle(
-                color: Colors.blue,
-                decoration: TextDecoration.underline,
+              child: Text(
+                'Olvidaste tu contraseña?',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 }
