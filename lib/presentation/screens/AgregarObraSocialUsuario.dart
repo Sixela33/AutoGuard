@@ -3,10 +3,6 @@ import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final obraSocialProvider = FutureProvider<List<ObraSocial>>((ref) {
-  return ref.read(databaseNotifierProvider).getObrasSociales();
-});
-
 final obraSocialSeleccionadaProvider = StateProvider<ObraSocial?>((ref) => null);
 
 class AgregarObraSocial extends StatelessWidget {
@@ -35,32 +31,20 @@ class _AgregarObraSocialState extends ConsumerState<_AgregarObraSocial> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // Refresh the provider when the widget is first created
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.refresh(obraSocialProvider);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final obrasSocialesAsync = ref.watch(obraSocialProvider);
-    final obraSocialSeleccionada = ref.watch(obraSocialSeleccionadaProvider);
+    final databaseProvider = ref.watch(databaseNotifierProvider);
+    databaseProvider.getObrasSociales();
+    
+    ObraSocial? obraSocialSeleccionada;
+    if (databaseProvider.obrasSociales.isNotEmpty) {
+      obraSocialSeleccionada = databaseProvider.obrasSociales[0];
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Agregar obra social"),
       ),
-      body: obrasSocialesAsync.when(
-        error: (error, stackTrace) {
-          return Center(child: Text('Error: $error'));
-        },
-        loading: () {
-          return const Center(child: CircularProgressIndicator());
-        },
-        data: (obrasSociales) {
-          return Padding(
+      body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +59,7 @@ class _AgregarObraSocialState extends ConsumerState<_AgregarObraSocial> {
                   onChanged: (ObraSocial? newValue) {
                     ref.read(obraSocialSeleccionadaProvider.notifier).state = newValue;
                   },
-                  items: obrasSociales.map((ObraSocial value) {
+                  items: databaseProvider.obrasSociales.map((ObraSocial value) {
                     return DropdownMenuItem<ObraSocial>(
                       value: value,
                       child: Text(value.nombre),
@@ -112,9 +96,7 @@ class _AgregarObraSocialState extends ConsumerState<_AgregarObraSocial> {
                 ),
               ],
             ),
-          );
-        },
-      ),
+          )
     );
   }
 }
