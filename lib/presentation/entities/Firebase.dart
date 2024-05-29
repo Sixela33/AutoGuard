@@ -42,6 +42,26 @@ class Database {
     }
   }
 
+Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, String capacidad) async {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+
+      String userId = userCredential.user!.uid;
+
+      await _firestore.collection('users').doc(userId).set({
+        'id': userId,
+        'email': email,
+        'nombre': nombre,
+        'capacidad': capacidad,
+      });
+
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+    } catch (e) {
+      print('Error en registro: $e');
+      throw e;
+    }
+  }
+
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
