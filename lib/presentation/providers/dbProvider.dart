@@ -20,12 +20,12 @@ class DatabaseNotifier extends StateNotifier<Database> {
     await state.addObraSocial(nombreObraSocial);
   }
 
-  Future<List<ObraSocial>> getObrasSociales() async {
-    return await state.getObrasSociales();
+  void getObrasSociales() async {
+    state.getObrasSociales();
   }
 
-  Future<List<EspecialidadMedica>> getEspecialidades() async {
-    return await state.getEspecialidades();
+  void getEspecialidades() async {
+    state.getEspecialidades();
   }
 }
 

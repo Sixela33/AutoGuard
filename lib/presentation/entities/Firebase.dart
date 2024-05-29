@@ -8,6 +8,14 @@ class Database {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  List<ObraSocial> obrasSociales = [];
+  List<EspecialidadMedica> especialidadesMedicas = [];
+
+  Database () {
+    getObrasSociales();
+    getEspecialidades();
+  }
+
   ///////////////////////////////////
   ///           AUTH
   ///////////////////////////////////
@@ -60,19 +68,20 @@ class Database {
           'id': docRef.id, 
           'nombre': nombreObraSocial,
       });
+
       return new ResponseObject(success: true, mensaje: 'Obra social agregada con exito');
       } else {
         // throw Exception('Usuario no autenticado');
         return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
       }
+
     } catch (e) {
       return new ResponseObject(success: false, mensaje: e.toString());
-
     }
   }
 
   // GetObrasSociales
-  Future<List<ObraSocial>> getObrasSociales() async {
+  void getObrasSociales() async {
     try {
       Query obraSocialQuery = _firestore.collection('obraSocial');
       QuerySnapshot response = await obraSocialQuery.get();
@@ -87,8 +96,7 @@ class Database {
           continue;
         }
       }
-      
-      return obrasSociales;
+      this.obrasSociales = obrasSociales;
 
     } catch (e) {
       print('Error al fetchear obras sociales: $e');
@@ -97,7 +105,7 @@ class Database {
   }
 
   // Agregar Especialidad
-  Future<void> addEspecialidad(String nombreEspecialidad) async {
+  Future<ResponseObject> addEspecialidad(String nombreEspecialidad) async {
     try {
       String? userId = getCurrentUserId();
       if (userId != null) {
@@ -106,29 +114,34 @@ class Database {
           'id': docRef.id, 
           'nombre': nombreEspecialidad,
       });
-      print('especialidad agregada con ID: ${docRef.id}');
+      //print('especialidad agregada con ID: ${docRef.id}');
+      return new ResponseObject(success: false, mensaje: 'Especialidad agregada');
+
       } else {
-        throw Exception('Usuario no autenticado');
+        return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
       }
     } catch (e) {
       print('Error al agregar obra social: $e');
-      throw e;
+      return new ResponseObject(success: false, mensaje: e.toString());
     }
   }
-  // Get especialidades
-  Future<List<EspecialidadMedica>> getEspecialidades() async {
-    // Fetch especialidad data from Firestore
+
+  void getEspecialidades() async {
     Query especialidadQuery = _firestore.collection('especialidad');
     QuerySnapshot querySnapshot = await especialidadQuery.get();
-
-    // Convert Firestore documents to Especialidad objects
     List<EspecialidadMedica> especialidades = [];
     for (DocumentSnapshot doc in querySnapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      EspecialidadMedica especialidad = EspecialidadMedica.fromMap(data);
-      especialidades.add(especialidad);
+         try {
+            EspecialidadMedica especialidad = EspecialidadMedica.fromMap(data);
+            especialidades.add(especialidad);
+        } catch (e) {
+          print(e);
+          continue;
+        }
+      
     }
 
-    return especialidades;
+    this.especialidadesMedicas = especialidades;
   }
 }

@@ -47,6 +47,7 @@ class _AdminScreen extends ConsumerWidget {
             FilledButton(
               onPressed: () async {
                 ResponseObject res = await databaseNotifier.addObraSocial(nombreNuevaObraSocial.text);
+                nombreNuevaObraSocial.clear;
                 showDialog(
                   context: context, 
                   builder: (context) {
@@ -67,8 +68,13 @@ class _AdminScreen extends ConsumerWidget {
             ),
             FilledButton(
                 onPressed: () async {
-                  await databaseNotifier.addEspecialidad(nombreNuevaEspecialidad.text);
-                  
+                  ResponseObject res = await databaseNotifier.addEspecialidad(nombreNuevaEspecialidad.text);
+                  nombreNuevaEspecialidad.clear();
+                  showDialog(
+                  context: context, 
+                  builder: (context) {
+                    return CustomPopup(title: res.mensaje, content: res.mensaje);
+                  });
                 },
                 child: const Text("Guardar Especialidad"),
             ),
