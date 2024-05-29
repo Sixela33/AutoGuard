@@ -4,6 +4,7 @@ import 'package:autoguard/presentation/screens/AgregarObraSocialUsuario.dart';
 import 'package:autoguard/presentation/screens/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
+import 'package:autoguard/presentation/screens/MenuPaciente.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/WelcomeScreen.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +34,7 @@ final appRouter = GoRouter(
                 GoRoute(
                   name: HomeScreen.name,
                   path: 'home',
-                  builder: (context, state) => HomeScreen(),
+                  builder: (context, state) => MenuPaciente(),
                 ),
               ],
             ),
