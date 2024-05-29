@@ -6,6 +6,7 @@ import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/WelcomeScreen.dart';
+import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -59,6 +60,10 @@ final appRouter = GoRouter(
         GoRoute(
           path: 'asociarObraSocial',
           builder: (context, state) => AgregarObraSocial(),
+        ),
+        GoRoute(
+          path: 'registrarMedico',
+          builder: (context, state) => RegistroMedicoScreen(),
         ),
       ],
     ),

@@ -3,6 +3,7 @@ import 'package:autoguard/presentation/entities/ResponseObject.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
 
 class AdminScreen extends StatelessWidget {
   static String name = 'Agregar obra social';
@@ -74,7 +75,17 @@ class _AdminScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             FilledButton(
-              onPressed: () {}, 
+              
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return RegistroMedicoScreen();
+                     },
+                   ),
+                 );
+              }, 
               child: Text('Añadir Medico'))
           ],
         ),
