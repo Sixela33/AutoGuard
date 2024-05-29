@@ -1,5 +1,6 @@
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/ResponseObject.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -46,22 +47,27 @@ class Database {
   ///         FIRESTORE
   ///////////////////////////////////
 
-  Future<void> addObraSocial(String nombreObraSocial) async {
+  Future<ResponseObject> addObraSocial(String nombreObraSocial) async {
     try {
       String? userId = getCurrentUserId();
+      if(nombreObraSocial.trim().isEmpty){
+        return new ResponseObject(success: false, mensaje: 'el nombre de la obra social no puede estar vacio');
+      }
+      
       if (userId != null) {
         DocumentReference docRef = _firestore.collection('obraSocial').doc();
         await docRef.set({
           'id': docRef.id, 
           'nombre': nombreObraSocial,
       });
-      print('Obra social agregada con ID: ${docRef.id}');
+      return new ResponseObject(success: true, mensaje: 'Obra social agregada con exito');
       } else {
-        throw Exception('Usuario no autenticado');
+        // throw Exception('Usuario no autenticado');
+        return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
       }
     } catch (e) {
-      print('Error al agregar obra social: $e');
-      throw e;
+      return new ResponseObject(success: false, mensaje: e.toString());
+
     }
   }
 
@@ -74,14 +80,18 @@ class Database {
       List<ObraSocial> obrasSociales = [];
       for (DocumentSnapshot doc in response.docs) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        ObraSocial obraSocial = ObraSocial.fromMap(data);
-        obrasSociales.add(obraSocial);
+        try {
+          ObraSocial obraSocial = ObraSocial.fromMap(data);
+          obrasSociales.add(obraSocial);
+        } catch (e) {
+          continue;
+        }
       }
       
       return obrasSociales;
 
     } catch (e) {
-      print('Error al agregar obra social: $e');
+      print('Error al fetchear obras sociales: $e');
       throw e;
     }
   }

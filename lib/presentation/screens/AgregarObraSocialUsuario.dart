@@ -1,88 +1,119 @@
+import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AgregarObraSocial extends StatefulWidget {
-  static String name = "Agregar Obra Social";
+final obraSocialProvider = FutureProvider<List<ObraSocial>>((ref) {
+  return ref.read(databaseNotifierProvider).getObrasSociales();
+});
 
+final obraSocialSeleccionadaProvider = StateProvider<ObraSocial?>((ref) => null);
+
+class AgregarObraSocial extends StatelessWidget {
   const AgregarObraSocial({super.key});
 
   @override
-  State<AgregarObraSocial> createState() => _AgregarObraSocialState();
+  Widget build(BuildContext context) {
+    return const _AgregarObraSocial();
+  }
 }
 
-class _AgregarObraSocialState extends State<AgregarObraSocial> {
-  final TextEditingController numeroObraSocialController = TextEditingController();
-  String? obraSocialSeleccionada;
+class _AgregarObraSocial extends ConsumerStatefulWidget {
+  const _AgregarObraSocial({super.key});
 
-  final List<String> obrasSociales = [
-    'OSDE',
-    'Swiss Medical',
-    'Galeno',
-    'Medifé',
-    'IOMA',
-    'PAMI',
-    'Hospital Italiano'
-  ];
+  @override
+  _AgregarObraSocialState createState() => _AgregarObraSocialState();
+}
+
+class _AgregarObraSocialState extends ConsumerState<_AgregarObraSocial> {
+  final TextEditingController numeroObraSocialController = TextEditingController();
+
+  @override
+  void dispose() {
+    numeroObraSocialController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Refresh the provider when the widget is first created
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.refresh(obraSocialProvider);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final obrasSocialesAsync = ref.watch(obraSocialProvider);
+    final obraSocialSeleccionada = ref.watch(obraSocialSeleccionadaProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Agregar obra social"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text("Seleccioná tu obra social:"),
-            DropdownButtonFormField<String>(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                hintText: 'Obra Social',
-              ),
-              value: obraSocialSeleccionada,
-              onChanged: (String? newValue) {
-                setState(() {
-                  obraSocialSeleccionada = newValue;
-                });
-              },
-              items: obrasSociales.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 16.0),
-            const Text("Ingresa tu número de obra social:"),
-            TextField(
-              controller: numeroObraSocialController,
-              decoration: const InputDecoration(
-                hintText: 'Número de obra social',
-                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Center(
-              child: FilledButton(
-                onPressed: () {
-                  final obraSocial = obraSocialSeleccionada;
-                  final numeroObraSocial = numeroObraSocialController.text;
-                  if (obraSocial != null && numeroObraSocial.isNotEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Obra social guardada: $obraSocial - $numeroObraSocial')),
+      body: obrasSocialesAsync.when(
+        error: (error, stackTrace) {
+          return Center(child: Text('Error: $error'));
+        },
+        loading: () {
+          return const Center(child: CircularProgressIndicator());
+        },
+        data: (obrasSociales) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Seleccioná tu obra social:"),
+                DropdownButtonFormField<ObraSocial>(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                  hint: const Text("elige tu obra social"),
+                  value: obraSocialSeleccionada,
+                  onChanged: (ObraSocial? newValue) {
+                    ref.read(obraSocialSeleccionadaProvider.notifier).state = newValue;
+                  },
+                  items: obrasSociales.map((ObraSocial value) {
+                    return DropdownMenuItem<ObraSocial>(
+                      value: value,
+                      child: Text(value.nombre),
                     );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Por favor, completá todos los campos')),
-                    );
-                  }
-                },
-                child: const Text("Guardar"),
-              ),
+                  }).toList(),
+                ),
+                const SizedBox(height: 16.0),
+                const Text("Ingresa tu número de obra social:"),
+                TextField(
+                  controller: numeroObraSocialController,
+                  decoration: const InputDecoration(
+                    hintText: 'Número de obra social',
+                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Center(
+                  child: FilledButton(
+                    onPressed: () {
+                      final obraSocial = ref.read(obraSocialSeleccionadaProvider);
+                      final numeroObraSocial = numeroObraSocialController.text;
+                      if (obraSocial != null && numeroObraSocial.isNotEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Obra social guardada: ${obraSocial.nombre} - $numeroObraSocial')),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Por favor, completá todos los campos')),
+                        );
+                      }
+                    },
+                    child: const Text("Guardar"),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

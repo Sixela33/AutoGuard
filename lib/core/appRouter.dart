@@ -1,5 +1,5 @@
 import 'package:autoguard/presentation/components/ScaffoldWithNavbar.dart';
-import 'package:autoguard/presentation/screens/AgregarNuevaObraSocial.dart';
+import 'package:autoguard/presentation/screens/AdminScreen.dart';
 import 'package:autoguard/presentation/screens/AgregarObraSocialUsuario.dart';
 import 'package:autoguard/presentation/screens/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
@@ -40,9 +40,9 @@ final appRouter = GoRouter(
             StatefulShellBranch(
               routes: [
                 GoRoute(
-                  name: AgregarNuevaObraSocial.name,
+                  name: AdminScreen.name,
                   path: 'Admin',
-                  builder: (context, state) => AgregarNuevaObraSocial(),
+                  builder: (context, state) => AdminScreen(),
                 ),
               ],
             ),
