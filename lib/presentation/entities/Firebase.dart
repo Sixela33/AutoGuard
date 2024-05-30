@@ -24,15 +24,19 @@ class Database {
     return _auth.currentUser?.uid;
   }
 
-  Future<void> registerWithEmailAndPassword(String email, String password) async {
+  Future<void> registerWithEmailAndPassword(String email, String password, List<ObraSocial> obrasSociales) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
       String userId = userCredential.user!.uid;
 
+      Iterable<String> obras_sociales = obrasSociales.map((e) => e.nombre).toList();
+
       await _firestore.collection('users').doc(userId).set({
         'id': userId,
         'email': email,
+        'es_medico': false,
+        'obras_sociales': obras_sociales
       });
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -42,20 +46,27 @@ class Database {
     }
   }
 
-Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, String capacidad) async {
+  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidades) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
       String userId = userCredential.user!.uid;
 
+      Iterable<String> obras_sociales = obrasSociales.map((e) => e.nombre).toList();
+      Iterable<String> especialidades = especialidadesMedicas.map((e) => e.nombre).toList();
+
       await _firestore.collection('users').doc(userId).set({
         'id': userId,
         'email': email,
         'nombre': nombre,
-        'capacidad': capacidad,
+        'obras_sociales': obras_sociales,
+        'especialidades': especialidades,
+        'es_medico': true
       });
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      return;
     } catch (e) {
       print('Error en registro: $e');
       throw e;
@@ -75,11 +86,11 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
   ///         FIRESTORE
   ///////////////////////////////////
 
-  Future<ResponseObject> addObraSocial(String nombreObraSocial) async {
+  Future<void> addObraSocial(String nombreObraSocial) async {
     try {
       String? userId = getCurrentUserId();
       if(nombreObraSocial.trim().isEmpty){
-        return new ResponseObject(success: false, mensaje: 'el nombre de la obra social no puede estar vacio');
+        throw Exception('el nombre de la obra social no puede estar vacio');
       }
       
       if (userId != null) {
@@ -89,14 +100,13 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
           'nombre': nombreObraSocial,
       });
 
-      return new ResponseObject(success: true, mensaje: 'Obra social agregada con exito');
+      return;
       } else {
-        // throw Exception('Usuario no autenticado');
-        return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
+        throw Exception("Usuario no autenticado");
       }
 
     } catch (e) {
-      return new ResponseObject(success: false, mensaje: e.toString());
+      rethrow;
     }
   }
 
@@ -125,7 +135,7 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
   }
 
   // Agregar Especialidad
-  Future<ResponseObject> addEspecialidad(String nombreEspecialidad) async {
+  Future<void> addEspecialidad(String nombreEspecialidad) async {
     try {
       String? userId = getCurrentUserId();
       if (userId != null) {
@@ -135,14 +145,14 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
           'nombre': nombreEspecialidad,
       });
       //print('especialidad agregada con ID: ${docRef.id}');
-      return new ResponseObject(success: false, mensaje: 'Especialidad agregada');
+      throw'Especialidad agregada';
 
       } else {
-        return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
+        throw 'Usuario no autenticado';
       }
     } catch (e) {
       print('Error al agregar obra social: $e');
-      return new ResponseObject(success: false, mensaje: e.toString());
+      rethrow;
     }
   }
 

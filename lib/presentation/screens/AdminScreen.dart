@@ -47,13 +47,17 @@ class _AdminScreen extends ConsumerWidget {
             ),
             FilledButton(
               onPressed: () async {
-                ResponseObject res = await databaseNotifier.addObraSocial(nombreNuevaObraSocial.text);
-                nombreNuevaObraSocial.clear;
-                showDialog(
-                  context: context, 
-                  builder: (context) {
-                    return CustomPopup(title: res.mensaje, content: res.mensaje);
-                  });
+                try {
+                  await databaseNotifier.addObraSocial(nombreNuevaObraSocial.text);
+                  nombreNuevaObraSocial.clear;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Obra social agregada con exito')),
+                    );
+                } catch (e){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error al agregar obra social: $e')),
+                  );
+                }
               },
               child: const Text("Guardar Obra Social"),
             ),
@@ -69,13 +73,18 @@ class _AdminScreen extends ConsumerWidget {
             ),
             FilledButton(
                 onPressed: () async {
-                  ResponseObject res = await databaseNotifier.addEspecialidad(nombreNuevaEspecialidad.text);
-                  nombreNuevaEspecialidad.clear();
-                  showDialog(
-                  context: context, 
-                  builder: (context) {
-                    return CustomPopup(title: res.mensaje, content: res.mensaje);
-                  });
+                  try {
+                    databaseNotifier.addEspecialidad(nombreNuevaEspecialidad.text);
+                    nombreNuevaEspecialidad.clear();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Especialidad agregada con exito')),
+                    );
+                  } catch (e) {
+                     ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Error en el registro: $e')),
+                    );
+                  }
+                  
                 },
                 child: const Text("Guardar Especialidad"),
             ),

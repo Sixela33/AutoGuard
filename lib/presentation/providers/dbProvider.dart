@@ -8,8 +8,8 @@ final databaseNotifierProvider = StateNotifierProvider<DatabaseNotifier, Databas
 class DatabaseNotifier extends StateNotifier<Database> {
   DatabaseNotifier() : super(Database());
 
-  Future<void> registerWithEmailAndPassword(String email, String password) async {
-    await state.registerWithEmailAndPassword(email, password);
+  Future<void> registerWithEmailAndPassword(String email, String password, List<ObraSocial> obrasSociales) async {
+    await state.registerWithEmailAndPassword(email, password, obrasSociales);
   }
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
