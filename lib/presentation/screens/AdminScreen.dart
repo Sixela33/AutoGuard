@@ -1,5 +1,3 @@
-import 'package:autoguard/presentation/components/CustomPopup.dart';
-import 'package:autoguard/presentation/entities/ResponseObject.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

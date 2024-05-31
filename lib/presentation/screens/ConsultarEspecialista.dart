@@ -1,5 +1,4 @@
 import 'package:autoguard/presentation/components/functions/consultarEspecialista.dart';
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

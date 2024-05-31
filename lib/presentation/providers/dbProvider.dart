@@ -1,4 +1,3 @@
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,6 +1,5 @@
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
-import 'package:autoguard/presentation/entities/ResponseObject.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
