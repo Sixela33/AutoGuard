@@ -1,7 +1,7 @@
 import 'package:autoguard/presentation/components/ScaffoldWithNavbar.dart';
 import 'package:autoguard/presentation/screens/AdminScreen.dart';
 import 'package:autoguard/presentation/screens/AgregarObraSocialUsuario.dart';
-import 'package:autoguard/presentation/screens/ConsultarEspecialista.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';

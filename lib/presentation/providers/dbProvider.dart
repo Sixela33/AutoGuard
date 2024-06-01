@@ -1,4 +1,6 @@
+import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
+import 'package:autoguard/presentation/entities/Medic.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +13,10 @@ class DatabaseNotifier extends StateNotifier<Database> {
     await state.registerWithEmailAndPassword(email, password, obrasSociales);
   }
 
+  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidades) async {
+    await registerWithEmailAndPasswordDoctor(email, password, nombre, obrasSociales, especialidades);
+  }
+
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     await state.signInWithEmailAndPassword(email, password);
   }
@@ -19,12 +25,16 @@ class DatabaseNotifier extends StateNotifier<Database> {
     await state.addObraSocial(nombreObraSocial);
   }
 
-  void getObrasSociales() async {
-    state.getObrasSociales();
+  Future<List<ObraSocial>> getObrasSociales() async {
+    return state.getObrasSociales();
   }
 
-  void getEspecialidades() async {
-    state.getEspecialidades();
+  Future<List<EspecialidadMedica>> getEspecialidades() async {
+    return state.getEspecialidades();
+  }
+
+  Future<List<Medic>> getMedicosByEspecialidad(String especialidad) async {
+    return state.getMedicosOfEspecialidad(especialidad);
   }
 }
 

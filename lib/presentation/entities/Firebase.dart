@@ -1,5 +1,6 @@
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/Medic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -110,7 +111,7 @@ class Database {
   }
 
   // GetObrasSociales
-  void getObrasSociales() async {
+  Future<List<ObraSocial>> getObrasSociales() async {
     try {
       Query obraSocialQuery = _firestore.collection('obraSocial');
       QuerySnapshot response = await obraSocialQuery.get();
@@ -125,7 +126,9 @@ class Database {
           continue;
         }
       }
+      
       this.obrasSociales = obrasSociales;
+      return obrasSociales;
 
     } catch (e) {
       print('Error al fetchear obras sociales: $e');
@@ -155,7 +158,7 @@ class Database {
     }
   }
 
-  void getEspecialidades() async {
+  Future<List<EspecialidadMedica>> getEspecialidades() async {
     Query especialidadQuery = _firestore.collection('especialidad');
     QuerySnapshot querySnapshot = await especialidadQuery.get();
     List<EspecialidadMedica> especialidades = [];
@@ -170,7 +173,26 @@ class Database {
         }
       
     }
-
     this.especialidadesMedicas = especialidades;
+    return especialidades;
+  }
+
+  Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
+    Query medicosQuery = _firestore.collection('users').where('es_medico',isEqualTo: true).where('especialidades', arrayContains: especialidad);
+    QuerySnapshot querySnapshot = await medicosQuery.get();
+    List<Medic> medicos = [];
+    for(DocumentSnapshot doc in querySnapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        try {
+            Medic especialidad = Medic.fromMap(data);
+            medicos.add(especialidad);
+        } catch (e) {
+          print(e);
+          continue;
+        }
+    }
+
+    return medicos;
+
   }
 }

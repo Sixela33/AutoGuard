@@ -1,5 +1,6 @@
 import 'package:autoguard/presentation/components/functions/consultarEspecialista.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
+import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +23,10 @@ class _ConsultarEspecialista extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final databaseNotifier = ref.watch(databaseNotifierProvider);
+    final turnoNotifier = ref.watch(turnoProvider);
+
     databaseNotifier.getEspecialidades();
+
     return Scaffold(
           body: Center(
           child: Column(
@@ -43,8 +47,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
               child: const Text('Promptear Modelo'),
               onPressed: () {
                 final inputUsuario = _controller.text;
-                // Aquí pasamos la lista de especialidades disponibles a la función consultarEspecialista
-                consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas);
+                consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifier);
               },
             ),
           ],

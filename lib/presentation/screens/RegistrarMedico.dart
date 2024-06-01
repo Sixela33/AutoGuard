@@ -26,7 +26,7 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerEspecialidad = TextEditingController();
   final List<ObraSocial> obrasSocialesSeleccionadas = [];
-  final List<EspecialidadMedica> especialidadesMedicass = [];
+  final List<EspecialidadMedica> especialidadesMedicas = [];
 
   @override
   void dispose() {
@@ -90,10 +90,10 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
                 onChanged: (selectedEspecialidad) {
                   if (selectedEspecialidad != null) {
                     setState(() {
-                      if (especialidadesMedicass.contains(selectedEspecialidad)) {
-                        especialidadesMedicass.remove(selectedEspecialidad);
+                      if (especialidadesMedicas.contains(selectedEspecialidad)) {
+                        especialidadesMedicas.remove(selectedEspecialidad);
                       } else {
-                        especialidadesMedicass.add(selectedEspecialidad);
+                        especialidadesMedicas.add(selectedEspecialidad);
                       }
                     });
                   }
@@ -107,11 +107,11 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
               ),
               const SizedBox(height: 20),
               Wrap(
-                children: especialidadesMedicass.map((especialidad) {
+                children: especialidadesMedicas.map((especialidad) {
                   return InkWell(
                     onTap: () {
                       setState(() {
-                        especialidadesMedicass.remove(especialidad);
+                        especialidadesMedicas.remove(especialidad);
                       });
                     },
                     child: Chip(
@@ -167,7 +167,7 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
                       controllerPassword.text,
                       controllerNombre.text,
                       obrasSocialesSeleccionadas,
-                      especialidadesMedicass
+                      especialidadesMedicas
                     );
                  
                     ScaffoldMessenger.of(context).showSnackBar(
