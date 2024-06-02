@@ -30,7 +30,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
 
     return Container(
       constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height / 2,
+          maxHeight: MediaQuery.of(context).size.height,
         ),
       child: Scaffold(
             body: Center(

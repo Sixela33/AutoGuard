@@ -3,25 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class SeleccionarMedico extends StatelessWidget {
-  const SeleccionarMedico({super.key});
+class SeleccionarFecha extends StatelessWidget {
+    // https://pub.dev/packages/table_calendar
+
+  const SeleccionarFecha({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return _SeleccionarMedico();
+    return _SeleccionarFecha();
   }
 }
 
-class _SeleccionarMedico extends ConsumerStatefulWidget {
-  const _SeleccionarMedico({
+class _SeleccionarFecha extends ConsumerStatefulWidget {
+  const _SeleccionarFecha({
     super.key,
   });
 
   @override
-  _SeleccionarMedicoState createState() => _SeleccionarMedicoState();
+  _SeleccionarFechaState createState() => _SeleccionarFechaState();
 }
 
-class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
+class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
   @override
   Widget build(BuildContext context) {
     final turnoNotifier = ref.watch(turnoProvider.notifier);
