@@ -12,6 +12,7 @@ class SacarTurnoEntity {
   late String inputUsuarioRazonConsulta;
   late DateTime fechaSeleccionada;
   late List<Medic> medicosDisponibles;
+  int currentStep = 0;
 
   void idSeleccionada(String id) async {
     this.idEspecialidadSeleccionada = id;
@@ -24,5 +25,6 @@ class SacarTurnoEntity {
   void setFechaSeleccionada(DateTime fecha) {
     this.fechaSeleccionada = fecha;
   }
-
 }
+
+

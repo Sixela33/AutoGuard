@@ -29,12 +29,6 @@ const List<MenuItem> menuItems = [
     link: '/login'
   ),
   MenuItem(
-    title: "Consultar especialista", 
-    subtitle: "Ya tu sabes", 
-    icon: Icons.movie, 
-    link: '/especialista'
-  ),
-  MenuItem(
     title: "Asociar obra social", 
     subtitle:  "Asociá tu obra social", 
     icon: Icons.youtube_searched_for_outlined, 
@@ -45,11 +39,17 @@ const List<MenuItem> menuItems = [
     subtitle: "Home",
     icon: Icons.home, 
     link: "/home"
-    ),
+  ),
   MenuItem(
-    title: "Registrar medico",
-    subtitle: "Registrar medico",
+      title: "Registrar medico",
+      subtitle: "Registrar medico",
+      icon: Icons.home, 
+      link: "/registrarMedico"
+  ),
+  MenuItem(
+    title: "saccar Turno medico",
+    subtitle: "saccar Turno medico",
     icon: Icons.home, 
-    link: "/registrarMedico"
-    ),
+    link: "/sacarTurno"
+  ),
 ];

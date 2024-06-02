@@ -1,8 +1,8 @@
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
-import 'package:autoguard/presentation/entities/SacarTurnoEntity.dart';
+import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:dart_openai/dart_openai.dart';
 
-Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica> especialidadesDisponibles, SacarTurnoEntity turnoNotifier) async {
+Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica> especialidadesDisponibles, turnoNotifier turnoNotifier) async {
   String especialidades = especialidadesDisponibles.map((e) => e.nombre).join(',');
 
   String presentacion = "Es muy importante que respondas con una sola palabra y solo usando las especialidades que se listan a continuación. Eres la recepcionista de una Clínica u Hospital. La institución cuenta únicamente con especialistas en las siguientes especialidades médicas: ";
@@ -18,16 +18,15 @@ Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica
   );
 
   print(completion.choices.first.text); // ...
-  print(completion.systemFingerprint); // ...
-  print(completion.id); 
 
   EspecialidadMedica especialidadSeleccionada;
 
+
   try {
-    especialidadSeleccionada = especialidadesDisponibles.firstWhere((element) => element.nombre == completion.choices.first);
+    especialidadSeleccionada = especialidadesDisponibles.firstWhere((element) => element.nombre == completion.choices.first.toString().trim());
   } catch (e) {
     especialidadSeleccionada = especialidadesDisponibles.first;
   }
-
-  turnoNotifier.idSeleccionada(especialidadSeleccionada.id);
+  
+  turnoNotifier.setIdSeleccionada(especialidadSeleccionada.id);
 }

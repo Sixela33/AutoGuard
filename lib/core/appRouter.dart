@@ -7,6 +7,7 @@ import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/WelcomeScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SacarTurnoScreen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -50,20 +51,23 @@ final appRouter = GoRouter(
             StatefulShellBranch(
               routes: [
                 GoRoute(
-                  path: 'especialista',
-                  builder: (context, state) => ConsultarEspecialista(),
-                ),
+                path: 'sacarTurno',
+                builder: (context, state) => SacarTurnoScreen()
+              ),
               ],
             ),
+            StatefulShellBranch(routes: [
+              GoRoute(
+                path: 'asociarObraSocial',
+                builder: (context, state) => AgregarObraSocial(),
+              ),
+              GoRoute(
+                path: 'registrarMedico',
+                builder: (context, state) => RegistroMedicoScreen(),
+              ),
+              
+            ])
           ],
-        ),
-        GoRoute(
-          path: 'asociarObraSocial',
-          builder: (context, state) => AgregarObraSocial(),
-        ),
-        GoRoute(
-          path: 'registrarMedico',
-          builder: (context, state) => RegistroMedicoScreen(),
         ),
       ],
     ),
