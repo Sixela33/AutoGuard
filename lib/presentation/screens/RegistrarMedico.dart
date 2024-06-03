@@ -1,4 +1,4 @@
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
+/* import 'package:autoguard/presentation/entities/ObraSocial.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -182,3 +182,4 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
     );
   }
 }
+ */

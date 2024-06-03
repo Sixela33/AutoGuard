@@ -1,8 +1,9 @@
-import 'package:autoguard/presentation/components/functions/consultarEspecialista.dart';
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
+
+import 'package:autoguard/core/IA/IARepository.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ConsultarEspecialista extends StatelessWidget {
   const ConsultarEspecialista({super.key});
@@ -22,8 +23,8 @@ class _ConsultarEspecialista extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final databaseNotifier = ref.watch(databaseNotifierProvider);
-    databaseNotifier.getEspecialidades();
+    //final databaseNotifier = ref.watch(databaseNotifierProvider);
+    //databaseNotifier.getEspecialidades();
     return Scaffold(
           body: Center(
           child: Column(
@@ -42,10 +43,10 @@ class _ConsultarEspecialista extends ConsumerWidget {
             ),
             TextButton(
               child: const Text('Promptear Modelo'),
-              onPressed: () {
+              onPressed: ()  {
                 final inputUsuario = _controller.text;
                 // Aquí pasamos la lista de especialidades disponibles a la función consultarEspecialista
-                consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas);
+                consultarEspecialista(inputUsuario).then((value) => context.push('/profesionales', extra:value));
               },
             ),
           ],

@@ -1,9 +1,11 @@
+import 'package:autoguard/core/User/UserRepository.dart';
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:dart_openai/dart_openai.dart';
 
-Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica> especialidadesDisponibles) async {
+Future<String> consultarEspecialista (String inputUsuario) async {
+  final especialidadesDisponibles = await getEspecialidades();
   print(especialidadesDisponibles);
-  String especialidades = especialidadesDisponibles.map((e) => e.nombre).join(',');
+  String especialidades = especialidadesDisponibles.join(',');
   
   print("=========================");
   print(especialidades);
@@ -22,5 +24,7 @@ Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica
 
   print(completion.choices.first.text); // ...
   print(completion.systemFingerprint); // ...
-  print(completion.id); 
+  print(completion.id);
+
+  return Future(() => completion.choices.first.text); 
 }

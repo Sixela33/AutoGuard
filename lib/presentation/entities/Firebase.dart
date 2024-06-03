@@ -1,6 +1,7 @@
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
 import 'package:autoguard/presentation/entities/ResponseObject.dart';
+import 'package:autoguard/presentation/entities/Usuario.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,8 +13,8 @@ class Database {
   List<EspecialidadMedica> especialidadesMedicas = [];
 
   Database () {
-    getObrasSociales();
-    getEspecialidades();
+    //getObrasSociales();
+    //getEspecialidades();
   }
 
   ///////////////////////////////////
@@ -160,6 +161,11 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
           continue;
         }
       
+    }
+
+    Future<Usuario> getUsuarioById(String id) async {
+      var usuario = await _firestore.collection('users').doc(id).get();
+      return Usuario.fromMap(usuario.data() as Map<String, dynamic>);
     }
 
     this.especialidadesMedicas = especialidades;
