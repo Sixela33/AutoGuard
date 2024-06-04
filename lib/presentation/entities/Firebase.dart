@@ -1,7 +1,6 @@
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/ObraSocial.dart';
-import 'package:autoguard/presentation/entities/ResponseObject.dart';
-import 'package:autoguard/presentation/entities/Usuario.dart';
+import 'package:autoguard/presentation/entities/Medic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -25,15 +24,19 @@ class Database {
     return _auth.currentUser?.uid;
   }
 
-  Future<void> registerWithEmailAndPassword(String email, String password) async {
+  Future<void> registerWithEmailAndPassword(String email, String password, List<ObraSocial> obrasSociales) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
       String userId = userCredential.user!.uid;
 
+      Iterable<String> obras_sociales = obrasSociales.map((e) => e.nombre).toList();
+
       await _firestore.collection('users').doc(userId).set({
         'id': userId,
         'email': email,
+        'es_medico': false,
+        'obras_sociales': obras_sociales
       });
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -43,20 +46,27 @@ class Database {
     }
   }
 
-Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, String capacidad) async {
+  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidades) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
       String userId = userCredential.user!.uid;
 
+      Iterable<String> obras_sociales = obrasSociales.map((e) => e.nombre).toList();
+      Iterable<String> especialidades = especialidadesMedicas.map((e) => e.nombre).toList();
+
       await _firestore.collection('users').doc(userId).set({
         'id': userId,
         'email': email,
         'nombre': nombre,
-        'capacidad': capacidad,
+        'obras_sociales': obras_sociales,
+        'especialidades': especialidades,
+        'es_medico': true
       });
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      return;
     } catch (e) {
       print('Error en registro: $e');
       throw e;
@@ -76,11 +86,11 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
   ///         FIRESTORE
   ///////////////////////////////////
 
-  Future<ResponseObject> addObraSocial(String nombreObraSocial) async {
+  Future<void> addObraSocial(String nombreObraSocial) async {
     try {
       String? userId = getCurrentUserId();
       if(nombreObraSocial.trim().isEmpty){
-        return new ResponseObject(success: false, mensaje: 'el nombre de la obra social no puede estar vacio');
+        throw Exception('el nombre de la obra social no puede estar vacio');
       }
       
       if (userId != null) {
@@ -90,19 +100,18 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
           'nombre': nombreObraSocial,
       });
 
-      return new ResponseObject(success: true, mensaje: 'Obra social agregada con exito');
+      return;
       } else {
-        // throw Exception('Usuario no autenticado');
-        return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
+        throw Exception("Usuario no autenticado");
       }
 
     } catch (e) {
-      return new ResponseObject(success: false, mensaje: e.toString());
+      rethrow;
     }
   }
 
   // GetObrasSociales
-  void getObrasSociales() async {
+  Future<List<ObraSocial>> getObrasSociales() async {
     try {
       Query obraSocialQuery = _firestore.collection('obraSocial');
       QuerySnapshot response = await obraSocialQuery.get();
@@ -117,7 +126,9 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
           continue;
         }
       }
+      
       this.obrasSociales = obrasSociales;
+      return obrasSociales;
 
     } catch (e) {
       print('Error al fetchear obras sociales: $e');
@@ -126,7 +137,7 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
   }
 
   // Agregar Especialidad
-  Future<ResponseObject> addEspecialidad(String nombreEspecialidad) async {
+  Future<void> addEspecialidad(String nombreEspecialidad) async {
     try {
       String? userId = getCurrentUserId();
       if (userId != null) {
@@ -136,18 +147,18 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
           'nombre': nombreEspecialidad,
       });
       //print('especialidad agregada con ID: ${docRef.id}');
-      return new ResponseObject(success: false, mensaje: 'Especialidad agregada');
+      throw'Especialidad agregada';
 
       } else {
-        return new ResponseObject(success: false, mensaje: 'Usuario no autenticado');
+        throw 'Usuario no autenticado';
       }
     } catch (e) {
       print('Error al agregar obra social: $e');
-      return new ResponseObject(success: false, mensaje: e.toString());
+      rethrow;
     }
   }
 
-  void getEspecialidades() async {
+  Future<List<EspecialidadMedica>> getEspecialidades() async {
     Query especialidadQuery = _firestore.collection('especialidad');
     QuerySnapshot querySnapshot = await especialidadQuery.get();
     List<EspecialidadMedica> especialidades = [];
@@ -162,12 +173,26 @@ Future<void> registerWithEmailAndPasswordDoctor(String email, String password, S
         }
       
     }
+    this.especialidadesMedicas = especialidades;
+    return especialidades;
+  }
 
-    Future<Usuario> getUsuarioById(String id) async {
-      var usuario = await _firestore.collection('users').doc(id).get();
-      return Usuario.fromMap(usuario.data() as Map<String, dynamic>);
+  Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
+    Query medicosQuery = _firestore.collection('users').where('es_medico',isEqualTo: true).where('especialidades', arrayContains: especialidad);
+    QuerySnapshot querySnapshot = await medicosQuery.get();
+    List<Medic> medicos = [];
+    for(DocumentSnapshot doc in querySnapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        try {
+            Medic especialidad = Medic.fromMap(data);
+            medicos.add(especialidad);
+        } catch (e) {
+          print(e);
+          continue;
+        }
     }
 
-    this.especialidadesMedicas = especialidades;
+    return medicos;
+
   }
 }

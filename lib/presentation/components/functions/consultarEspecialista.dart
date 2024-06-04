@@ -1,5 +1,6 @@
 import 'package:autoguard/core/User/UserRepository.dart';
 import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:dart_openai/dart_openai.dart';
 
 Future<String> consultarEspecialista (String inputUsuario) async {
