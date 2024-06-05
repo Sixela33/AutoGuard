@@ -10,4 +10,11 @@ class AgendaProxyFs implements AgendaProxy {
   Future<List<Cita>> getCitasLibresMedico(String idMedico) {
     return Future.value(agenda.where((element) => element.idMedico == idMedico && element.libre).toList());
   }
+  
+  @override
+  void ocuparCita(String idCita) {
+    agenda.firstWhere((element) => element.id == idCita).libre = false;
+  }
+
+  
 }

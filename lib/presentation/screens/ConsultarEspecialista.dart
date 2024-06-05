@@ -26,6 +26,13 @@ class _ConsultarEspecialista extends ConsumerWidget {
     //final databaseNotifier = ref.watch(databaseNotifierProvider);
     //databaseNotifier.getEspecialidades();
     return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Consultar Especialista',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.blueAccent,
+          ),
           body: Center(
           child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

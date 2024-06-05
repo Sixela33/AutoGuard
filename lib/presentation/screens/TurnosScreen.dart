@@ -23,13 +23,15 @@ class TurnosScreen extends StatelessWidget {
             return ListView.builder(
                 itemCount: citas!.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(citas[index].getFecha()),
-                    subtitle: Text(citas[index].getHora()),
-                    onTap: () {
-                      registrarTurno(citas[index]);
-                      context.go("/");
-                    },
+                  return Card(
+                    child: ListTile(
+                      title: Text(citas[index].getFecha()),
+                      subtitle: Text(citas[index].getHora()),
+                      onTap: () {
+                        registrarTurno(citas[index]);
+                        context.go("/");
+                      },
+                    ),
                   );
                 });
           } else {

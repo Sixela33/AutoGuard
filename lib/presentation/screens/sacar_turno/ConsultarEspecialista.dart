@@ -53,7 +53,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
                       child: const Text('Ver especialistas'),
                       onPressed: () async {
                         final inputUsuario = _controller.text;
-                        await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
+                        //await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
                         turnoNotifierController.nextStep();
                         context.pushReplacement('/sacarTurno');
                       },

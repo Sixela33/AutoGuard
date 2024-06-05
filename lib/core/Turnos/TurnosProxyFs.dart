@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:autoguard/core/Agenda/AgendaRepository.dart';
 import 'package:autoguard/core/Turnos/TurnosProxy.dart';
 import 'package:autoguard/core/Turnos/turnos.dart';
 import 'package:autoguard/core/User/UserRepository.dart';
@@ -19,7 +20,7 @@ class TurnosProxyFs implements TurnosProxy {
     getActiveUser().then((value) => {
       turno.paciente = value.id, 
       turnos.add(turno),
-      cita.libre = false,
+      ocuparCita(cita.id)
       });
   }
   

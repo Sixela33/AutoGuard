@@ -18,10 +18,12 @@ class ConsultarTurnosScreen extends StatelessWidget {
               return ListView.builder(
                 itemCount: turnos!.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(turnos[index].fecha),
-                    subtitle: Text(turnos[index].medico),
-                    onTap: () {},
+                  return Card(
+                    child: ListTile(
+                      title: Text(turnos[index].fecha),
+                      subtitle: Text(turnos[index].medico),
+                      onTap: () {},
+                    ),
                   );
                 },
               );

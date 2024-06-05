@@ -24,12 +24,14 @@ class ProfesionalesScreen extends StatelessWidget {
               return ListView.builder(
                   itemCount: medicos!.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(medicos[index].nombre),
-                      subtitle: Text(medicos[index].especialidad ?? "Clínico"),
-                      onTap: () {
-                        context.push('/turnos', extra: medicos[index].id);
-                      },
+                    return Card(
+                      child: ListTile(
+                        title: Text(medicos[index].nombre),
+                        subtitle: Text(medicos[index].especialidad ?? "Clínico"),
+                        onTap: () {
+                          context.push('/turnos', extra: medicos[index].id);
+                        },
+                      ),
                     );
                   });
             } else {

@@ -7,3 +7,7 @@ final AgendaProxy agendaProxy = AgendaProxyFs();
 Future<List<Cita>> getCitasLibresMedico(String idMedico) async {
   return agendaProxy.getCitasLibresMedico(idMedico);
 }
+
+void ocuparCita(String idCita) {
+  agendaProxy.ocuparCita(idCita);
+}
