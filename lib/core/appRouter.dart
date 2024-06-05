@@ -8,6 +8,7 @@ import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/WelcomeScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarFecha.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarHora.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarMedico.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,6 +64,10 @@ final appRouter = GoRouter(
                       path: 'seleccionarFecha',
                       builder: (context, state) => SeleccionarFecha()
                     ),
+                    GoRoute(
+                      path: 'seleccionarHora',
+                      builder:(context, state) => SeleccionarHora(),)
+      
                   
 
                   ])

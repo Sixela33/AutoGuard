@@ -63,7 +63,7 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
               ElevatedButton(
                 onPressed: () {
                   turnoNotifier.setFechaSeleccionada(_selectedDay);
-                  context.go('/confirmacion'); 
+                  context.go('/sacarTurno/seleccionarHora'); 
                 },
                 child: Text('Seleccionar Fecha'),
               ),
