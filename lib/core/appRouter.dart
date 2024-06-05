@@ -7,7 +7,8 @@ import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/WelcomeScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
-import 'package:autoguard/presentation/screens/sacar_turno/SacarTurnoScreen.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarFecha.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarMedico.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -51,9 +52,20 @@ final appRouter = GoRouter(
             StatefulShellBranch(
               routes: [
                 GoRoute(
-                path: 'sacarTurno',
-                builder: (context, state) => SacarTurnoScreen()
-              ),
+                  path: 'sacarTurno',
+                  builder: (context, state) => ConsultarEspecialista(),
+                  routes: [
+                    GoRoute(
+                      path: 'seleccionarEspecialista',
+                      builder: (context, state) => SeleccionarMedico()
+                    ),
+                    GoRoute(
+                      path: 'seleccionarFecha',
+                      builder: (context, state) => SeleccionarFecha()
+                    ),
+                  
+
+                  ])
               ],
             ),
             StatefulShellBranch(routes: [

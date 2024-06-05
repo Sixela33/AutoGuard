@@ -21,6 +21,12 @@ class _ConsultarEspecialista extends ConsumerWidget {
 
   final TextEditingController _controller = TextEditingController();
 
+  void continueFunction(dbNotif, turnoNotif) async {
+     final inputUsuario = _controller.text;
+      await consultarEspecialista(inputUsuario, dbNotif.especialidadesMedicas, turnoNotif);
+      turnoNotif.nextStep();
+        }
+
   @override
   Widget build(BuildContext context, ref) {
     final databaseNotifier = ref.watch(databaseNotifierProvider);
@@ -54,8 +60,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
                       onPressed: () async {
                         final inputUsuario = _controller.text;
                         await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
-                        turnoNotifierController.nextStep();
-                        context.pushReplacement('/sacarTurno');
+                        context.pushReplacement('/sacarTurno/seleccionarEspecialista');
                       },
                     ),
                     TextButton(onPressed: () {

@@ -37,7 +37,7 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   FilledButton(
-                    child: const Text('Ver especialistas'),
+                    child: const Text('Continuar'),
                     onPressed: () async {
                       turnoNotifier.nextStep();
                       context.pushReplacement('/sacarTurno');
