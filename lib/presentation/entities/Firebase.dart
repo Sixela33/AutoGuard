@@ -11,9 +11,16 @@ class Database {
   List<ObraSocial> obrasSociales = [];
   List<EspecialidadMedica> especialidadesMedicas = [];
 
-  Database () {
+  static final Database _instance = Database._internal();
+
+  Database._internal() {
     getObrasSociales();
     getEspecialidades();
+  }
+
+  // Factory constructor que retorna la misma instancia
+  factory Database() {
+    return _instance;
   }
 
   ///////////////////////////////////
@@ -46,7 +53,7 @@ class Database {
     }
   }
 
-  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidades) async {
+  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidadesMedicas) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
@@ -178,21 +185,33 @@ class Database {
   }
 
   Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
-    Query medicosQuery = _firestore.collection('users').where('es_medico',isEqualTo: true).where('especialidades', arrayContains: especialidad);
+    Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
     QuerySnapshot querySnapshot = await medicosQuery.get();
     List<Medic> medicos = [];
-    for(DocumentSnapshot doc in querySnapshot.docs) {
+    for (DocumentSnapshot doc in querySnapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        try {
-            Medic especialidad = Medic.fromMap(data);
-            medicos.add(especialidad);
-        } catch (e) {
-          print(e);
-          continue;
-        }
+      try {
+        Medic medic = Medic.fromMap(data);
+        medicos.add(medic);
+      } catch (e) {
+        print(e);
+        continue;
+      }
     }
-
+    print(medicos);
     return medicos;
-
   }
+
+Future<Medic> getMedicoByID(String id) async {
+  Query medicoQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('id', isEqualTo: id);
+  QuerySnapshot querySnapshot = await medicoQuery.get();
+  
+  if (querySnapshot.docs.isEmpty) {
+    throw Exception('Medico no encontrado');
+  }
+
+  Map<String, dynamic> data = querySnapshot.docs[0].data() as Map<String, dynamic>;
+  return Medic.fromMap(data);
+}
+
 }

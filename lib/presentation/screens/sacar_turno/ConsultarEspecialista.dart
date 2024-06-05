@@ -41,35 +41,37 @@ class _ConsultarEspecialista extends ConsumerWidget {
       child: Scaffold(
             body: Center(
             child: Column(
-            children: [
-              Text('Cual es la razón de su consulta?'),
-              TextField(
-                  controller: _controller,
-                  maxLines: 8,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Cual es la razón de su consulta',
-                  ),
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FilledButton(
-                      child: const Text('Ver especialistas'),
-                      onPressed: () async {
-                        final inputUsuario = _controller.text;
-                        await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
-                        context.pushReplacement('/sacarTurno/seleccionarEspecialista');
-                      },
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Cual es la razón de su consulta?'),
+                TextField(
+                    controller: _controller,
+                    maxLines: 8,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Cual es la razón de su consulta',
                     ),
-                    TextButton(onPressed: () {
-                      context.pop();
-                    }, child: Text("Cancelar"))
-                  ],
-                )
-            ],
-          ),
+                  ),
+                  SizedBox(height: 5,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                       TextButton(onPressed: () {
+                        context.pop();
+                      }, child: Text("Cancelar")),
+                      FilledButton(
+                        child: const Text('Continuar'),
+                        onPressed: () async {
+                          final inputUsuario = _controller.text;
+                          await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
+                          await turnoNotifierController.getMedicosOfEspecialidad();
+                          context.pushReplacement('/sacarTurno/seleccionarEspecialista');
+                        },
+                      ),
+                    ],
+                  )
+              ],
+            ),
         ),
       ),
     );

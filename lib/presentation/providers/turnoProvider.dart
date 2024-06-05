@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/entities/Medic.dart';
 import 'package:autoguard/presentation/entities/SacarTurnoEntity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,19 +22,14 @@ class turnoNotifier extends StateNotifier<SacarTurnoEntity> {
     state = state;
   }
 
-  void nextStep() {
-    state.currentStep++;
-    state = state; 
+  Future<void> getMedicosOfEspecialidad() async {
+    await state.getMedicosOfespecialidad();
+    return;
   }
 
-  void lastStep() {
-    state.currentStep--;
-    state = state;
-  }
-
-  int getCurrentStep() {
-    print("se llama a get currentStep");
-    return state.currentStep;
+  Future<void> setMedicoSeleccionado(Medic medico) async {
+    await state.setMedicoSeleccionado(medico);
+    return;
   }
 }
 

@@ -11,8 +11,9 @@ class SacarTurnoEntity {
   late String idEspecialidadSeleccionada;
   late String inputUsuarioRazonConsulta;
   late DateTime fechaSeleccionada;
-  late List<Medic> medicosDisponibles;
-  int currentStep = 0;
+  late Medic medicoSeleccionado;
+  List<Medic> medicosDisponibles = [];
+  Database database = new Database();
 
   void idSeleccionada(String id) async {
     this.idEspecialidadSeleccionada = id;
@@ -24,6 +25,16 @@ class SacarTurnoEntity {
 
   void setFechaSeleccionada(DateTime fecha) {
     this.fechaSeleccionada = fecha;
+  }
+
+  Future<void> getMedicosOfespecialidad() async {
+    this.medicosDisponibles = await this.database.getMedicosOfEspecialidad(idEspecialidadSeleccionada);
+    return;
+  }
+
+  Future<void> setMedicoSeleccionado(Medic medico) async {
+    medicoSeleccionado = medico;
+    return;
   }
 }
 

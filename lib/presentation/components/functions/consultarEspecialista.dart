@@ -21,12 +21,12 @@ Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica
 
   EspecialidadMedica especialidadSeleccionada;
 
-
+  // TODO DEFAULT A CLINICO
   try {
     especialidadSeleccionada = especialidadesDisponibles.firstWhere((element) => element.nombre == completion.choices.first.toString().trim());
   } catch (e) {
     especialidadSeleccionada = especialidadesDisponibles.first;
   }
-  
-  turnoNotifier.setIdSeleccionada(especialidadSeleccionada.id);
+  print(especialidadSeleccionada.id);
+  turnoNotifier.setIdSeleccionada(especialidadSeleccionada.nombre);
 }
