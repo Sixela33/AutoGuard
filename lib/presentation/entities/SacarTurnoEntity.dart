@@ -1,5 +1,5 @@
 import 'package:autoguard/presentation/entities/Firebase.dart';
-import 'package:autoguard/presentation/entities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,15 +9,15 @@ final databaseProvider = Provider<Database>((ref) {
 });
 
 class SacarTurnoEntity {
-  late String idEspecialidadSeleccionada;
+  late String especialidadSeleccionada;
   late String inputUsuarioRazonConsulta;
   late DateTime fechaSeleccionada;
   late Medic medicoSeleccionado;
   List<Medic> medicosDisponibles = [];
   Database database = new Database();
 
-  void idSeleccionada(String id) async {
-    this.idEspecialidadSeleccionada = id;
+  void setEspecialidadSeleccionada(String id) async {
+    this.especialidadSeleccionada = id;
   }
 
   void setInputRazonConsulta(String razon) {
@@ -29,7 +29,7 @@ class SacarTurnoEntity {
   }
 
   Future<void> getMedicosOfespecialidad() async {
-    this.medicosDisponibles = await this.database.getMedicosOfEspecialidad(idEspecialidadSeleccionada);
+    this.medicosDisponibles = await this.database.getMedicosOfEspecialidad(especialidadSeleccionada);
     return;
   }
 
@@ -49,8 +49,11 @@ class SacarTurnoEntity {
       fechaSeleccionada.millisecond,
       fechaSeleccionada.microsecond,
     );
-
+    print(fechaSeleccionada);
+    print(time);
+    database.agendarTurnoMedico(especialidadSeleccionada, fechaSeleccionada, inputUsuarioRazonConsulta, medicoSeleccionado);
   }
+
 }
 
 

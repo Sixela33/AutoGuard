@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
 

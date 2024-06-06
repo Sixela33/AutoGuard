@@ -1,6 +1,7 @@
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SeleccionarHora extends ConsumerStatefulWidget {
   SeleccionarHora({
@@ -77,17 +78,20 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () {
-                // Handle submit action
                 turnoNotifier.setTime(_selectedTime);
                 print('Selected Time: ${_selectedTime.format(context)}');
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('¡Inicio de sesión exitoso!')),
+                );
+                context.push('/home');
               },
               child: Text('Submit'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50), // Full-width button
+                minimumSize: Size(double.infinity, 50),
               ),
             ),
           ),
-          SizedBox(height: 10), // Add some spacing at the bottom
+          SizedBox(height: 10),
         ],
       ),
     );

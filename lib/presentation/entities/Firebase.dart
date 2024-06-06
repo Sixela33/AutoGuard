@@ -1,6 +1,7 @@
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
-import 'package:autoguard/presentation/entities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -93,6 +94,10 @@ class Database {
   ///         FIRESTORE
   ///////////////////////////////////
 
+  ///////////////////////////////////
+  ///       OBRAS SOCIALES
+  ///////////////////////////////////
+
   Future<void> addObraSocial(String nombreObraSocial) async {
     try {
       String? userId = getCurrentUserId();
@@ -143,6 +148,10 @@ class Database {
     }
   }
 
+  ///////////////////////////////////
+  ///    ESPECIALIDADES MEDICAS
+  ///////////////////////////////////
+
   // Agregar Especialidad
   Future<void> addEspecialidad(String nombreEspecialidad) async {
     try {
@@ -184,6 +193,11 @@ class Database {
     return especialidades;
   }
 
+  ///////////////////////////////////
+  ///          MEDICOS
+  ///////////////////////////////////
+
+
   Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
     Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
     QuerySnapshot querySnapshot = await medicosQuery.get();
@@ -202,16 +216,80 @@ class Database {
     return medicos;
   }
 
-Future<Medic> getMedicoByID(String id) async {
-  Query medicoQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('id', isEqualTo: id);
-  QuerySnapshot querySnapshot = await medicoQuery.get();
-  
-  if (querySnapshot.docs.isEmpty) {
-    throw Exception('Medico no encontrado');
+  Future<Medic> getMedicoByID(String id) async {
+    Query medicoQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('id', isEqualTo: id);
+    QuerySnapshot querySnapshot = await medicoQuery.get();
+    
+    if (querySnapshot.docs.isEmpty) {
+      throw Exception('Medico no encontrado');
+    }
+
+    Map<String, dynamic> data = querySnapshot.docs[0].data() as Map<String, dynamic>;
+    return Medic.fromMap(data);
   }
 
-  Map<String, dynamic> data = querySnapshot.docs[0].data() as Map<String, dynamic>;
-  return Medic.fromMap(data);
-}
+  void agendarTurnoMedico(String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado) async {
+    try {
+      String? userId = getCurrentUserId();
+      String medicID = medicoSeleccionado.id;
+
+      if (userId != null) {
+
+        DocumentReference medicoTurnoDocRef = _firestore.collection('users').doc(medicID).collection('turnos_medico').doc();
+        DocumentReference usuarioTurnoDocRef = _firestore.collection('users').doc(userId).collection('turnos').doc();
+
+        Map<String, dynamic> nuevoTurno = {
+          'id': medicoTurnoDocRef.id, // Usar el id del documento
+          'especialidad': especialidadSeleccionada,
+          'fecha_hora': fechaSeleccionada,
+          'razon_consulta': inputUsuarioRazonConsulta,
+          'estado': "pendiente",
+          'paciente_id': userId,
+          'medico_id': medicoTurnoDocRef.id
+        };
+
+        WriteBatch batch = _firestore.batch();
+
+        batch.set(medicoTurnoDocRef, nuevoTurno);
+        batch.set(usuarioTurnoDocRef, nuevoTurno);
+
+        await batch.commit();
+
+        print("Turno agendado exitosamente en ambas colecciones.");
+      } else {
+        throw Exception("Usuario no autenticado");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  void getTurnosUsuario() async {
+    try {
+      String? userId = getCurrentUserId();
+      if (userId != null) {
+        QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('turnos')
+            .get();
+
+        List<TurnoUser> turnos = snapshot.docs.map((doc) {
+          return TurnoUser.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+        }).toList();
+
+        print("Turnos del usuario obtenidos exitosamente.");
+        for (var turno in turnos) {
+          print(turno);
+        }
+      } else {
+        throw Exception("Usuario no autenticado");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 
 }

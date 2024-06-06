@@ -1,4 +1,4 @@
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:dart_openai/dart_openai.dart';
 
@@ -27,6 +27,7 @@ Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica
   } catch (e) {
     especialidadSeleccionada = especialidadesDisponibles.first;
   }
-  print(especialidadSeleccionada.id);
-  turnoNotifier.setIdSeleccionada(especialidadSeleccionada.nombre);
+  
+  turnoNotifier.setInputRazonConsulta(inputUsuario);
+  turnoNotifier.setEspecialidadSeleccionada(especialidadSeleccionada.nombre);
 }

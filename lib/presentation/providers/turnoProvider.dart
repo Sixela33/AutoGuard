@@ -1,4 +1,4 @@
-import 'package:autoguard/presentation/entities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:autoguard/presentation/entities/SacarTurnoEntity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,8 +7,8 @@ final turnoProvider = StateNotifierProvider<turnoNotifier, SacarTurnoEntity>((re
 class turnoNotifier extends StateNotifier<SacarTurnoEntity> {
   turnoNotifier() : super(SacarTurnoEntity());
 
-  void setIdSeleccionada(String id) async {
-    state.idSeleccionada(id);
+  void setEspecialidadSeleccionada(String id) async {
+    state.setEspecialidadSeleccionada(id);
     state = state;
   }
 
