@@ -66,10 +66,8 @@ final appRouter = GoRouter(
                     ),
                     GoRoute(
                       path: 'seleccionarHora',
-                      builder:(context, state) => SeleccionarHora(),)
-      
-                  
-
+                      builder:(context, state) => SeleccionarHora(),
+                    )
                   ])
               ],
             ),

@@ -31,5 +31,9 @@ class turnoNotifier extends StateNotifier<SacarTurnoEntity> {
     await state.setMedicoSeleccionado(medico);
     return;
   }
+
+  void setTime (time) {
+    state.setTime(time);
+  }
 }
 

@@ -5,6 +5,7 @@ class Medic {
   final List<String> especialidades;
   final List<String> obras_sociales;
   final bool es_medico;
+  final int duracionTurno;
 
   Medic({
     required this.email,
@@ -12,7 +13,8 @@ class Medic {
     required this.obras_sociales,
     required this.es_medico,
     required this.id,
-    required this.nombre
+    required this.nombre,
+    required this.duracionTurno
   });
 
   factory Medic.fromMap(Map<String, dynamic> data) {
@@ -23,6 +25,7 @@ class Medic {
       especialidades: List<String>.from(data['especialidades'] as List<dynamic>),
       obras_sociales: List<String>.from(data['obras_sociales'] as List<dynamic>),
       es_medico: data['es_medico'] as bool,
+      duracionTurno: data['duracionturno'] as int,
     );
   }
 }

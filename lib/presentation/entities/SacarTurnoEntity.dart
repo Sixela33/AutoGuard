@@ -1,6 +1,7 @@
 import 'package:autoguard/presentation/entities/Firebase.dart';
 import 'package:autoguard/presentation/entities/Medic.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final databaseProvider = Provider<Database>((ref) {
@@ -35,6 +36,20 @@ class SacarTurnoEntity {
   Future<void> setMedicoSeleccionado(Medic medico) async {
     medicoSeleccionado = medico;
     return;
+  }
+
+  void setTime (TimeOfDay time) {
+    fechaSeleccionada = DateTime(
+      fechaSeleccionada.year,
+      fechaSeleccionada.month,
+      fechaSeleccionada.day,
+      time.hour,
+      time.minute,
+      fechaSeleccionada.second,
+      fechaSeleccionada.millisecond,
+      fechaSeleccionada.microsecond,
+    );
+
   }
 }
 
