@@ -81,7 +81,7 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
                 turnoNotifier.setTime(_selectedTime);
                 print('Selected Time: ${_selectedTime.format(context)}');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('¡Inicio de sesión exitoso!')),
+                  SnackBar(content: Text('Turno reservado con exito')),
                 );
                 context.push('/home');
               },

@@ -27,7 +27,7 @@ class _SeleccionarFecha extends ConsumerStatefulWidget {
 class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  DateTime _firstDay = DateTime.utc(2020, 1, 1);
+  DateTime _firstDay = DateTime.now();
   DateTime _lastDay = DateTime.utc(2030, 1, 1);
 
   @override

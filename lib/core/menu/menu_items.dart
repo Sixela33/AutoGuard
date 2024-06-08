@@ -52,4 +52,10 @@ const List<MenuItem> menuItems = [
     icon: Icons.home, 
     link: "/sacarTurno"
   ),
+   MenuItem(
+    title: "mis turnos",
+    subtitle: "mis turnos",
+    icon: Icons.home, 
+    link: "/misTurnosUser"
+  ),
 ];

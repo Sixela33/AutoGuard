@@ -1,4 +1,5 @@
 import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
@@ -231,29 +232,34 @@ class Database {
   void agendarTurnoMedico(String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado) async {
     try {
       String? userId = getCurrentUserId();
-      String medicID = medicoSeleccionado.id;
 
       if (userId != null) {
 
-        DocumentReference medicoTurnoDocRef = _firestore.collection('users').doc(medicID).collection('turnos_medico').doc();
-        DocumentReference usuarioTurnoDocRef = _firestore.collection('users').doc(userId).collection('turnos').doc();
+        DocumentReference nuevoTurnoRef = _firestore.collection('turnos').doc();
 
-        Map<String, dynamic> nuevoTurno = {
-          'id': medicoTurnoDocRef.id, // Usar el id del documento
+        print({
+          'id': nuevoTurnoRef.id, // Usar el id del documento
           'especialidad': especialidadSeleccionada,
           'fecha_hora': fechaSeleccionada,
           'razon_consulta': inputUsuarioRazonConsulta,
-          'estado': "pendiente",
+          'estado': EstadoTurno.pendiente.toString(),
           'paciente_id': userId,
-          'medico_id': medicoTurnoDocRef.id
+          'medico_id': medicoSeleccionado.id,
+          'medico_name':  medicoSeleccionado.nombre
+        });
+
+        Map<String, dynamic> nuevoTurno = {
+          'id': nuevoTurnoRef.id, // Usar el id del documento
+          'especialidad': especialidadSeleccionada,
+          'fecha_hora': fechaSeleccionada,
+          'razon_consulta': inputUsuarioRazonConsulta,
+          'estado': EstadoTurno.pendiente.toString(),
+          'paciente_id': userId,
+          'medico_id': medicoSeleccionado.id,
+          'medico_name':  medicoSeleccionado.nombre
         };
 
-        WriteBatch batch = _firestore.batch();
-
-        batch.set(medicoTurnoDocRef, nuevoTurno);
-        batch.set(usuarioTurnoDocRef, nuevoTurno);
-
-        await batch.commit();
+        nuevoTurnoRef.set(nuevoTurno);
 
         print("Turno agendado exitosamente en ambas colecciones.");
       } else {
@@ -264,30 +270,32 @@ class Database {
     }
   }
 
-  void getTurnosUsuario() async {
+  Future<List<TurnoUser>> getTurnosUsuario() async {
     try {
-      String? userId = getCurrentUserId();
-      if (userId != null) {
-        QuerySnapshot snapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(userId)
-            .collection('turnos')
-            .get();
+        String? userId = getCurrentUserId();
+        if (userId != null) {
+          QuerySnapshot snapshot = await _firestore.collection('turnos').where('paciente_id', isEqualTo: userId).get();
 
-        List<TurnoUser> turnos = snapshot.docs.map((doc) {
-          return TurnoUser.fromMap(doc.data() as Map<String, dynamic>, doc.id);
-        }).toList();
+          List<TurnoUser> turnos = [];
 
-        print("Turnos del usuario obtenidos exitosamente.");
-        for (var turno in turnos) {
-          print(turno);
+          for(DocumentSnapshot doc in snapshot.docs) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            try {
+              TurnoUser turno = TurnoUser.fromMap(data, doc.id);
+              turnos.add(turno);
+            } catch (e) {
+              print(e);
+              continue;
+            }
+          }
+          
+          return turnos;
+        } else {
+          throw Exception("Usuario no autenticado");
         }
-      } else {
-        throw Exception("Usuario no autenticado");
+      } catch (e) {
+        rethrow;
       }
-    } catch (e) {
-      rethrow;
-    }
   }
 
 
