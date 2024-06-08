@@ -40,12 +40,7 @@ const List<MenuItem> menuItems = [
     icon: Icons.home, 
     link: "/home"
   ),
-  MenuItem(
-      title: "Registrar medico",
-      subtitle: "Registrar medico",
-      icon: Icons.home, 
-      link: "/registrarMedico"
-  ),
+
   MenuItem(
     title: "saccar Turno medico",
     subtitle: "saccar Turno medico",

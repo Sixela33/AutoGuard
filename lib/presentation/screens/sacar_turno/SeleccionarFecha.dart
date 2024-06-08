@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +34,7 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
   @override
   Widget build(BuildContext context) {
     final turnoNotifier = ref.watch(turnoProvider.notifier);
+    final themeProvider = ref.watch(themeNotifier);
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height,
@@ -46,6 +48,7 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TableCalendar(
+                availableCalendarFormats: {CalendarFormat.month: 'Month'},
                 focusedDay: _focusedDay,
                 firstDay: _firstDay,
                 lastDay: _lastDay,
@@ -53,11 +56,26 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
                   return isSameDay(_selectedDay, day);
                 },
                 onDaySelected: (selectedDay, focusedDay) {
+                  if (selectedDay.weekday == DateTime.saturday || selectedDay.weekday == DateTime.sunday) {
+                    return;
+                  }
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
                   });
                 },
+                calendarStyle: CalendarStyle(
+                  selectedDecoration: BoxDecoration(
+                    color: themeProvider.primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: themeProvider.primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  weekendTextStyle: TextStyle(color: Colors.red), 
+                ),
+
               ),
               const SizedBox(height: 20),
               ElevatedButton(
