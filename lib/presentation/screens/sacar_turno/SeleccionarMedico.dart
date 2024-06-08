@@ -8,7 +8,7 @@ class SeleccionarMedico extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SeleccionarMedico();
+    return const _SeleccionarMedico();
   }
 }
 

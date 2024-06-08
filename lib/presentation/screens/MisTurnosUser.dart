@@ -17,9 +17,7 @@ class MisTurnosUser extends StatelessWidget {
 }
 
 class _MisTurnosUser extends ConsumerStatefulWidget {
-  const _MisTurnosUser({
-    super.key,
-  });
+  const _MisTurnosUser();
 
   @override
   _MisTurnosUserState createState() => _MisTurnosUserState();
@@ -61,7 +59,7 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
               final turno = turnos[index];
               return ListTile(
                 title: Text('Médico: ${turno.medicoName}'),
-                subtitle: Text('Fecha y Hora: ${turno.fechaHora}'),
+                subtitle: Text('Fecha: ${turno.fechaHora}'),
                 trailing: Text(turno.estado.toString().split('.').last),
               );
             },

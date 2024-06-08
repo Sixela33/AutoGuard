@@ -37,7 +37,7 @@ class _RecuperarContraseniaState extends State<RecuperarContrasenia> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recuperar contraseña'),
+        title: const Text('Recuperar contraseña'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -46,12 +46,12 @@ class _RecuperarContraseniaState extends State<RecuperarContrasenia> {
           children: [
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: enviarRecuperacion,
-              child: Text('Recuperar contraseña'),
+              child: const Text('Recuperar contraseña'),
                 ),
               ],
         ),

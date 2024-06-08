@@ -27,8 +27,8 @@ class _SeleccionarFecha extends ConsumerStatefulWidget {
 class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  DateTime _firstDay = DateTime.now();
-  DateTime _lastDay = DateTime.utc(2030, 1, 1);
+  final DateTime _firstDay = DateTime.now();
+  final DateTime _lastDay = DateTime.utc(2030, 1, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Seleccionar Fecha'),
+          title: const Text('Seleccionar Fecha'),
         ),
         body: Center(
           child: Column(
@@ -59,13 +59,13 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
                   });
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   turnoNotifier.setFechaSeleccionada(_selectedDay);
                   context.push('/sacarTurno/seleccionarHora'); 
                 },
-                child: Text('Seleccionar Fecha'),
+                child: const Text('Seleccionar Fecha'),
               ),
             ],
           ),

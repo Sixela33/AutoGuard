@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class SeleccionarHora extends ConsumerStatefulWidget {
-  SeleccionarHora({
-    Key? key,
-  }) : super(key: key);
+  const SeleccionarHora({
+    super.key,
+  });
 
   @override
   _SeleccionarHoraState createState() => _SeleccionarHoraState();
@@ -25,18 +25,18 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seleccionar Hora'),
+        title: const Text('Seleccionar Hora'),
       ),
       body: Column(
         children: [
-          Text(
+          const Text(
             'Seleccionar Hora',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4, // Number of columns
                 childAspectRatio: 2, // Adjust this value to change the aspect ratio
                 mainAxisSpacing: 10,
@@ -73,25 +73,24 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
               onPressed: () {
                 turnoNotifier.setTime(_selectedTime);
-                print('Selected Time: ${_selectedTime.format(context)}');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Turno reservado con exito')),
+                  const SnackBar(content: Text('Turno reservado con exito')),
                 );
                 context.push('/home');
               },
-              child: Text('Submit'),
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(double.infinity, 50),
               ),
+              child: const Text('Submit'),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
         ],
       ),
     );

@@ -15,7 +15,7 @@ class AgregarObraSocial extends StatelessWidget {
 }
 
 class _AgregarObraSocial extends ConsumerStatefulWidget {
-  const _AgregarObraSocial({super.key});
+  const _AgregarObraSocial();
 
   @override
   _AgregarObraSocialState createState() => _AgregarObraSocialState();

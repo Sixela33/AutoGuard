@@ -7,6 +7,8 @@ import 'package:autoguard/presentation/screens/LoginScreen.dart';
 class RegistrationScreen extends ConsumerStatefulWidget {
   static String name = "Registrar usuario";
 
+  const RegistrationScreen({super.key});
+
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
@@ -22,7 +24,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro'),
+        title: const Text('Registro'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -31,11 +33,11 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
           children: [
             TextFormField(
               controller: controller_email,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
               controller: controller_password,
-              decoration: InputDecoration(labelText: 'Contraseña'),
+              decoration: const InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
             const Text("Seleccioná tus obras sociales:"),
@@ -76,7 +78,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -84,13 +86,13 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                       controller_email.text, controller_password.text,
                       obrasSocialesSeleccionadas);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('¡Registro exitoso!')),
+                    const SnackBar(content: Text('¡Registro exitoso!')),
                   );
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
-                        return LoginScreen();
+                        return const LoginScreen();
                       },
                     ),
                   );
@@ -100,7 +102,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                   );
                 }
               },
-              child: Text('Registrarse'),
+              child: const Text('Registrarse'),
             ),
           ],
         ),

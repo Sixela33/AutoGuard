@@ -43,7 +43,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Cual es la razón de su consulta?'),
+                const Text('Cual es la razón de su consulta?'),
                 TextField(
                     controller: _controller,
                     maxLines: 8,
@@ -52,13 +52,13 @@ class _ConsultarEspecialista extends ConsumerWidget {
                       labelText: 'Cual es la razón de su consulta',
                     ),
                   ),
-                  SizedBox(height: 5,),
+                  const SizedBox(height: 5,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                        TextButton(onPressed: () {
                         context.pop();
-                      }, child: Text("Cancelar")),
+                      }, child: const Text("Cancelar")),
                       FilledButton(
                         child: const Text('Continuar'),
                         onPressed: () async {

@@ -180,13 +180,13 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
                     );
                   }
                 },
-                child: const Text('Registrar Médico'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   textStyle: const TextStyle(fontSize: 18),
                 ),
+                child: const Text('Registrar Médico'),
               ),
             ],
           ),
