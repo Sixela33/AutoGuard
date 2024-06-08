@@ -10,6 +10,7 @@ import 'package:autoguard/presentation/screens/NuevaConsultaScreen.dart';
 import 'package:autoguard/presentation/screens/PerfilScreen.dart';
 import 'package:autoguard/presentation/screens/ProfesionalesScreen.dart';
 import 'package:autoguard/presentation/screens/TurnosScreen.dart';
+import 'package:autoguard/presentation/screens/agenda/AgendaScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -53,4 +54,8 @@ final appRouter = GoRouter(initialLocation: "/", routes: [
     path: "/consultas",
     builder: (context, state) => ConsultarTurnosScreen(),
   ),
+  GoRoute(
+    path: "/agenda",
+    builder: (context, state) => AgendaScreen(),
+  )
 ]);
