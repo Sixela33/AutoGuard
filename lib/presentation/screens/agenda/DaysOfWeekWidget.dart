@@ -1,26 +1,25 @@
+import 'package:autoguard/presentation/providers/agendaProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DaysOfWeekWidget extends StatefulWidget {
+class DaysOfWeekWidget extends ConsumerWidget {
+ 
+ 
   @override
-  _DaysOfWeekWidgetState createState() => _DaysOfWeekWidgetState();
-}
+  Widget build(BuildContext context, ref) {
 
-class _DaysOfWeekWidgetState extends State<DaysOfWeekWidget> {
-  List<bool> _selectedDays = List.generate(7, (index) => false);
+ List<bool>? _selectedDays = ref.watch(agendaProvider).days;
 
-  @override
-  Widget build(BuildContext context) {
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (int i = 0; i < 7; i++)
           CheckboxListTile(
             title: Text(_getDayOfWeekName(i)),
-            value: _selectedDays[i],
+            value: _selectedDays?[i],
             onChanged: (value) {
-              setState(() {
-                _selectedDays[i] = value!;
-              });
+              ref.read(agendaProvider.notifier).setDays(_selectedDays?..[i] = value!);
             },
           ),
       ],

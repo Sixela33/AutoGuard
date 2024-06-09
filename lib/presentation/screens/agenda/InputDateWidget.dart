@@ -1,32 +1,29 @@
 import 'dart:math';
 
+import 'package:autoguard/presentation/providers/agendaProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 DateFormat formatFecha = DateFormat("dd-MM-yyyy");
 
-class InputDateWidget extends StatefulWidget {
-  @override
-  _InputDateWidgetState createState() => _InputDateWidgetState();
-}
+class InputDateWidget extends ConsumerWidget {
+  
 
-class _InputDateWidgetState extends State<InputDateWidget> {
   TextEditingController _desdeController = TextEditingController();
   TextEditingController _hastaController = TextEditingController();
-  DateTime? _selectedDateFrom;
-  DateTime? _selectedDateTo;
+  
 
-  String? get _errorText {
-    if (isDateRangeValid(_selectedDateFrom, _selectedDateTo)) {
-      return null;
-    } else {
-      return 'La fecha desde debe ser anterior a la fecha hasta';
-    }
-  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+    DateTime? _selectedDateFrom = ref.watch(agendaProvider).dateFrom;
+    DateTime? _selectedDateTo = ref.watch(agendaProvider).dateTo;
+
+    var _errorText = isDateRangeValid(_selectedDateFrom, _selectedDateTo) ? null : 'La fecha desde debe ser anterior a la fecha hasta';
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -49,9 +46,7 @@ class _InputDateWidgetState extends State<InputDateWidget> {
 
               if (date != null) {
                 _desdeController.text = formatFecha.format(date);
-                setState(() {
-                  _selectedDateFrom = date;
-                });
+                ref.read(agendaProvider.notifier).setDateFrom(date);
               }
             },
           ),
@@ -76,9 +71,7 @@ class _InputDateWidgetState extends State<InputDateWidget> {
 
               if (date != null) {
                 _hastaController.text = formatFecha.format(date);
-                setState(() {
-                  _selectedDateTo = date;
-                });
+                ref.read(agendaProvider.notifier).setDateTo(date);
               }
             },
           ),

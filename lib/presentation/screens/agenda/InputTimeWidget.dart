@@ -1,17 +1,20 @@
+import 'package:autoguard/presentation/providers/agendaProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class InputTimeWidget extends StatefulWidget {
-  @override
-  _InputTimeWidgetState createState() => _InputTimeWidgetState();
-}
-
-class _InputTimeWidgetState extends State<InputTimeWidget> {
-  TimeOfDay? _fromTime;
-  TimeOfDay? _toTime;
-  int? _interval;
+class InputTimeWidget extends ConsumerWidget {
+  
+  
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+
+    int? _fromTime = ref.watch(agendaProvider).fromTime;
+  int? _toTime = ref.watch(agendaProvider).toTime;
+  int? _interval = ref.watch(agendaProvider).interval;
+
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -34,28 +37,73 @@ class _InputTimeWidgetState extends State<InputTimeWidget> {
               ),
             ]),
             onChanged: (value) {
-              setState(() {
-                _interval = value as int?;
-              });
+              ref.read(agendaProvider.notifier).setInterval(value as int);
             },
           ),
         ),
         Container(
-          mainAxisAlignment: MainAxisAlignment.center,
           child: DropdownButton(
-            items: List.generate(getLength(_interval!), (index) {
+            items: _interval == null ? [] : List.generate(getLengthFrom(_interval!), (index) {
               return DropdownMenuItem(
-                child: Text('$_fromTime - $_toTime'),
-                value: index,
+                child: Text(getHourFrom(index, _interval!)),
+                value: index * (_interval!),
               );
             }),
+            onChanged: (value) {
+              ref.read(agendaProvider.notifier).setFromTime(value as int);
+            },
+            value: _fromTime,
+            hint: Text('Selecciona la hora de inicio'),
           ),
+        ),
+        Container(
+          child: DropdownButton(
+            items: _interval == null || _fromTime == null ? [] : List.generate(getLengthTo(_fromTime! ,_interval!), (index) {
+              return DropdownMenuItem(
+                child: Text(getHourTo(_fromTime!, _interval!, index)),
+                value: index * (_interval!),
+              );
+            }),
+            onChanged: (value) {
+              ref.read(agendaProvider.notifier).setToTime(value as int);
+            },
+            value: _toTime,
+            hint: Text('Selecciona la hora de fin'),
+          ),
+        ),
+        ElevatedButton(
+          child: Text('Guardar'),
+          onPressed: (){
+            ref.read(agendaProvider.notifier).actualizarAgenda();
+            ref.read(agendaProvider.notifier).reset();
+            context.go("/");
+          },
         )
       ],
     );
   }
 }
 
-int getLength(int interval) {
-  return 60 / interval * 24 as int;
+int getLengthFrom(int interval) {
+  return (60 / interval * 24).truncate();
+}
+
+int getLengthTo(int from, int interval) {
+  return ((24 * 60 - from) / interval).truncate();
+}
+
+String getHourFrom(int index, int interval) {
+  int hour = interval * index ~/ 60;
+  int minute = interval * index % 60;
+
+
+
+  return hour.toString().padLeft(2, '0') + ':' + minute.toString().padRight(2, '0');
+}
+
+String getHourTo(int value, int interval, int index) {
+  int hour = (value + interval * (index + 1)) ~/ 60;
+  int minute = (value + interval * (index + 1)) % 60;
+
+  return hour.toString().padLeft(2, '0') + ':' + minute.toString().padRight(2, '0');
 }

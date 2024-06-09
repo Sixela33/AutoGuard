@@ -9,7 +9,7 @@ class UserDAOFs implements UserDAO {
 
   @override
   Future<Usuario> getActiveUser() {
-    return Future.value(users[0]);
+    return Future.value(users[1]);
   }
 
   @override
