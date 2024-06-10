@@ -1,7 +1,8 @@
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
-import 'package:autoguard/presentation/entities/Medic.dart';
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final databaseNotifierProvider = StateNotifierProvider<DatabaseNotifier, Database>((ref) => DatabaseNotifier());
@@ -35,6 +36,10 @@ class DatabaseNotifier extends StateNotifier<Database> {
 
   Future<List<Medic>> getMedicosByEspecialidad(String especialidad) async {
     return state.getMedicosOfEspecialidad(especialidad);
+  }
+
+  Future<List<TurnoUser>> getTurnosUsuario() async {
+    return state.getTurnosUsuario();
   }
 }
 

@@ -1,5 +1,4 @@
-import 'package:autoguard/core/User/UserRepository.dart';
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:dart_openai/dart_openai.dart';
 
@@ -27,5 +26,15 @@ Future<String> consultarEspecialista (String inputUsuario) async {
   print(completion.systemFingerprint); // ...
   print(completion.id);
 
-  return Future(() => completion.choices.first.text); 
+  EspecialidadMedica especialidadSeleccionada;
+
+  // TODO DEFAULT A CLINICO
+  try {
+    especialidadSeleccionada = especialidadesDisponibles.firstWhere((element) => element.nombre == completion.choices.first.toString().trim());
+  } catch (e) {
+    especialidadSeleccionada = especialidadesDisponibles.first;
+  }
+  
+  turnoNotifier.setInputRazonConsulta(inputUsuario);
+  turnoNotifier.setEspecialidadSeleccionada(especialidadSeleccionada.nombre);
 }

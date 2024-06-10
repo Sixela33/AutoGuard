@@ -3,9 +3,12 @@ import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/screens/RecuperarContrasenia.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
   static String name = "Iniciar sesión";
+
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class _LoginScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Iniciar sesión'),
+        title: const Text('Iniciar sesión'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -36,14 +39,14 @@ class _LoginScreen extends ConsumerWidget {
           children: [
             TextFormField(
               controller: controllerEmail,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextFormField(
               controller: controllerPassword,
-              decoration: InputDecoration(labelText: 'Contraseña'),
+              decoration: const InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -52,37 +55,31 @@ class _LoginScreen extends ConsumerWidget {
                     controllerPassword.text,
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('¡Inicio de sesión exitoso!')),
+                    const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
                   );
-                  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return HomeScreen();
-                     },
-                   ),
-                 );
+                  
+                  context.push('/home');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error al iniciar sesión: $e')),
                   );
                 }
               },
-              child: Text('Iniciar sesión'),
+              child: const Text('Iniciar sesión'),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return RecuperarContrasenia();
+                      return const RecuperarContrasenia();
                     },
                   ),
                 );
               },
-              child: Text(
+              child: const Text(
                 'Olvidaste tu contraseña?',
                 style: TextStyle(
                   color: Colors.blue,

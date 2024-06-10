@@ -1,5 +1,5 @@
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +26,7 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
   final TextEditingController controllerPassword = TextEditingController();
   final TextEditingController controllerEspecialidad = TextEditingController();
   final List<ObraSocial> obrasSocialesSeleccionadas = [];
-  final List<EspecialidadMedica> especialidadesMedicas = [];
+  final List<EspecialidadMedica> especialidadesMedicasSeleccionadas = [];
 
   @override
   void dispose() {
@@ -86,14 +86,14 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
               const SizedBox(height: 20),
               DropdownButton<EspecialidadMedica>(
                 hint: const Text('Seleccionar especialidades'),
-                value: null, 
+                value: null,
                 onChanged: (selectedEspecialidad) {
                   if (selectedEspecialidad != null) {
                     setState(() {
-                      if (especialidadesMedicas.contains(selectedEspecialidad)) {
-                        especialidadesMedicas.remove(selectedEspecialidad);
+                      if (especialidadesMedicasSeleccionadas.contains(selectedEspecialidad)) {
+                        especialidadesMedicasSeleccionadas.remove(selectedEspecialidad);
                       } else {
-                        especialidadesMedicas.add(selectedEspecialidad);
+                        especialidadesMedicasSeleccionadas.add(selectedEspecialidad);
                       }
                     });
                   }
@@ -107,11 +107,11 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
               ),
               const SizedBox(height: 20),
               Wrap(
-                children: especialidadesMedicas.map((especialidad) {
+                children: especialidadesMedicasSeleccionadas.map((especialidad) {
                   return InkWell(
                     onTap: () {
                       setState(() {
-                        especialidadesMedicas.remove(especialidad);
+                        especialidadesMedicasSeleccionadas.remove(especialidad);
                       });
                     },
                     child: Chip(
@@ -167,7 +167,7 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
                       controllerPassword.text,
                       controllerNombre.text,
                       obrasSocialesSeleccionadas,
-                      especialidadesMedicas
+                      especialidadesMedicasSeleccionadas
                     );
                  
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -180,13 +180,13 @@ class _RegistroMedicoScreenState extends ConsumerState<_RegistroMedicoScreen> {
                     );
                   }
                 },
-                child: const Text('Registrar Médico'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.blueAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   textStyle: const TextStyle(fontSize: 18),
                 ),
+                child: const Text('Registrar Médico'),
               ),
             ],
           ),

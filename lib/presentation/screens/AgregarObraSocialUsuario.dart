@@ -1,4 +1,4 @@
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ class AgregarObraSocial extends StatelessWidget {
 }
 
 class _AgregarObraSocial extends ConsumerStatefulWidget {
-  const _AgregarObraSocial({super.key});
+  const _AgregarObraSocial();
 
   @override
   _AgregarObraSocialState createState() => _AgregarObraSocialState();

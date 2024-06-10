@@ -14,9 +14,7 @@ class AdminScreen extends StatelessWidget {
 }
 
 class _AdminScreen extends ConsumerWidget {
-  _AdminScreen({
-    super.key,
-  });
+  _AdminScreen();
 
   final TextEditingController nombreNuevaObraSocial = TextEditingController();
   final TextEditingController nombreNuevaEspecialidad = TextEditingController();

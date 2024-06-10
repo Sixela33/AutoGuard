@@ -1,4 +1,5 @@
 import 'package:autoguard/core/appRouter.dart';
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,14 +20,16 @@ Future<void> main() async {
   runApp(ProviderScope(child: MainApp()));
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final theme = ref.watch(themeNotifier);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig:appRouter,
+      theme: theme,
     );
   }
 }

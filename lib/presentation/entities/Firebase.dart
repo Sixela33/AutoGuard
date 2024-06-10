@@ -1,6 +1,8 @@
-import 'package:autoguard/presentation/entities/EspecialidadMedica.dart';
-import 'package:autoguard/presentation/entities/ObraSocial.dart';
-import 'package:autoguard/presentation/entities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
+import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
+import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -11,9 +13,16 @@ class Database {
   List<ObraSocial> obrasSociales = [];
   List<EspecialidadMedica> especialidadesMedicas = [];
 
-  Database () {
-    //getObrasSociales();
-    //getEspecialidades();
+  static final Database _instance = Database._internal();
+
+  Database._internal() {
+    getObrasSociales();
+    getEspecialidades();
+  }
+
+  // Factory constructor que retorna la misma instancia
+  factory Database() {
+    return _instance;
   }
 
   ///////////////////////////////////
@@ -46,7 +55,7 @@ class Database {
     }
   }
 
-  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidades) async {
+  Future<void> registerWithEmailAndPasswordDoctor(String email, String password, String nombre, List<ObraSocial> obrasSociales, List<EspecialidadMedica> especialidadesMedicas) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
@@ -84,6 +93,10 @@ class Database {
 
   ///////////////////////////////////
   ///         FIRESTORE
+  ///////////////////////////////////
+
+  ///////////////////////////////////
+  ///       OBRAS SOCIALES
   ///////////////////////////////////
 
   Future<void> addObraSocial(String nombreObraSocial) async {
@@ -136,6 +149,10 @@ class Database {
     }
   }
 
+  ///////////////////////////////////
+  ///    ESPECIALIDADES MEDICAS
+  ///////////////////////////////////
+
   // Agregar Especialidad
   Future<void> addEspecialidad(String nombreEspecialidad) async {
     try {
@@ -177,22 +194,110 @@ class Database {
     return especialidades;
   }
 
+  ///////////////////////////////////
+  ///          MEDICOS
+  ///////////////////////////////////
+
+
   Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
-    Query medicosQuery = _firestore.collection('users').where('es_medico',isEqualTo: true).where('especialidades', arrayContains: especialidad);
+    Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
     QuerySnapshot querySnapshot = await medicosQuery.get();
     List<Medic> medicos = [];
-    for(DocumentSnapshot doc in querySnapshot.docs) {
+    for (DocumentSnapshot doc in querySnapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        try {
-            Medic especialidad = Medic.fromMap(data);
-            medicos.add(especialidad);
-        } catch (e) {
-          print(e);
-          continue;
-        }
+      try {
+        Medic medic = Medic.fromMap(data);
+        medicos.add(medic);
+      } catch (e) {
+        print(e);
+        continue;
+      }
+    }
+    print(medicos);
+    return medicos;
+  }
+
+  Future<Medic> getMedicoByID(String id) async {
+    Query medicoQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('id', isEqualTo: id);
+    QuerySnapshot querySnapshot = await medicoQuery.get();
+    
+    if (querySnapshot.docs.isEmpty) {
+      throw Exception('Medico no encontrado');
     }
 
-    return medicos;
-
+    Map<String, dynamic> data = querySnapshot.docs[0].data() as Map<String, dynamic>;
+    return Medic.fromMap(data);
   }
+
+  void agendarTurnoMedico(String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado) async {
+    try {
+      String? userId = getCurrentUserId();
+
+      if (userId != null) {
+
+        DocumentReference nuevoTurnoRef = _firestore.collection('turnos').doc();
+
+        print({
+          'id': nuevoTurnoRef.id, // Usar el id del documento
+          'especialidad': especialidadSeleccionada,
+          'fecha_hora': fechaSeleccionada,
+          'razon_consulta': inputUsuarioRazonConsulta,
+          'estado': EstadoTurno.pendiente.toString(),
+          'paciente_id': userId,
+          'medico_id': medicoSeleccionado.id,
+          'medico_name':  medicoSeleccionado.nombre
+        });
+
+        Map<String, dynamic> nuevoTurno = {
+          'id': nuevoTurnoRef.id, // Usar el id del documento
+          'especialidad': especialidadSeleccionada,
+          'fecha_hora': fechaSeleccionada,
+          'razon_consulta': inputUsuarioRazonConsulta,
+          'estado': EstadoTurno.pendiente.toString(),
+          'paciente_id': userId,
+          'medico_id': medicoSeleccionado.id,
+          'medico_name':  medicoSeleccionado.nombre
+        };
+
+        nuevoTurnoRef.set(nuevoTurno);
+
+        print("Turno agendado exitosamente en ambas colecciones.");
+      } else {
+        throw Exception("Usuario no autenticado");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TurnoUser>> getTurnosUsuario() async {
+    try {
+        String? userId = getCurrentUserId();
+        if (userId != null) {
+          QuerySnapshot snapshot = await _firestore.collection('turnos').where('paciente_id', isEqualTo: userId).get();
+
+          List<TurnoUser> turnos = [];
+
+          for(DocumentSnapshot doc in snapshot.docs) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            try {
+              TurnoUser turno = TurnoUser.fromMap(data, doc.id);
+              turnos.add(turno);
+            } catch (e) {
+              print(e);
+              continue;
+            }
+          }
+          
+          return turnos;
+        } else {
+          throw Exception("Usuario no autenticado");
+        }
+      } catch (e) {
+        rethrow;
+      }
+  }
+
+
+
 }

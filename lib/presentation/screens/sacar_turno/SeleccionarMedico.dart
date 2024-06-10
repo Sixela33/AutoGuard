@@ -8,7 +8,7 @@ class SeleccionarMedico extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SeleccionarMedico();
+    return const _SeleccionarMedico();
   }
 }
 
@@ -24,7 +24,14 @@ class _SeleccionarMedico extends ConsumerStatefulWidget {
 class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
   @override
   Widget build(BuildContext context) {
+    final turnoState = ref.watch(turnoProvider);
     final turnoNotifier = ref.watch(turnoProvider.notifier);
+
+    // Fetch médicos disponibles si no se han cargado aún
+    if (turnoState.medicosDisponibles == null || turnoState.medicosDisponibles.isEmpty) {
+      turnoNotifier.getMedicosOfEspecialidad();
+    }
+
     return Container(
       constraints: BoxConstraints(
         maxHeight: MediaQuery.of(context).size.height,
@@ -32,22 +39,23 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
       child: Scaffold(
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  FilledButton(
-                    child: const Text('Ver especialistas'),
-                    onPressed: () async {
-                      turnoNotifier.nextStep();
-                      context.pushReplacement('/sacarTurno');
-                    },
-                  ),
-                  TextButton(onPressed: () {
-                      turnoNotifier.lastStep();
-                      context.pushReplacement('/sacarTurno');
-                  }, child: Text("Cancelar"))
-                ],
+              Expanded(
+                child: ListView.builder(
+                  itemCount: turnoState.medicosDisponibles.length,
+                  itemBuilder: (context, index) {
+                    final medico = turnoState.medicosDisponibles[index];
+                    return ListTile(
+                      title: Text(medico.nombre),
+                      subtitle: Text(medico.especialidades.join(', ')),
+                      onTap: () {
+                        turnoNotifier.setMedicoSeleccionado(medico);
+                        context.pushReplacement('/sacarTurno/seleccionarFecha');
+                      },
+                    );
+                  },
+                ),
               ),
             ],
           ),
