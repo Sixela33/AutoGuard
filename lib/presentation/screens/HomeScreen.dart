@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Yaba'),
+        title: const Text('AutoGuard UWU'),
       ),
       body: const _HomeView(),
     );
