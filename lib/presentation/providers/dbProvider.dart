@@ -1,5 +1,5 @@
 import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
-import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
@@ -42,8 +42,16 @@ class DatabaseNotifier extends StateNotifier<Database> {
     return state.getMedicosOfEspecialidad(especialidad);
   }
 
-  Future<List<TurnoUser>> getTurnosUsuario() async {
-    return state.getTurnosUsuario();
+  Future<List<Turno>> getTurnosUsuario() async {
+    return state.getTurnosPorUsuario();
+  }
+
+  Future<List<Turno>> getTurnosPorMedico(String medicoID) async {
+    return state.getTurnosPorMedico(medicoID);
+  }
+
+  Future<List<Turno>> getTurnosPorMedicoYFecha(String medicoId, DateTime fechaSeleccionada) async {
+    return state.getTurnosPorMedicoYFecha(medicoId, fechaSeleccionada);
   }
 }
 

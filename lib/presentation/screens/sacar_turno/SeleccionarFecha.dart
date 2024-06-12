@@ -45,7 +45,6 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
         ),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TableCalendar(
                 availableCalendarFormats: {CalendarFormat.month: 'Month'},
@@ -62,6 +61,7 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
+
                   });
                 },
                 calendarStyle: CalendarStyle(
@@ -75,7 +75,6 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
                   ),
                   weekendTextStyle: TextStyle(color: Colors.red), 
                 ),
-
               ),
               const SizedBox(height: 20),
               ElevatedButton(

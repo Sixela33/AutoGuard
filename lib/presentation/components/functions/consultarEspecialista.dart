@@ -4,7 +4,7 @@ import 'package:dart_openai/dart_openai.dart';
 
 Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica> especialidadesDisponibles, turnoNotifier turnoNotifier) async {
   String especialidades = especialidadesDisponibles.map((e) => e.nombre).join(',');
-
+  /*
   String presentacion = "Es muy importante que respondas con una sola palabra y solo usando las especialidades que se listan a continuación. Eres la recepcionista de una Clínica u Hospital. La institución cuenta únicamente con especialistas en las siguientes especialidades médicas: ";
   //String especialidades = "Clínico, Traumatólogo, Cardiólogo, Dentista, Dermatólogo.";
   String paciente = " Razón del paciente para buscar consulta médica: ";
@@ -27,7 +27,12 @@ Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica
   } catch (e) {
     especialidadSeleccionada = especialidadesDisponibles.first;
   }
-  
+  */
+
+
+  EspecialidadMedica especialidadSeleccionada;
+  especialidadSeleccionada = especialidadesDisponibles.first;
+
   turnoNotifier.setInputRazonConsulta(inputUsuario);
   turnoNotifier.setEspecialidadSeleccionada(especialidadSeleccionada.nombre);
 }

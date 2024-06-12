@@ -18,6 +18,9 @@ class ScaffoldWithNavBar extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Section A'),
           BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Section B'),
           BottomNavigationBarItem(icon: Icon(Icons.tab), label: 'Section C'),
+          BottomNavigationBarItem(icon: Icon(Icons.work), label: 'Section B'),
+          BottomNavigationBarItem(icon: Icon(Icons.tab), label: 'Section C'),
+          
         ],
         currentIndex: navigationShell.currentIndex,
         onTap: (int index) => _onTap(context, index),

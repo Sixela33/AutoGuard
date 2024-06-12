@@ -2,32 +2,38 @@ import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class TurnoUser {
+class Turno {
   final String id;
   final DateTime fechaHora;
   final String razonConsulta;
   final EstadoTurno estado;
+  final String especialidadSeleccionada;
   final String medicoName;
   final String medicoID;
+  final String pacienteID;
 
-  TurnoUser({
+  Turno({
     required this.id,
     required this.fechaHora,
     required this.razonConsulta,
     required this.estado,
     required this.medicoName,
     required this.medicoID,
+    required this.pacienteID,
+    required this.especialidadSeleccionada
   });
 
-  factory TurnoUser.fromMap(Map<String, dynamic> data, String documentId) {
-    
-    return TurnoUser(
+  factory Turno.fromMap(Map<String, dynamic> data, String documentId) {
+
+    return Turno(
       id: documentId,
       fechaHora: (data['fecha_hora'] as Timestamp).toDate(),
       razonConsulta: data['razon_consulta'],
       estado: EstadoTurno.values.firstWhere((e) => e.toString() == data['estado']),
       medicoName: data['medico_name'],
       medicoID: data['medico_id'],
+      pacienteID: data['paciente_id'],
+      especialidadSeleccionada: data['especialidad']
     );
   }
 }

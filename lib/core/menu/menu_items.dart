@@ -17,31 +17,6 @@ const List<MenuItem> menuItems = [
     link: '/Admin'
   ),
   MenuItem(
-    title: "Register", 
-    subtitle: "Registrar nuevo usuario", 
-    icon: Icons.movie, 
-    link: '/register'
-  ),
-    MenuItem(
-    title: "Login", 
-    subtitle: "Iniciar sesion", 
-    icon: Icons.movie, 
-    link: '/login'
-  ),
-  MenuItem(
-    title: "Asociar obra social", 
-    subtitle:  "Asociá tu obra social", 
-    icon: Icons.youtube_searched_for_outlined, 
-    link: "/asociarObraSocial"
-  ),
-  MenuItem(
-    title: "Home",
-    subtitle: "Home",
-    icon: Icons.home, 
-    link: "/home"
-  ),
-
-  MenuItem(
     title: "saccar Turno medico",
     subtitle: "saccar Turno medico",
     icon: Icons.home, 
