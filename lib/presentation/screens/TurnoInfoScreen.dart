@@ -1,13 +1,18 @@
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-class TurnoInfoScreen extends StatelessWidget {
+class TurnoInfoScreen extends ConsumerWidget {
   final Turno turno;
 
   const TurnoInfoScreen({Key? key, required this.turno}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final databaseNotifier = ref.watch(databaseNotifierProvider);
+ 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Información del Turno"),
@@ -29,6 +34,11 @@ class TurnoInfoScreen extends StatelessWidget {
             Text('Razón de la Consulta: ${turno.razonConsulta}'),
             const SizedBox(height: 8.0),
             Text('Estado: ${turno.estado.toString().split('.').last}'),
+            const SizedBox(height: 8.0),
+            FilledButton(onPressed: () {
+              databaseNotifier.cancelarTurno(turno.id);
+              context.push('/home');
+            }, child: Text("cancelar turno"))
           ],
         ),
       ),

@@ -53,6 +53,10 @@ class DatabaseNotifier extends StateNotifier<Database> {
   Future<List<Turno>> getTurnosPorMedicoYFecha(String medicoId, DateTime fechaSeleccionada) async {
     return state.getTurnosPorMedicoYFecha(medicoId, fechaSeleccionada);
   }
+
+  Future<void> cancelarTurno(String id) async {
+    await state.cancelarTurno(id);
+  }
 }
 
 
