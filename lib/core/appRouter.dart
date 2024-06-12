@@ -3,10 +3,8 @@ import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/MenuScreen.dart';
 import 'package:autoguard/presentation/screens/MisTurnosUser.dart';
 import 'package:autoguard/presentation/screens/PerfilScreen.dart';
-import 'package:autoguard/presentation/screens/ProfesionalesScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
-import 'package:autoguard/presentation/screens/TurnosScreen.dart';
 import 'package:autoguard/presentation/screens/agenda/AgendaScreen.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarFecha.dart';
@@ -46,6 +44,10 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
           builder: (context, state) => SeleccionarHora(),
         )
       ]),
+     GoRoute(
+    path: "/misTurnosUser",
+    builder: (context, state) => MisTurnosUser(),
+  ),
   GoRoute(
     path: '/misTurnosUser/:id',
     builder: (context, state) {
@@ -53,15 +55,7 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
       return TurnoInfoScreen(turno: turno);
     },
   ),
-  GoRoute(
-    path: "/profesionales",
-    builder: (context, state) =>
-        ProfesionalesScreen(especialidad: state.extra as String),
-  ),
-  GoRoute(
-    path: "/turnos",
-    builder: (context, state) => TurnosScreen(idMedico: state.extra as String),
-  ),
+
   GoRoute(
     path: "/consultas",
     builder: (context, state) => MisTurnosUser(),
