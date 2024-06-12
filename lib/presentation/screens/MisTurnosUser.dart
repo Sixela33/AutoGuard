@@ -63,7 +63,7 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
                 subtitle: Text('Fecha: ${turno.fechaHora}'),
                 trailing: Text(turno.estado.toString().split('.').last),
                 onTap: () {
-                  context.go('/misTurnosUser/${turno.id}', extra: turno);
+                  context.push('/misTurnosUser/${turno.id}', extra: turno);
                 },
               );
             },
