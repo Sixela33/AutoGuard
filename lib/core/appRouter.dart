@@ -1,46 +1,50 @@
-import 'dart:convert';
 
-import 'package:autoguard/core/User/UserRepository.dart';
-import 'package:autoguard/presentation/entities/Usuario.dart';
-import 'package:autoguard/presentation/screens/ConsultarEspecialista.dart';
-import 'package:autoguard/presentation/screens/ConsultarTurnosScreen.dart';
-import 'package:autoguard/presentation/screens/MenuMedico.dart';
-import 'package:autoguard/presentation/screens/MenuPaciente.dart';
-import 'package:autoguard/presentation/screens/NuevaConsultaScreen.dart';
+import 'package:autoguard/presentation/screens/LoginScreen.dart';
+import 'package:autoguard/presentation/screens/MenuScreen.dart';
+import 'package:autoguard/presentation/screens/MisTurnosUser.dart';
 import 'package:autoguard/presentation/screens/PerfilScreen.dart';
 import 'package:autoguard/presentation/screens/ProfesionalesScreen.dart';
+import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/TurnosScreen.dart';
 import 'package:autoguard/presentation/screens/agenda/AgendaScreen.dart';
-import 'package:flutter/material.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/ConsultarEspecialista.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarFecha.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarHora.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarMedico.dart';
 import 'package:go_router/go_router.dart';
 
-final appRouter = GoRouter(initialLocation: "/", routes: [
+final appRouter = GoRouter(initialLocation: "/login", routes: [
   GoRoute(
-    path: "/",
-    builder: (context, state) => FutureBuilder(
-      future: getActiveUser(), 
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final user = snapshot.data as Usuario;
-          if (user.esMedico) {
-            return MenuMedico();
-          } else {
-            return MenuPaciente();
-          }
-        } else {
-          return Center(child: CircularProgressIndicator());
-        }
-      }
-      ),
+    path: "/login",
+    builder: (context, state) => LoginScreen(),
+  ),
+  GoRoute(
+    path: "/registro",
+    builder: (context, state) => RegistrationScreen(),
+  ),
+  GoRoute(
+    path: "/home",
+    builder: (context, state) => MenuScreen(),
   ),
   GoRoute(
     path: "/perfil",
     builder: (context, state) => PerfilScreen(),
   ),
   GoRoute(
-    path: "/especialista",
-    builder: (context, state) => ConsultarEspecialista(),
-  ),
+      path: "/sacarTurno",
+      builder: (context, state) => ConsultarEspecialista(),
+      routes: [
+        GoRoute(
+            path: 'seleccionarEspecialista',
+            builder: (context, state) => SeleccionarMedico()),
+        GoRoute(
+            path: 'seleccionarFecha',
+            builder: (context, state) => SeleccionarFecha()),
+        GoRoute(
+          path: 'seleccionarHora',
+          builder: (context, state) => SeleccionarHora(),
+        )
+      ]),
   GoRoute(
     path: "/profesionales",
     builder: (context, state) =>
@@ -52,7 +56,7 @@ final appRouter = GoRouter(initialLocation: "/", routes: [
   ),
   GoRoute(
     path: "/consultas",
-    builder: (context, state) => ConsultarTurnosScreen(),
+    builder: (context, state) => MisTurnosUser(),
   ),
   GoRoute(
     path: "/agenda",

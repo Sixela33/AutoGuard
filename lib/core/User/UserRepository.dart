@@ -1,9 +1,9 @@
 
 import 'package:autoguard/core/User/UserDAO.dart';
-import 'package:autoguard/core/User/UserDAOFs.dart';
+import 'package:autoguard/core/User/UserDAOFirebase.dart';
 import 'package:autoguard/presentation/entities/Usuario.dart';
 
-final UserDAO userDAO = UserDAOFs();
+final UserDAO userDAO = UserDaoFirebase();
 
 Future<Usuario> getActiveUser() async {
   return userDAO.getActiveUser();

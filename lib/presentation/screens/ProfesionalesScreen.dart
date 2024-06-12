@@ -26,8 +26,8 @@ class ProfesionalesScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return Card(
                       child: ListTile(
-                        title: Text(medicos[index].nombre),
-                        subtitle: Text(medicos[index].especialidad ?? "Clínico"),
+                        title: Text(medicos[index].nombre!),
+                        subtitle: Text("Clinico general"),
                         onTap: () {
                           context.push('/turnos', extra: medicos[index].id);
                         },

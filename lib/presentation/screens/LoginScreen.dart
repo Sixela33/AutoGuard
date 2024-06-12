@@ -1,5 +1,5 @@
 import 'package:autoguard/presentation/providers/dbProvider.dart';
-import 'package:autoguard/presentation/screens/HomeScreen.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/screens/RecuperarContrasenia.dart';
@@ -54,11 +54,12 @@ class _LoginScreen extends ConsumerWidget {
                     controllerEmail.text,
                     controllerPassword.text,
                   );
+                  ref.read(userProvider.notifier).login();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
                   );
                   
-                  context.push('/home');
+                  context.go('/home');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error al iniciar sesión: $e')),
@@ -87,6 +88,9 @@ class _LoginScreen extends ConsumerWidget {
                 ),
               ),
             ),
+            ElevatedButton(onPressed: (){
+              context.push('/registro');
+            }, child: Text('Registrarse')),
           ],
         ),
       ),

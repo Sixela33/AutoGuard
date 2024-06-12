@@ -18,7 +18,7 @@ class MenuPaciente extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            BotonMenu(texto: 'Nueva Consulta', ruta: '/especialista'),
+            BotonMenu(texto: 'Nueva Consulta', ruta: '/sacarTurno'),
             BotonMenu(texto: 'Tus Consultas', ruta: '/consultas'),
             BotonMenu(texto: 'Perfil', ruta: '/perfil'),
           ],

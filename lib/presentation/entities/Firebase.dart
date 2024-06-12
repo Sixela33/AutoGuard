@@ -3,8 +3,10 @@ import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Database {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

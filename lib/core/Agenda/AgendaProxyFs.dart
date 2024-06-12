@@ -33,7 +33,7 @@ class AgendaProxyFs implements AgendaProxy {
         while(fromTime! < agenda.toTime!) {
         var cita = Cita(
           id: Random().nextInt(1000).toString(),
-          idMedico: (await getActiveUser()).id,
+          idMedico: (await getActiveUser()).id!,
           fecha: day.add(Duration(minutes: fromTime)),
           libre: true
         );

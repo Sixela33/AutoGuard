@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final AppTheme = ThemeData(
-  colorSchemeSeed: Colors.teal,
+  //colorSchemeSeed: Colors.teal,
   brightness: Brightness.light, // Puedes cambiar a Brightness.dark para un tema oscuro
   primaryColor: Colors.teal,
   primaryColorLight: Colors.teal[300],

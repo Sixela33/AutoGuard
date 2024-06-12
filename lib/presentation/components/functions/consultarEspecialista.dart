@@ -2,13 +2,8 @@ import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:dart_openai/dart_openai.dart';
 
-Future<String> consultarEspecialista (String inputUsuario) async {
-  final especialidadesDisponibles = await getEspecialidades();
-  print(especialidadesDisponibles);
-  String especialidades = especialidadesDisponibles.join(',');
-  
-  print("=========================");
-  print(especialidades);
+Future<void> consultarEspecialista (String inputUsuario, List<EspecialidadMedica> especialidadesDisponibles, turnoNotifier turnoNotifier) async {
+  String especialidades = especialidadesDisponibles.map((e) => e.nombre).join(',');
 
   String presentacion = "Es muy importante que respondas con una sola palabra y solo usando las especialidades que se listan a continuación. Eres la recepcionista de una Clínica u Hospital. La institución cuenta únicamente con especialistas en las siguientes especialidades médicas: ";
   //String especialidades = "Clínico, Traumatólogo, Cardiólogo, Dentista, Dermatólogo.";
@@ -23,8 +18,6 @@ Future<String> consultarEspecialista (String inputUsuario) async {
   );
 
   print(completion.choices.first.text); // ...
-  print(completion.systemFingerprint); // ...
-  print(completion.id);
 
   EspecialidadMedica especialidadSeleccionada;
 

@@ -14,12 +14,12 @@ class UserDAOFs implements UserDAO {
 
   @override
   Future<List<Usuario>> getMedicosEspecialidad(String especialidad) {
-    return Future.value(users.where((element) => element.especialidad == especialidad).toList());
+    throw UnimplementedError();
   }
 
   @override
   Future<List<String?>> getEspecialidades() {
-    return Future.value(users.map((e) => e.especialidad).toSet().toList());
+    throw UnimplementedError();
   }
   
 }

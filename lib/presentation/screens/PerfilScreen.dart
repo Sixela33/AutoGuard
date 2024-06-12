@@ -28,7 +28,7 @@ class PerfilScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            user!.nombre,
+            user!.nombre ?? "Sin nombre",
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -36,7 +36,7 @@ class PerfilScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            user.email,
+            user.email ?? "Sin email",
             style: TextStyle(
               fontSize: 16,
             ),
