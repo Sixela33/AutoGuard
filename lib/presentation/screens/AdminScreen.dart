@@ -88,14 +88,14 @@ class _AdminScreen extends ConsumerWidget {
             FilledButton(
               
               onPressed: () {
-                Navigator.push(
+                /* Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
-                      return RegistroMedicoScreen();
+                      
                      },
                    ),
-                 );
+                 ); */
               }, 
               child: Text('Añadir Medico'))
           ],

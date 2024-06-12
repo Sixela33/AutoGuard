@@ -1,5 +1,5 @@
 import 'package:autoguard/presentation/providers/dbProvider.dart';
-import 'package:autoguard/presentation/screens/HomeScreen.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/screens/RecuperarContrasenia.dart';
@@ -26,7 +26,6 @@ class _LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final databaseNotifier = ref.watch(databaseNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +49,7 @@ class _LoginScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await databaseNotifier.signInWithEmailAndPassword(
+                  await ref.read(databaseNotifierProvider.notifier).signInWithEmailAndPassword(
                     controllerEmail.text,
                     controllerPassword.text,
                   );
@@ -58,7 +57,7 @@ class _LoginScreen extends ConsumerWidget {
                     const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
                   );
                   
-                  context.push('/home');
+                  context.go('/home');
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Error al iniciar sesión: $e')),
@@ -87,6 +86,9 @@ class _LoginScreen extends ConsumerWidget {
                 ),
               ),
             ),
+            ElevatedButton(onPressed: (){
+              context.push('/registro');
+            }, child: Text('Registrarse')),
           ],
         ),
       ),

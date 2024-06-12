@@ -2,9 +2,9 @@ import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
-import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:flutter/material.dart';
 
 class Database {
