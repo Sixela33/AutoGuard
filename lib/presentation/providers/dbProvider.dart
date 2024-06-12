@@ -3,12 +3,15 @@ import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final databaseNotifierProvider = StateNotifierProvider<DatabaseNotifier, Database>((ref) => DatabaseNotifier());
+final databaseNotifierProvider = StateNotifierProvider<DatabaseNotifier, Database>((ref) => DatabaseNotifier(ref));
 
 class DatabaseNotifier extends StateNotifier<Database> {
-  DatabaseNotifier() : super(Database());
+  final Ref ref;
+
+  DatabaseNotifier(this.ref) : super(Database());
 
   Future<void> registerWithEmailAndPassword(String email, String password, List<ObraSocial> obrasSociales) async {
     await state.registerWithEmailAndPassword(email, password, obrasSociales);
@@ -20,6 +23,7 @@ class DatabaseNotifier extends StateNotifier<Database> {
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     await state.signInWithEmailAndPassword(email, password);
+    await ref.read(userProvider.notifier).login();
   }
 
   Future<void> addObraSocial(String nombreObraSocial) async {

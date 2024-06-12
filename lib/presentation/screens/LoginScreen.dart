@@ -26,7 +26,6 @@ class _LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final databaseNotifier = ref.watch(databaseNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -50,11 +49,10 @@ class _LoginScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () async {
                 try {
-                  await databaseNotifier.signInWithEmailAndPassword(
+                  await ref.read(databaseNotifierProvider.notifier).signInWithEmailAndPassword(
                     controllerEmail.text,
                     controllerPassword.text,
                   );
-                  ref.read(userProvider.notifier).login();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
                   );
