@@ -1,7 +1,8 @@
 import 'package:autoguard/presentation/components/ScaffoldWithNavbar.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/screens/AdminScreen.dart';
-import 'package:autoguard/presentation/screens/AgregarObraSocialUsuario.dart';
 import 'package:autoguard/presentation/screens/MisTurnosUser.dart';
+import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/HomeScreen.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
@@ -74,16 +75,19 @@ final appRouter = GoRouter(
             ),
             StatefulShellBranch(routes: [
               GoRoute(
-                path: 'asociarObraSocial',
-                builder: (context, state) => AgregarObraSocial(),
-              ),
-              GoRoute(
                 path: 'registrarMedico',
                 builder: (context, state) => RegistroMedicoScreen(),
               ),
               GoRoute(
                 path: 'misTurnosUser',
                 builder: (context, state) => MisTurnosUser(),
+              ),
+              GoRoute(
+                path: 'misTurnosUser/:id',
+                builder: (context, state) {
+                  final turno = state.extra as Turno;
+                  return TurnoInfoScreen(turno: turno);
+                },
               ),
             ])
           ],

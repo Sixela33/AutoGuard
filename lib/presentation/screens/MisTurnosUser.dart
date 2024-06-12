@@ -2,6 +2,7 @@ import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 final misTurnosProvider = FutureProvider<List<Turno>>((ref) {
   return ref.read(databaseNotifierProvider).getTurnosPorUsuario();
@@ -61,6 +62,9 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
                 title: Text('Médico: ${turno.medicoName}'),
                 subtitle: Text('Fecha: ${turno.fechaHora}'),
                 trailing: Text(turno.estado.toString().split('.').last),
+                onTap: () {
+                  context.go('/misTurnosUser/${turno.id}', extra: turno);
+                },
               );
             },
           );
