@@ -7,15 +7,15 @@ import 'package:autoguard/presentation/screens/LoginScreen.dart';
 class RegistrationScreen extends ConsumerStatefulWidget {
   static String name = "Registrar usuario";
 
-  const RegistrationScreen({super.key});
+  const RegistrationScreen({Key? key});
 
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
 class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
-  final TextEditingController controller_email = TextEditingController();
-  final TextEditingController controller_password = TextEditingController();
+  final TextEditingController controllerEmail = TextEditingController();
+  final TextEditingController controllerPassword = TextEditingController();
   final List<ObraSocial> obrasSocialesSeleccionadas = [];
 
   @override
@@ -25,6 +25,8 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro'),
+        backgroundColor: Color(0xFF8BC34A), // Verde claro
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -32,14 +34,28 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
-              controller: controller_email,
-              decoration: const InputDecoration(labelText: 'Email'),
+              controller: controllerEmail,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                prefixIcon: Icon(Icons.email),
+              ),
             ),
+            const SizedBox(height: 20),
             TextFormField(
-              controller: controller_password,
-              decoration: const InputDecoration(labelText: 'Contraseña'),
+              controller: controllerPassword,
+              decoration: InputDecoration(
+                labelText: 'Contraseña',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                prefixIcon: Icon(Icons.lock),
+              ),
               obscureText: true,
             ),
+            const SizedBox(height: 20),
             const Text("Seleccioná tus obras sociales:"),
             DropdownButton<ObraSocial>(
               hint: const Text('Seleccionar obra social'),
@@ -47,8 +63,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
               onChanged: (selectedObraSocial) {
                 if (selectedObraSocial != null) {
                   setState(() {
-                    if (obrasSocialesSeleccionadas
-                        .contains(selectedObraSocial)) {
+                    if (obrasSocialesSeleccionadas.contains(selectedObraSocial)) {
                       obrasSocialesSeleccionadas.remove(selectedObraSocial);
                     } else {
                       obrasSocialesSeleccionadas.add(selectedObraSocial);
@@ -83,7 +98,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
               onPressed: () async {
                 try {
                   await databaseNotifier.registerWithEmailAndPassword(
-                      controller_email.text, controller_password.text,
+                      controllerEmail.text, controllerPassword.text,
                       obrasSocialesSeleccionadas);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('¡Registro exitoso!')),
@@ -102,6 +117,17 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                   );
                 }
               },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Color(0xFF8BC34A), // Verde claro
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               child: const Text('Registrarse'),
             ),
           ],

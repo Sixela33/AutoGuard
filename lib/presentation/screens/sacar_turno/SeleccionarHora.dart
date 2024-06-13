@@ -1,14 +1,17 @@
-import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
-import 'package:autoguard/presentation/entities/ThemeProvider.dart';
-import 'package:autoguard/presentation/providers/dbProvider.dart';
-import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:autoguard/presentation/providers/turnoProvider.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 
 final turnosDelDiaProvider = FutureProvider<List<Turno>>((ref) {
   final turnoNotifier = ref.watch(turnoProvider.notifier);
-  return ref.read(databaseNotifierProvider).getTurnosPorMedicoYFecha(turnoNotifier.state.medicoSeleccionado.id, turnoNotifier.state.fechaSeleccionada);
+  return ref.read(databaseNotifierProvider).getTurnosPorMedicoYFecha(
+    turnoNotifier.state.medicoSeleccionado.id,
+    turnoNotifier.state.fechaSeleccionada
+  );
 });
 
 class SeleccionarHora extends ConsumerStatefulWidget {
@@ -20,11 +23,10 @@ class SeleccionarHora extends ConsumerStatefulWidget {
 
 class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
   TimeOfDay _selectedTime = TimeOfDay.now();
-  
+
   @override
   void initState() {
     super.initState();
-    // Refresh the provider when the widget is first created
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.refresh(turnosDelDiaProvider);
     });
@@ -35,12 +37,11 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
     final turnoNotifier = ref.watch(turnoProvider.notifier);
     final medicoSeleccionado = turnoNotifier.state.medicoSeleccionado;
 
-    // Cálculo de los slots de tiempo entre horaApertura y horaCierre
     final List<TimeOfDay> availableSlots = [];
     TimeOfDay currentTimeSlot = medicoSeleccionado.horaApertura;
 
     while (currentTimeSlot.hour < medicoSeleccionado.horaCierre.hour || 
-          (currentTimeSlot.hour == medicoSeleccionado.horaCierre.hour && currentTimeSlot.minute < medicoSeleccionado.horaCierre.minute)) {
+           (currentTimeSlot.hour == medicoSeleccionado.horaCierre.hour && currentTimeSlot.minute < medicoSeleccionado.horaCierre.minute)) {
       availableSlots.add(currentTimeSlot);
       final int totalMinutes = currentTimeSlot.hour * 60 + currentTimeSlot.minute + medicoSeleccionado.duracionTurno;
       currentTimeSlot = TimeOfDay(hour: totalMinutes ~/ 60, minute: totalMinutes % 60);
@@ -51,6 +52,8 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seleccionar Hora'),
+        backgroundColor: Color(0xFF8BC34A),
+        elevation: 0,
       ),
       body: turnosDelDia.when(
         data: (turnos) {
@@ -100,7 +103,7 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
                     );
                     context.push('/home');
                   },
-                  child: const Text('Submit'),
+                  child: const Text('Enviar'),
                 ),
               ),
             ],

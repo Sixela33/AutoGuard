@@ -46,36 +46,35 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
         body: Center(
           child: Column(
             children: [
-              TableCalendar(
-                availableCalendarFormats: {CalendarFormat.month: 'Month'},
-                focusedDay: _focusedDay,
-                firstDay: _firstDay,
-                lastDay: _lastDay,
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  if (selectedDay.weekday == DateTime.saturday || selectedDay.weekday == DateTime.sunday) {
-                    return;
-                  }
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-
-                  });
-                },
-                calendarStyle: CalendarStyle(
-                  selectedDecoration: BoxDecoration(
-                    color: themeProvider.primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  todayDecoration: BoxDecoration(
-                    color: themeProvider.primaryColor,
-                    shape: BoxShape.circle,
-                  ),
-                  weekendTextStyle: TextStyle(color: Colors.red), 
+            TableCalendar(
+              availableCalendarFormats: {CalendarFormat.month: 'Month'},
+              focusedDay: _focusedDay,
+              firstDay: _firstDay,
+              lastDay: _lastDay,
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                if (selectedDay.weekday == DateTime.saturday || selectedDay.weekday == DateTime.sunday) {
+                  return;
+                }
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay;
+                });
+              },
+              calendarStyle: CalendarStyle(
+                selectedDecoration: BoxDecoration(
+                  color: themeProvider.primaryColor,
+                  shape: BoxShape.circle,
                 ),
+                todayDecoration: BoxDecoration(
+                  color: themeProvider.primaryColor,
+                  shape: BoxShape.circle,
+                ),
+                weekendTextStyle: TextStyle(color: Colors.red),
               ),
+            ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {

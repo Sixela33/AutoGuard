@@ -1,5 +1,5 @@
 name: autoguard
-description: "A new Flutter project."
+description: "Autoguard, tu recepcionista personal"
 publish_to: "none"
 version: 0.1.0
 
@@ -28,6 +28,9 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/profile_picture.png
+    - assets/autoguard_logo.jpg
+    - assets/autoguard_logo_app.jpg
 
 flutter_native_splash:
   color: "#42f59e"

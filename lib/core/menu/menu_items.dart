@@ -12,19 +12,19 @@ class MenuItem {
 const List<MenuItem> menuItems = [
   MenuItem(
     title: "Admin panel", 
-    subtitle: "agregar una nueva obra social", 
+    subtitle: "Agregar una nueva obra social", 
     icon: Icons.movie, 
     link: '/Admin'
   ),
   MenuItem(
-    title: "saccar Turno medico",
-    subtitle: "saccar Turno medico",
+    title: "Obtener Turno medico",
+    subtitle: "Obtener Turno medico",
     icon: Icons.home, 
     link: "/sacarTurno"
   ),
    MenuItem(
-    title: "mis turnos",
-    subtitle: "mis turnos",
+    title: "Mis turnos",
+    subtitle: "Mis turnos",
     icon: Icons.home, 
     link: "/misTurnosUser"
   ),

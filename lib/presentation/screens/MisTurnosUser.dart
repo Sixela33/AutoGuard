@@ -25,11 +25,9 @@ class _MisTurnosUser extends ConsumerStatefulWidget {
 }
 
 class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
-
   @override
   void initState() {
     super.initState();
-    // Refresh the provider when the widget is first created
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.refresh(misTurnosProvider);
     });
@@ -41,6 +39,8 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mis Turnos"),
+        backgroundColor: Color(0xFF8BC34A), // Verde claro
+        elevation: 0,
       ),
       body: misTurnosAsync.when(
         error: (error, stackTrace) {
@@ -58,17 +58,23 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
             itemCount: turnos.length,
             itemBuilder: (context, index) {
               final turno = turnos[index];
-              return ListTile(
-                title: Text('Médico: ${turno.medicoName}'),
-                subtitle: Text('Fecha: ${turno.fechaHora}'),
-                trailing: Text(turno.estado.toString().split('.').last),
-                onTap: () {
-                  context.push('/misTurnosUser/${turno.id}', extra: turno);
-                },
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  title: Text('Médico: ${turno.medicoName}'),
+                  subtitle: Text('Fecha: ${turno.fechaHora}'),
+                  trailing: Text(turno.estado.toString().split('.').last),
+                  onTap: () {
+                    context.push('/misTurnosUser/${turno.id}', extra: turno);
+                  },
+                ),
               );
             },
           );
-        }
+        },
       ),
     );
   }

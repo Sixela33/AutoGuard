@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class ConsultarEspecialista extends StatelessWidget {
-  const ConsultarEspecialista({super.key});
+  const ConsultarEspecialista({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +15,15 @@ class ConsultarEspecialista extends StatelessWidget {
 }
 
 class _ConsultarEspecialista extends ConsumerWidget {
-  _ConsultarEspecialista({
-    super.key,
-  });
+  _ConsultarEspecialista({Key? key}) : super(key: key);
 
   final TextEditingController _controller = TextEditingController();
 
   void continueFunction(dbNotif, turnoNotif) async {
-     final inputUsuario = _controller.text;
-      await consultarEspecialista(inputUsuario, dbNotif.especialidadesMedicas, turnoNotif);
-      turnoNotif.nextStep();
-        }
+    final inputUsuario = _controller.text;
+    await consultarEspecialista(inputUsuario, dbNotif.especialidadesMedicas, turnoNotif);
+    turnoNotif.nextStep();
+  }
 
   @override
   Widget build(BuildContext context, ref) {
@@ -34,44 +32,51 @@ class _ConsultarEspecialista extends ConsumerWidget {
 
     databaseNotifier.getEspecialidades();
 
-    return Container(
-      constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height,
-        ),
-      child: Scaffold(
-            body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Cual es la razón de su consulta?'),
-                TextField(
-                    controller: _controller,
-                    maxLines: 8,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Cual es la razón de su consulta',
-                    ),
-                  ),
-                  const SizedBox(height: 5,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                       TextButton(onPressed: () {
-                        context.pop();
-                      }, child: const Text("Cancelar")),
-                      FilledButton(
-                        child: const Text('Continuar'),
-                        onPressed: () async {
-                          final inputUsuario = _controller.text;
-                          await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
-                          await turnoNotifierController.getMedicosOfEspecialidad();
-                          context.pushReplacement('/sacarTurno/seleccionarEspecialista');
-                        },
-                      ),
-                    ],
-                  )
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Consulta Especialista'),
+        backgroundColor: Color(0xFF8BC34A),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              '¿Cuál es la razón de su consulta?',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _controller,
+              maxLines: 8,
+              decoration: InputDecoration(
+                hintText: 'Escribe aquí tu consulta',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: const Text("Cancelar"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    final inputUsuario = _controller.text;
+                    await consultarEspecialista(inputUsuario, databaseNotifier.especialidadesMedicas, turnoNotifierController);
+                    await turnoNotifierController.getMedicosOfEspecialidad();
+                    context.pushReplacement('/sacarTurno/seleccionarEspecialista');
+                  },
+                  child: const Text('Continuar'),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
