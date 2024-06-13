@@ -35,5 +35,6 @@ class turnoNotifier extends StateNotifier<SacarTurnoEntity> {
   void setTime (time) {
     state.setTime(time);
   }
+
 }
 

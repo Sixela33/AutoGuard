@@ -230,6 +230,10 @@ class Database {
     return Medic.fromMap(data);
   }
 
+  ///////////////////////////////////
+  ///          TURNOS
+  ///////////////////////////////////
+
   Future<List<Turno>> getTurnosPorMedico (String medicoID) async {
     try {
       Query turnosQuery = _firestore.collection('users').where('medico_id', isEqualTo: medicoID);
@@ -351,6 +355,15 @@ class Database {
   }
 
 
+
+  Future<void> cancelarTurno(String id) async {
+    try {
+      await _firestore.collection('turnos').doc(id).delete();
+      print('Turno con ID $id eliminado exitosamente.');
+    } catch (e) {
+      print('Error al eliminar el turno: $e');
+    }
+  }
 
 
 
