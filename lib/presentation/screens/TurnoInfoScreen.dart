@@ -1,18 +1,13 @@
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
-import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-class TurnoInfoScreen extends ConsumerWidget {
+class TurnoInfoScreen extends StatelessWidget {
   final Turno turno;
 
   const TurnoInfoScreen({Key? key, required this.turno}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
-    final databaseNotifier = ref.watch(databaseNotifierProvider);
- 
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Información del Turno"),
