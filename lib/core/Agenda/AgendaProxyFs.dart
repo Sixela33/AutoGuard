@@ -1,25 +1,11 @@
 import 'dart:math';
 
-import 'package:autoguard/core/Agenda/AgendaProxy.dart';
-import 'package:autoguard/core/Agenda/agenda.dart';
-import 'package:autoguard/core/User/UserRepository.dart';
-import 'package:autoguard/presentation/entities/Cita.dart';
 import 'package:autoguard/presentation/providers/agendaProvider.dart';
 import 'package:flutter/material.dart';
 
-class AgendaProxyFs implements AgendaProxy {
+class AgendaProxyFs {
 
   AgendaProxyFs();
-
-  @override
-  Future<List<Cita>> getCitasLibresMedico(String idMedico) {
-    return Future.value(agenda.where((element) => element.idMedico == idMedico && element.libre).toList());
-  }
-  
-  @override
-  void ocuparCita(String idCita) {
-    agenda.firstWhere((element) => element.id == idCita).libre = false;
-  }
 
   @override
   void guardarAgenda(AgendaInput agenda) async {
@@ -31,13 +17,12 @@ class AgendaProxyFs implements AgendaProxy {
       if (agenda.days![day.weekday - 1]) {
         var fromTime = agenda.fromTime;
         while(fromTime! < agenda.toTime!) {
-        var cita = Cita(
+        /* var cita = Cita(
           id: Random().nextInt(1000).toString(),
           idMedico: (await getActiveUser()).id!,
           fecha: day.add(Duration(minutes: fromTime)),
           libre: true
-        );
-        guardarTurno(cita);
+        ); */
         fromTime += agenda.interval!;
       }
       }
@@ -45,8 +30,8 @@ class AgendaProxyFs implements AgendaProxy {
     }
   }
 
-  void guardarTurno(Cita cita) {
-    agenda.add(cita);
+  void guardarTurno() {
+    throw UnimplementedError();
   }
 
   

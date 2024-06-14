@@ -1,6 +1,5 @@
 import 'dart:core';
 
-import 'package:autoguard/core/Agenda/AgendaRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final agendaProvider = StateNotifierProvider<AgendaNotifier, AgendaInput>((ref) => AgendaNotifier());
@@ -59,7 +58,4 @@ class AgendaNotifier extends StateNotifier<AgendaInput> {
     state = AgendaInput();
   }
 
-  void actualizarAgenda() {
-    guardarAgenda(state);
-  }
 }

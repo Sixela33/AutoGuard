@@ -1,5 +1,4 @@
-import 'package:autoguard/core/User/UserRepository.dart';
-import 'package:autoguard/presentation/entities/Usuario.dart';
+
 import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:autoguard/presentation/screens/MenuMedico.dart';
 import 'package:autoguard/presentation/screens/MenuPaciente.dart';

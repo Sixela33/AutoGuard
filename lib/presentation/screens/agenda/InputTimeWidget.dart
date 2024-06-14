@@ -74,7 +74,7 @@ class InputTimeWidget extends ConsumerWidget {
         ElevatedButton(
           child: Text('Guardar'),
           onPressed: (){
-            ref.read(agendaProvider.notifier).actualizarAgenda();
+            
             ref.read(agendaProvider.notifier).reset();
             context.go("/");
           },
