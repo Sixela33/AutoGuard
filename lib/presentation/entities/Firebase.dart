@@ -2,11 +2,10 @@ import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
-import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
-import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:flutter/material.dart';
 
 class Database {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -231,6 +230,31 @@ class Database {
     return Medic.fromMap(data);
   }
 
+  Future<List<Turno>> getTurnosPorMedico (String medicoID) async {
+    try {
+      Query turnosQuery = _firestore.collection('users').where('medico_id', isEqualTo: medicoID);
+      QuerySnapshot querySnapshot = await turnosQuery.get();
+
+      List<Turno> turnos = [];
+
+        for(DocumentSnapshot doc in querySnapshot.docs) {
+            Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+            try {
+              Turno turno = Turno.fromMap(data, doc.id);
+              turnos.add(turno);
+            } catch (e) {
+              print(e);
+              continue;
+            }
+          }
+
+          return turnos;
+
+    } catch (e) {
+      throw e;
+    }
+  }
+
   void agendarTurnoMedico(String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado) async {
     try {
       String? userId = getCurrentUserId();
@@ -239,16 +263,6 @@ class Database {
 
         DocumentReference nuevoTurnoRef = _firestore.collection('turnos').doc();
 
-        print({
-          'id': nuevoTurnoRef.id, // Usar el id del documento
-          'especialidad': especialidadSeleccionada,
-          'fecha_hora': fechaSeleccionada,
-          'razon_consulta': inputUsuarioRazonConsulta,
-          'estado': EstadoTurno.pendiente.toString(),
-          'paciente_id': userId,
-          'medico_id': medicoSeleccionado.id,
-          'medico_name':  medicoSeleccionado.nombre
-        });
 
         Map<String, dynamic> nuevoTurno = {
           'id': nuevoTurnoRef.id, // Usar el id del documento
@@ -258,7 +272,10 @@ class Database {
           'estado': EstadoTurno.pendiente.toString(),
           'paciente_id': userId,
           'medico_id': medicoSeleccionado.id,
-          'medico_name':  medicoSeleccionado.nombre
+          'medico_name':  medicoSeleccionado.nombre,
+          'hora_apertura': TimeOfDay(hour: 8, minute:0 ).toString(),
+          'hora_cierre': TimeOfDay(hour: 18, minute:0 ).toString(),
+          'duracion_turno': 30
         };
 
         nuevoTurnoRef.set(nuevoTurno);
@@ -272,18 +289,18 @@ class Database {
     }
   }
 
-  Future<List<TurnoUser>> getTurnosUsuario() async {
+  Future<List<Turno>> getTurnosPorUsuario() async {
     try {
         String? userId = getCurrentUserId();
         if (userId != null) {
           QuerySnapshot snapshot = await _firestore.collection('turnos').where('paciente_id', isEqualTo: userId).get();
 
-          List<TurnoUser> turnos = [];
+          List<Turno> turnos = [];
 
           for(DocumentSnapshot doc in snapshot.docs) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             try {
-              TurnoUser turno = TurnoUser.fromMap(data, doc.id);
+              Turno turno = Turno.fromMap(data, doc.id);
               turnos.add(turno);
             } catch (e) {
               print(e);
@@ -299,6 +316,41 @@ class Database {
         rethrow;
       }
   }
+
+  Future<List<Turno>> getTurnosPorMedicoYFecha(String medicoId, DateTime fechaSeleccionada) async {
+    try {
+
+      DateTime fechaInicio = DateTime(fechaSeleccionada.year, fechaSeleccionada.month, fechaSeleccionada.day, 0, 0, 0);
+      DateTime fechaFin = DateTime(fechaSeleccionada.year, fechaSeleccionada.month, fechaSeleccionada.day, 23, 59, 59);
+
+      QuerySnapshot snapshot = await _firestore.collection('turnos')
+          .where('medico_id', isEqualTo: medicoId)
+          .where('fecha_hora', isGreaterThanOrEqualTo: fechaInicio)
+          .where('fecha_hora', isLessThanOrEqualTo: fechaFin)
+          .get();
+
+      List<Turno> turnos = [];
+
+      for (DocumentSnapshot doc in snapshot.docs) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        print("==============");
+        print(data);
+        try {
+          Turno turno = Turno.fromMap(data, doc.id);
+          turnos.add(turno);
+        } catch (e) {
+          print(e);
+          continue;
+        }
+      }
+
+      return turnos;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+
 
 
 

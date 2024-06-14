@@ -1,10 +1,11 @@
-import 'package:autoguard/presentation/entities/DataEntities/TurnoUser.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-final misTurnosProvider = FutureProvider<List<TurnoUser>>((ref) {
-  return ref.read(databaseNotifierProvider).getTurnosUsuario();
+final misTurnosProvider = FutureProvider<List<Turno>>((ref) {
+  return ref.read(databaseNotifierProvider).getTurnosPorUsuario();
 });
 
 class MisTurnosUser extends StatelessWidget {
@@ -61,6 +62,9 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
                 title: Text('Médico: ${turno.medicoName}'),
                 subtitle: Text('Fecha: ${turno.fechaHora}'),
                 trailing: Text(turno.estado.toString().split('.').last),
+                onTap: () {
+                  context.push('/misTurnosUser/${turno.id}', extra: turno);
+                },
               );
             },
           );
