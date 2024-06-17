@@ -1,6 +1,9 @@
+import 'package:autoguard/core/repository/UserRepository.dart';
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
+import 'package:autoguard/presentation/entities/Usuario.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Turno {
   final String id;
@@ -11,6 +14,8 @@ class Turno {
   final String medicoName;
   final String medicoID;
   final String pacienteID;
+  final String? diagnostico;
+  final String? tratamiento;
 
   Turno({
     required this.id,
@@ -20,7 +25,9 @@ class Turno {
     required this.medicoName,
     required this.medicoID,
     required this.pacienteID,
-    required this.especialidadSeleccionada
+    required this.especialidadSeleccionada,
+    this.diagnostico,
+    this.tratamiento
   });
 
   factory Turno.fromMap(Map<String, dynamic> data, String documentId) {
@@ -33,7 +40,9 @@ class Turno {
       medicoName: data['medico_name'],
       medicoID: data['medico_id'],
       pacienteID: data['paciente_id'],
-      especialidadSeleccionada: data['especialidad']
+      especialidadSeleccionada: data['especialidad'],
+      diagnostico: data['diagnostico'],
+      tratamiento: data['tratamiento']
     );
   }
 
@@ -48,5 +57,50 @@ class Turno {
       'paciente_id': pacienteID,
       'especialidad': especialidadSeleccionada,
     };
+  }
+}
+
+final detalleTurnoProvider = FutureProvider.autoDispose.family<DetalleTurno, Turno>((ref, turno) async {
+  final UserRepository = ref.watch(userRepositoryProvider);
+  final usuario = await UserRepository.getUsuario(turno.pacienteID);
+  return DetalleTurno.fromUserAndTurno(usuario, turno);
+});
+
+class DetalleTurno {
+  final String id;
+  final DateTime fechaHora;
+  final String razonConsulta;
+  final EstadoTurno estado;
+  final String especialidadSeleccionada;
+  final String medicoName;
+  final String emailPaciente;
+  final String? diagnostico;
+  final String? tratamiento;
+
+
+  DetalleTurno({
+    required this.id,
+    required this.fechaHora,
+    required this.razonConsulta,
+    required this.estado,
+    required this.medicoName,
+    required this.emailPaciente,
+    required this.especialidadSeleccionada,
+    this.diagnostico,
+     this.tratamiento
+  });
+
+ factory DetalleTurno.fromUserAndTurno(Usuario user, Turno turno) {
+    return DetalleTurno(
+      id: turno.id,
+      fechaHora: turno.fechaHora,
+      razonConsulta: turno.razonConsulta,
+      estado: turno.estado,
+      medicoName: turno.medicoName,
+      emailPaciente: user.email!,
+      especialidadSeleccionada: turno.especialidadSeleccionada,
+      diagnostico: turno.diagnostico,
+      tratamiento: turno.tratamiento
+    );
   }
 }

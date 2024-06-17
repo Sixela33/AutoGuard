@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class TurnosMedico extends ConsumerStatefulWidget {
   @override
@@ -82,7 +83,9 @@ class _TurnosMedicoState extends ConsumerState<TurnosMedico> {
                     title: Text('${turno.medicoName} - ${turno.especialidadSeleccionada}'),
                     subtitle: Text('Fecha: ${dateFormat.format(turno.fechaHora)}'),
                     trailing: Text(doc["estado"].toString().split('.').last),
-                    onTap: () {},
+                    onTap: () {
+                      context.push("/detalleTurno", extra: turno);
+                    },
                   ),
                 );
               },
