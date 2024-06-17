@@ -36,4 +36,17 @@ class Turno {
       especialidadSeleccionada: data['especialidad']
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'fecha_hora': fechaHora,
+      'razon_consulta': razonConsulta,
+      'estado': estado.toString(),
+      'medico_name': medicoName,
+      'medico_id': medicoID,
+      'paciente_id': pacienteID,
+      'especialidad': especialidadSeleccionada,
+    };
+  }
 }
