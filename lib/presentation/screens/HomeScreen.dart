@@ -12,12 +12,12 @@ class MenuPaciente extends StatelessWidget {
           'Menu Paciente',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: const Color(0xFF8BC34A),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -59,10 +59,10 @@ class BotonMenu extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        leading: Icon(icono, color: Color(0xFF8BC34A), size: 40),
+        leading: Icon(icono, color: const Color(0xFF8BC34A), size: 40),
         title: Text(
           texto,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         onTap: () {
           context.push(ruta);

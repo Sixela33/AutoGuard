@@ -1,21 +1,28 @@
 import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Usuario {
   final String? email;
-  final List<EspecialidadMedica>? especialidades;
   final String? nombre;
-  final String? id;
+  final String? apellido;
+  final String? dni;
+  final List<EspecialidadMedica>? especialidades;
+  final String id;
   final bool? esMedico;
-  final List<ObraSocial>? obrasSociales;
+  final List<String>? obrasSociales;
+  final DateTime? fecha_nacimiento;
 
   Usuario(
       {this.email,
       this.especialidades,
       this.nombre,
-      this.id,
+      required this.id,
       this.esMedico,
-      this.obrasSociales});
+      this.obrasSociales,
+      this.fecha_nacimiento,
+      this.apellido,
+      this.dni});
 
   Usuario copyWith({
     String? email,
@@ -23,7 +30,7 @@ class Usuario {
     String? nombre,
     String? id,
     bool? esMedico,
-    List<ObraSocial>? obrasSociales,
+    List<String>? obrasSociales,
   }) {
     return Usuario(
       email: email ?? this.email,
@@ -43,6 +50,9 @@ class Usuario {
         id: data['id'] as String,
         esMedico: data['es_medico'] as bool,
         obrasSociales:
-            (data['obras_sociales'] as List<dynamic>?)?.cast<ObraSocial>(),
+            (data['obras_sociales'] as List<dynamic>?)?.cast<String>(),
+        fecha_nacimiento: data['fecha_nacimiento'] == null ? null : (data['fecha_nacimiento'] as Timestamp).toDate(),
+        apellido: data['apellido'] as String?,
+        dni: data['dni'] as String?,
       );
 }

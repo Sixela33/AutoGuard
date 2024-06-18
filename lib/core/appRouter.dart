@@ -3,6 +3,7 @@ import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/MenuScreen.dart';
 import 'package:autoguard/presentation/screens/MisTurnosUser.dart';
 import 'package:autoguard/presentation/screens/PerfilScreen.dart';
+import 'package:autoguard/presentation/screens/RegisterScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoMedico.dart';
@@ -21,7 +22,7 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
   ),
   GoRoute(
     path: "/registro",
-    builder: (context, state) => RegistrationScreen(),
+    builder: (context, state) => Registerscreen(),
   ),
   GoRoute(
     path: "/home",

@@ -52,7 +52,7 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seleccionar Hora'),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: const Color(0xFF8BC34A),
         elevation: 0,
       ),
       body: turnosDelDia.when(

@@ -35,7 +35,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Consulta Especialista'),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: const Color(0xFF8BC34A),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -50,7 +50,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
             TextField(
               controller: _controller,
               maxLines: 8,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Escribe aquí tu consulta',
                 border: OutlineInputBorder(),
               ),

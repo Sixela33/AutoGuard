@@ -12,7 +12,7 @@ class SeleccionarFecha extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _SeleccionarFecha();
+    return const _SeleccionarFecha();
   }
 }
 
@@ -72,7 +72,7 @@ class _SeleccionarFechaState extends ConsumerState<_SeleccionarFecha> {
                   color: themeProvider.primaryColor,
                   shape: BoxShape.circle,
                 ),
-                weekendTextStyle: TextStyle(color: Colors.red),
+                weekendTextStyle: const TextStyle(color: Colors.red),
               ),
             ),
               const SizedBox(height: 20),

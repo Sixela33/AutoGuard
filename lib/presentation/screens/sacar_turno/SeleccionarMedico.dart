@@ -45,7 +45,7 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seleccionar Médico'),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: const Color(0xFF8BC34A),
         elevation: 0,
       ),
       body: medicosDisponibles.when(
@@ -64,7 +64,7 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
                 child: ListTile(
                   title: Text(medico.nombre),
                   subtitle: Text(medico.especialidades.join(', ')),
-                  leading: Icon(Icons.person, color: Color(0xFF8BC34A)),
+                  leading: const Icon(Icons.person, color: Color(0xFF8BC34A)),
                   onTap: () {
                     turnoNotifier.setMedicoSeleccionado(medico);
                     context.pushReplacement('/sacarTurno/seleccionarFecha');

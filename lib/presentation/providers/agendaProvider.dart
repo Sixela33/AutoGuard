@@ -1,8 +1,19 @@
 import 'dart:core';
 
+import 'package:autoguard/core/repository/TurnoRepository.dart';
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/entities/Firebase.dart';
+import 'package:autoguard/presentation/entities/Usuario.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final agendaProvider = StateNotifierProvider<AgendaNotifier, AgendaInput>((ref) => AgendaNotifier());
+final agendaProvider = StateNotifierProvider<AgendaNotifier, AgendaInput>((ref) {
+  
+  final turnoRepository = ref.read(turnoRepositoryProvider);
+  final user = ref.watch(userProvider);
+  return AgendaNotifier(turnoRepository, user!);
+  });
 
 class AgendaInput {
   int? fromTime;
@@ -28,7 +39,12 @@ class AgendaInput {
 }
 
 class AgendaNotifier extends StateNotifier<AgendaInput> {
-  AgendaNotifier() : super(AgendaInput());
+
+Turnorepository _turnoRepository;
+Usuario _user;
+
+
+  AgendaNotifier( this._turnoRepository, this._user) : super(AgendaInput());
 
   void setFromTime(int? fromTime) {
     state = state.copyWith(fromTime: fromTime);
@@ -54,6 +70,22 @@ class AgendaNotifier extends StateNotifier<AgendaInput> {
     state = state.copyWith(days: days);
   }
 
+  Future<void> save() async {
+    var day = state.dateFrom;
+    var until = state.dateTo;
+    
+    
+    while(day!.isBefore(until!)) {
+      if (state.days![day.weekday - 1]) {
+        var fromTime = state.fromTime;
+        while(fromTime! < state.toTime!) {
+        _turnoRepository.nuevoTurno(day.add(Duration(minutes: fromTime)), _user.id);
+        fromTime += state.interval!;
+      }
+      }
+      day = day.add(Duration(days: 1));
+    }
+  }
   void reset() {
     state = AgendaInput();
   }
