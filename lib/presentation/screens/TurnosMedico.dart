@@ -84,7 +84,7 @@ class _TurnosMedicoState extends ConsumerState<TurnosMedico> {
                     subtitle: Text('Fecha: ${dateFormat.format(turno.fechaHora)}'),
                     trailing: Text(doc["estado"].toString().split('.').last),
                     onTap: () {
-                      context.push("/detalleTurno", extra: turno);
+                      context.push("/detalleTurno", extra: turno.id);
                     },
                   ),
                 );

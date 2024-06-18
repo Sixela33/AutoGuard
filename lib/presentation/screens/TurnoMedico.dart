@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TurnoMedico extends ConsumerWidget {
-  final Turno turno;
+  final String turno;
 
   TurnoMedico({required this.turno});
 
@@ -23,7 +23,7 @@ class TurnoMedico extends ConsumerWidget {
 }
 
 class DetalleTurnoScreen extends ConsumerWidget {
-  final DetalleTurno detalleTurno;
+  DetalleTurno detalleTurno;
   DetalleTurnoScreen({required this.detalleTurno});
 
   @override
@@ -38,32 +38,40 @@ class DetalleTurnoScreen extends ConsumerWidget {
         backgroundColor: const Color(0xFF8BC34A),
         elevation: 0,
       ),
-      body: Column(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.refresh(detalleTurnoProvider(detalleTurno.id).future);
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
         children: [
           ListTile(
             title: Text('Paciente: ${detalleTurno.emailPaciente}'),
             subtitle:
-                Text('Fecha: ${dateFormat.format(detalleTurno.fechaHora)}'),
+            Text('Fecha: ${dateFormat.format(detalleTurno.fechaHora)}'),
           ),
           ListTile(
             title: Text('Razon de consulta: ${detalleTurno.razonConsulta}'),
           ),
           ListTile(
-            title:
-                Text('Especialidad: ${detalleTurno.especialidadSeleccionada}'),
+            title: Text(
+            'Especialidad: ${detalleTurno.especialidadSeleccionada}'),
           ),
           ListTile(
             title: Text('Estado: ${detalleTurno.estado.name}'),
           ),
           if (detalleTurno.diagnostico != null)
-          ListTile(
-            title: Text('Diagnostico: ${detalleTurno.diagnostico}'),
-          ),
+            ListTile(
+          title: Text('Diagnostico: ${detalleTurno.diagnostico}'),
+            ),
           if (detalleTurno.tratamiento != null)
-          ListTile(
-            title: Text('Tratamiento: ${detalleTurno.tratamiento}'),
-          ),
+            ListTile(
+          title: Text('Tratamiento: ${detalleTurno.tratamiento}'),
+            ),
         ],
+          ),
+        ),
       ),
       floatingActionButton: detalleTurno.estado == EstadoTurno.pendiente ? FloatingActionButton(
         onPressed: () async {
@@ -117,10 +125,13 @@ class FinalizarTurnoDialog extends ConsumerWidget {
               Wrap(
           children: [
             TextButton(
-              onPressed: () {
-                ref
+              onPressed: () async {
+                Turno turno;
+                await ref
               .read(turnoRepositoryProvider)
-              .finalizarTurno(turnoId, diagnosticoController.text, tratamientoController.text);
+              .finalizarTurno(turnoId, diagnosticoController.text, tratamientoController.text).then((void nada)async => {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Turno finalizado'))),
+              });
                 Navigator.of(context).pop();
               },
               child: Text('Finalizar'),

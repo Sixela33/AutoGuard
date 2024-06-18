@@ -63,7 +63,7 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
   ),
   GoRoute(
     path: "/detalleTurno",
-    builder: (context, state) => TurnoMedico(turno: state.extra as Turno),
+    builder: (context, state) => TurnoMedico(turno: state.extra as String),
   ),
   GoRoute(
     path: "/consultas",

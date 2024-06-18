@@ -1,3 +1,4 @@
+import 'package:autoguard/core/repository/TurnoRepository.dart';
 import 'package:autoguard/core/repository/UserRepository.dart';
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
@@ -60,8 +61,10 @@ class Turno {
   }
 }
 
-final detalleTurnoProvider = FutureProvider.autoDispose.family<DetalleTurno, Turno>((ref, turno) async {
+final detalleTurnoProvider = FutureProvider.autoDispose.family<DetalleTurno, String>((ref, turnoId) async {
   final UserRepository = ref.watch(userRepositoryProvider);
+  final Turnorepository = ref.watch(turnoRepositoryProvider);
+  final turno = await Turnorepository.getTurno(turnoId);
   final usuario = await UserRepository.getUsuario(turno.pacienteID);
   return DetalleTurno.fromUserAndTurno(usuario, turno);
 });
