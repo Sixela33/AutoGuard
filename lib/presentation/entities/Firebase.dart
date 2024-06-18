@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Database {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -367,3 +368,5 @@ class Database {
 
 
 }
+
+final firebaseFirestoreProvider = Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);

@@ -12,16 +12,32 @@ class MenuMedico extends StatelessWidget {
           'Menu Médico',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: const Color(0xFF8BC34A),
+        elevation: 0,
       ),
-      body: const Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            BotonMenu(texto: 'Agenda', ruta: '/agenda'),
-            BotonMenu(texto: 'Tus Consultas', ruta: '/consultas'),
-            BotonMenu(texto: 'Perfil', ruta: '/perfil'),
-          ],
+      body: const SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              BotonMenu(
+                texto: 'Agenda',
+                ruta: '/sacarTurno',
+                icono: Icons.medical_services,
+              ),
+              BotonMenu(
+                texto: 'Tus Consultas',
+                ruta: '/turnos',
+                icono: Icons.calendar_today,
+              ),
+              BotonMenu(
+                texto: 'Perfil',
+                ruta: '/perfil',
+                icono: Icons.person,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -31,20 +47,26 @@ class MenuMedico extends StatelessWidget {
 class BotonMenu extends StatelessWidget {
   final String texto;
   final String ruta;
+  final IconData icono;
 
-  const BotonMenu({required this.texto, required this.ruta, super.key});
+  const BotonMenu({required this.texto, required this.ruta, required this.icono, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          onPressed: () {
-            context.push(ruta);
-          },
-          child: Text(texto),
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ListTile(
+        leading: Icon(icono, color: const Color(0xFF8BC34A), size: 40),
+        title: Text(
+          texto,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
+        onTap: () {
+          context.push(ruta);
+        },
       ),
     );
   }
