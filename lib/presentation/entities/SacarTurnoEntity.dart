@@ -49,9 +49,6 @@ class SacarTurnoEntity {
       fechaSeleccionada.millisecond,
       fechaSeleccionada.microsecond,
     );
-    print(fechaSeleccionada);
-    print(time);
-    database.agendarTurnoMedico(especialidadSeleccionada, fechaSeleccionada, inputUsuarioRazonConsulta, medicoSeleccionado);
   }
 
 }
