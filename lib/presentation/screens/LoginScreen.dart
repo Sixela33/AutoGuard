@@ -119,7 +119,7 @@ class _LoginScreen extends ConsumerWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
-                side: BorderSide(color: Color(0xFF8BC34A)),
+                side: const BorderSide(color: Color(0xFF8BC34A)),
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(
                   fontSize: 18,

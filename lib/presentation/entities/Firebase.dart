@@ -48,6 +48,7 @@ class Database {
         'id': userId,
         'email': email,
         'es_medico': false,
+        'es_admin' : false,
         'obras_sociales': obras_sociales
       });
 
@@ -75,7 +76,8 @@ class Database {
         'especialidades': especialidades,
         'hora_apertura': TimeOfDay(hour: 8, minute:0 ).toString(),
         'hora_cierre': TimeOfDay(hour: 18, minute:0 ).toString(),
-        'es_medico': true
+        'es_medico': true,
+        'es_admin' : false
       });
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
