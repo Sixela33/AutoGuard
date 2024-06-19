@@ -36,6 +36,10 @@ class Database {
     return _auth.currentUser?.uid;
   }
 
+  Future<void> logOut() async {
+    _auth.signOut();
+  }
+
   Future<void> registerWithEmailAndPassword(String email, String password, List<ObraSocial> obrasSociales) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -207,20 +211,23 @@ class Database {
 
 
   Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
+    print(especialidad);
     Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
     QuerySnapshot querySnapshot = await medicosQuery.get();
     List<Medic> medicos = [];
+    print('==========================================');
     for (DocumentSnapshot doc in querySnapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      print(data);
       try {
         Medic medic = Medic.fromMap(data);
+        print(medic);
         medicos.add(medic);
       } catch (e) {
         print(e);
         continue;
       }
     }
-    print(medicos);
     return medicos;
   }
 
