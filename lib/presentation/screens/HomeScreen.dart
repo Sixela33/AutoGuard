@@ -17,12 +17,12 @@ class MenuPaciente extends ConsumerWidget {
           'Menu Paciente',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: const Color(0xFF8BC34A),
         elevation: 0,
       ),
-      body: SingleChildScrollView(
+      body:  SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[

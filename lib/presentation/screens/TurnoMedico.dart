@@ -1,6 +1,7 @@
 import 'package:autoguard/core/repository/TurnoRepository.dart';
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/providers/historiaClinicaProvider.dart';
 import 'package:autoguard/presentation/providers/utilProviders.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +17,7 @@ class TurnoMedico extends ConsumerWidget {
 
     return detalleTurno.when(
       data: (data) => DetalleTurnoScreen(detalleTurno: data),
-      loading: () => Center(child: CircularProgressIndicator()),
+      loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, stack) => Text('Error: $error'),
     );
   }
@@ -43,7 +44,7 @@ class DetalleTurnoScreen extends ConsumerWidget {
           ref.refresh(detalleTurnoProvider(detalleTurno.id).future);
         },
         child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
         children: [
           ListTile(
@@ -81,7 +82,7 @@ class DetalleTurnoScreen extends ConsumerWidget {
           
           );
         },
-        child: Icon(Icons.edit),
+        child: const Icon(Icons.edit),
       ) : null,
     );
   }
@@ -98,7 +99,7 @@ class FinalizarTurnoDialog extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     return Dialog(
       backgroundColor: Colors.transparent,
-  insetPadding: EdgeInsets.all(10),
+  insetPadding: const EdgeInsets.all(10),
       child: 
         Container(
           width: double.infinity,
@@ -106,45 +107,60 @@ class FinalizarTurnoDialog extends ConsumerWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
           ),
-          padding: EdgeInsets.fromLTRB(20, 50, 20, 20),
+          padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
           height: 450,
           alignment: Alignment.center,
-          child: Column(
-            children: [
-              TextField(
-          decoration: InputDecoration(labelText: 'Diagnostico', border: OutlineInputBorder()),
-          maxLines: 5,
-          controller: diagnosticoController,
-              ),
-              SizedBox(height: 20,),
-              TextField(
-          decoration: InputDecoration(labelText: 'Tratamiento', border: OutlineInputBorder()),
-          maxLines: 5,
-          controller: tratamientoController,
-              ),
-              Wrap(
-          children: [
-            TextButton(
-              onPressed: () async {
-                Turno turno;
-                await ref
-              .read(turnoRepositoryProvider)
-              .finalizarTurno(turnoId, diagnosticoController.text, tratamientoController.text).then((void nada)async => {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Turno finalizado'))),
-              });
-                Navigator.of(context).pop();
-              },
-              child: Text('Finalizar'),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Diagnostico',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 5,
+                  controller: diagnosticoController,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Tratamiento',
+                    border: OutlineInputBorder(),
+                  ),
+                  maxLines: 5,
+                  controller: tratamientoController,
+                ),
+                Wrap(
+                  children: [
+                    TextButton(
+                      onPressed: () async {
+                        Turno turno;
+                        await ref
+                            .read(turnoRepositoryProvider)
+                            .finalizarTurno(
+                              turnoId,
+                              diagnosticoController.text,
+                              tratamientoController.text,
+                            )
+                            .then((void nada) async {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Turno finalizado')),
+                          );
+                        });
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Finalizar'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Cancelar'),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancelar'),
-            ),
-          ],
-              )
-            ],
           ),
         ),
     );

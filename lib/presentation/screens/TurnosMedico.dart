@@ -35,7 +35,7 @@ class _TurnosMedicoState extends ConsumerState<TurnosMedico> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.filter_list),
+            icon: const Icon(Icons.filter_list),
             onPressed: () {
               setState(() {
                 showFilters = !showFilters;
