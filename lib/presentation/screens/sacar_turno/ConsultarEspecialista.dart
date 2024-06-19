@@ -1,4 +1,5 @@
 import 'package:autoguard/presentation/components/functions/consultarEspecialista.dart';
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _ConsultarEspecialista extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     final databaseNotifier = ref.watch(databaseNotifierProvider);
     final turnoNotifierController = ref.read(turnoProvider.notifier);
-
+     final themeProvider = ref.watch(themeNotifier);
     databaseNotifier.getEspecialidades();
 
     return Scaffold(
@@ -64,6 +65,10 @@ class _ConsultarEspecialista extends ConsumerWidget {
                     context.pop();
                   },
                   child: const Text("Cancelar"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: themeProvider.primaryColor,
+                    foregroundColor: themeProvider.scaffoldBackgroundColor,
+                  )
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -73,6 +78,10 @@ class _ConsultarEspecialista extends ConsumerWidget {
                     context.pushReplacement('/sacarTurno/seleccionarEspecialista');
                   },
                   child: const Text('Continuar'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: themeProvider.primaryColor,
+                    foregroundColor: themeProvider.scaffoldBackgroundColor,
+                  )
                 ),
               ],
             )

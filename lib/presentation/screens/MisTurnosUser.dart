@@ -1,4 +1,5 @@
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,10 +37,11 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
   @override
   Widget build(BuildContext context) {
     final misTurnosAsync = ref.watch(misTurnosProvider);
+     final themeProvider = ref.watch(themeNotifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Mis Turnos"),
-        backgroundColor: Color(0xFF8BC34A), // Verde claro
+        backgroundColor: themeProvider.primaryColor,
         elevation: 0,
       ),
       body: misTurnosAsync.when(
@@ -59,9 +61,10 @@ class _MisTurnosUserState extends ConsumerState<_MisTurnosUser> {
             itemBuilder: (context, index) {
               final turno = turnos[index];
               return Card(
+                color: themeProvider.primaryColorLight,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
                   title: Text('Médico: ${turno.medicoName}'),
