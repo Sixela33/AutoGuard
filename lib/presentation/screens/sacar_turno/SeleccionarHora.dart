@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/screens/sacar_turno/TimeSlot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
@@ -35,13 +36,18 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
   @override
   Widget build(BuildContext context) {
     final turnoNotifier = ref.watch(turnoProvider.notifier);
-    final medicoSeleccionado = turnoNotifier.state.medicoSeleccionado;
+    final databaseNotifier = ref.watch(databaseNotifierProvider);
 
+    final medicoSeleccionado = turnoNotifier.state.medicoSeleccionado;
     final List<TimeOfDay> availableSlots = [];
+
     TimeOfDay currentTimeSlot = medicoSeleccionado.horaApertura;
 
+    // mientras currrentTimeSlot no sea mayor que la hora de cierre
     while (currentTimeSlot.hour < medicoSeleccionado.horaCierre.hour || 
            (currentTimeSlot.hour == medicoSeleccionado.horaCierre.hour && currentTimeSlot.minute < medicoSeleccionado.horaCierre.minute)) {
+      
+      // se agrega un turno cada duración turno
       availableSlots.add(currentTimeSlot);
       final int totalMinutes = currentTimeSlot.hour * 60 + currentTimeSlot.minute + medicoSeleccionado.duracionTurno;
       currentTimeSlot = TimeOfDay(hour: totalMinutes ~/ 60, minute: totalMinutes % 60);
@@ -96,8 +102,9 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: FilledButton(
-                  onPressed: () {
+                  onPressed: () async {
                     turnoNotifier.setTime(_selectedTime);
+                    await databaseNotifier.agendarTurnoMedico(turnoNotifier.state);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Turno reservado con éxito')),
                     );
@@ -111,41 +118,6 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
-      ),
-    );
-  }
-}
-
-class TimeSlot extends ConsumerWidget {
-  final String timeLabel;
-  final bool isSelected;
-  final bool isReserved;
-  final VoidCallback? onTap;
-
-  const TimeSlot({
-    required this.timeLabel,
-    required this.isSelected,
-    required this.isReserved,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context, ref) {
-    final themeProvider = ref.watch(themeNotifier);
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: isReserved ? Colors.grey : isSelected ? themeProvider.primaryColorLight : themeProvider.primaryColor,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Text(
-          timeLabel,
-          style: TextStyle(
-            color: isReserved ? Colors.black45 : Colors.black,
-          ),
-        ),
       ),
     );
   }

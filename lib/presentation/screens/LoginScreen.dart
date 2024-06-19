@@ -136,6 +136,10 @@ class _LoginScreen extends ConsumerWidget {
               ),
               child: const Text('Registrarse'),
             ),
+            const SizedBox(height: 10),
+            TextButton(onPressed: () {
+              context.push('/admin');
+            }, child: const Text('.'))
           ],
         ),
       ),

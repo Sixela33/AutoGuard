@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PerfilScreen extends ConsumerWidget {
+  const PerfilScreen({super.key});
+
   @override
   Widget build(BuildContext context, ref) {
 
@@ -10,7 +12,7 @@ class PerfilScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfil'),
+        title: const Text('Perfil'),
         backgroundColor: Color(0xFF8BC34A),
         elevation: 0,
       ),
@@ -21,7 +23,7 @@ class PerfilScreen extends ConsumerWidget {
                     margin: EdgeInsets.only(top: 20),
                     width: 150,
                     height: 150,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: AssetImage('assets/profile_picture.png'),
@@ -29,23 +31,23 @@ class PerfilScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text(
                     usuario!.nombre ?? "Sin nombre",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     usuario.email ?? "Sin email",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'Fecha de nacimiento: 1 de enero de 1990',
                     style: TextStyle(
                       fontSize: 16,
