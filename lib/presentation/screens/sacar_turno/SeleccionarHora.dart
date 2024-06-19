@@ -37,7 +37,7 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
   Widget build(BuildContext context) {
     final turnoNotifier = ref.watch(turnoProvider.notifier);
     final databaseNotifier = ref.watch(databaseNotifierProvider);
-
+    final themeProvider = ref.watch(themeNotifier);
     final medicoSeleccionado = turnoNotifier.state.medicoSeleccionado;
     final List<TimeOfDay> availableSlots = [];
 
@@ -58,7 +58,7 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seleccionar Hora'),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: themeProvider.primaryColor,
         elevation: 0,
       ),
       body: turnosDelDia.when(
@@ -110,6 +110,10 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
                     );
                     context.push('/home');
                   },
+                  style: ElevatedButton.styleFrom(
+                  backgroundColor: themeProvider.primaryColor,
+                  foregroundColor: themeProvider.scaffoldBackgroundColor,
+                ),
                   child: const Text('Enviar'),
                 ),
               ),
