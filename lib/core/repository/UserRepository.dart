@@ -15,7 +15,7 @@ class UserRepository {
   }
 
   Future<void> saveUsuario(RegistrationDto dto, String id) async {
-    await _firestore.collection('users').doc(id).set(dto.toMap());
+    await _firestore.collection('users').doc(id).set(dto.toMap(id));
   }
 }
 

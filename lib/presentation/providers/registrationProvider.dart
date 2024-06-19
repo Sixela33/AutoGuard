@@ -69,10 +69,12 @@ class RegistrationDto {
       ..birthDate = birthDate ?? this.birthDate;
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(String id) {
     return {
       'name': name,
       'apellido': surname,
+      'es_medico': false,
+      'id': "id",
       'dni': dni,
       'email': email,
       'obrasSocialesSeleccionadas': obrasSocialesSeleccionadas,

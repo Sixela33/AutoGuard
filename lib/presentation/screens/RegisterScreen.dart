@@ -138,8 +138,8 @@ class _PersonalDataState extends ConsumerState<_PersonalData> {
           },
           icon: const Icon(Icons.arrow_forward),
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(const Color(0xFF8BC34A)), // Verde claro
-            shape: WidgetStateProperty.all(const CircleBorder()),
+            backgroundColor: MaterialStateProperty.all(const Color(0xFF8BC34A)), // Verde claro
+            shape: MaterialStateProperty.all(const CircleBorder()),
           )
               ),
             ],
