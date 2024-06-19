@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
@@ -41,11 +42,11 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
   Widget build(BuildContext context) {
     final turnoNotifier = ref.watch(turnoProvider.notifier);
     final medicosDisponibles = ref.watch(medicosDisponiblesProvider);
-
+    final themeProvider = ref.watch(themeNotifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seleccionar Médico'),
-        backgroundColor: Color(0xFF8BC34A),
+        backgroundColor: themeProvider.primaryColor,
         elevation: 0,
       ),
       body: medicosDisponibles.when(
@@ -64,7 +65,7 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
                 child: ListTile(
                   title: Text(medico.nombre),
                   subtitle: Text(medico.especialidades.join(', ')),
-                  leading: Icon(Icons.person, color: Color(0xFF8BC34A)),
+                  leading: Icon(Icons.person, color: themeProvider.primaryColorLight),
                   onTap: () {
                     turnoNotifier.setMedicoSeleccionado(medico);
                     context.pushReplacement('/sacarTurno/seleccionarFecha');

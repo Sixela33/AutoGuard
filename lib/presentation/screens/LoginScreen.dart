@@ -27,9 +27,9 @@ class _LoginScreen extends ConsumerWidget {
     final themeProvider = ref.watch(themeNotifier);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Bienvenido a Autoguard',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: themeProvider.scaffoldBackgroundColor),
         ),
         backgroundColor: themeProvider.primaryColor,
         elevation: 0,
@@ -122,7 +122,7 @@ class _LoginScreen extends ConsumerWidget {
                 context.push('/registro');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
+                backgroundColor: themeProvider.scaffoldBackgroundColor,
                 foregroundColor: themeProvider.primaryColor,
                 side: BorderSide(color: themeProvider.primaryColor, width: 2),
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
