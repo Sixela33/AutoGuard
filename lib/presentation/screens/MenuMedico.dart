@@ -23,14 +23,9 @@ class MenuMedico extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               BotonMenu(
-                texto: 'Agenda',
-                ruta: '/sacarTurno',
-                icono: Icons.medical_services,
-              ),
-              BotonMenu(
                 texto: 'Tus Consultas',
                 ruta: '/turnos',
-                icono: Icons.calendar_today,
+                icono: Icons.medical_services,
               ),
               BotonMenu(
                 texto: 'Perfil',
