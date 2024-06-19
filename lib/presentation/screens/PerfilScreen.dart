@@ -43,6 +43,7 @@ class PerfilScreen extends ConsumerWidget {
                     decoration: const InputDecoration(
                       labelText: 'Email',
                     ),
+                    readOnly: true,
                         ),
                         const SizedBox(height: 10),
                         TextField(
