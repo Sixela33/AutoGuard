@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
@@ -21,11 +22,11 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     final databaseNotifier = ref.watch(databaseNotifierProvider);
-
+    final themeProvider = ref.watch(themeNotifier);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro'),
-        backgroundColor: Color(0xFF8BC34A), // Verde claro
+        backgroundColor: themeProvider.primaryColor,
         elevation: 0,
       ),
       body: Padding(
@@ -118,7 +119,7 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                foregroundColor: Color(0xFF8BC34A), // Verde claro
+                foregroundColor: themeProvider.primaryColor,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(
                   fontSize: 18,
