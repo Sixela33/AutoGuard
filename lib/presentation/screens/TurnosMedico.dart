@@ -27,8 +27,6 @@ class _TurnosMedicoState extends ConsumerState<TurnosMedico> {
   if (filters.isNotEmpty) {
     turnosQuery = turnosQuery.where("estado", whereIn: filters.map((e) => e.toString()));
   }
-  
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(

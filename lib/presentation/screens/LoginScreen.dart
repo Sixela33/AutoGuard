@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/screens/RecuperarContrasenia.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +24,14 @@ class _LoginScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
+    final themeProvider = ref.watch(themeNotifier);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Bienvenido a Autoguard',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: themeProvider.scaffoldBackgroundColor),
         ),
-        backgroundColor: Color(0xFF8BC34A), // Verde claro
+        backgroundColor: themeProvider.primaryColor,
         elevation: 0,
       ),
       body: Padding(
@@ -80,7 +82,8 @@ class _LoginScreen extends ConsumerWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF8BC34A),
+                backgroundColor: themeProvider.primaryColor,
+                foregroundColor: themeProvider.scaffoldBackgroundColor,
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(
                   fontSize: 18,
@@ -103,11 +106,12 @@ class _LoginScreen extends ConsumerWidget {
                     },
                   ),
                 );
+                
               },
-              child: const Text(
+              child: Text(
                 '¿Olvidaste tu contraseña?',
                 style: TextStyle(
-                  color: Color(0xFF8BC34A),
+                  color: themeProvider.primaryColor,
                   decoration: TextDecoration.underline,
                 ),
               ),
@@ -118,8 +122,9 @@ class _LoginScreen extends ConsumerWidget {
                 context.push('/registro');
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                side: BorderSide(color: Color(0xFF8BC34A)),
+                backgroundColor: themeProvider.scaffoldBackgroundColor,
+                foregroundColor: themeProvider.primaryColor,
+                side: BorderSide(color: themeProvider.primaryColor, width: 2),
                 padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 textStyle: const TextStyle(
                   fontSize: 18,
@@ -131,6 +136,10 @@ class _LoginScreen extends ConsumerWidget {
               ),
               child: const Text('Registrarse'),
             ),
+            const SizedBox(height: 10),
+            TextButton(onPressed: () {
+              context.push('/admin');
+            }, child: const Text('.'))
           ],
         ),
       ),

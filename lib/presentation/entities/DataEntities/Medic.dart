@@ -33,18 +33,6 @@ class Medic {
       es_medico: data['es_medico'] ? data['es_medico']  as bool : false
       );
     
-    if(data['hora_apertura'] != null) {
-      temp_medic.horaApertura =  data['hora_apertura'] as TimeOfDay;
-    }
-
-    if(data['hora_cierre']!= null) {
-      temp_medic.horaCierre =  data['hora_cierre'] as TimeOfDay;
-    }
-    
-    if(data['duracion_turno']!= null) {
-      temp_medic.duracionTurno =  data['duracion_turno'] as int;
-    }
-
     return temp_medic;
   }
 }

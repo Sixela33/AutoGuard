@@ -2,6 +2,7 @@ import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Medic.dart';
+import 'package:autoguard/presentation/entities/SacarTurnoEntity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
@@ -35,6 +36,10 @@ class Database {
     return _auth.currentUser?.uid;
   }
 
+  Future<void> logOut() async {
+    _auth.signOut();
+  }
+
   Future<void> registerWithEmailAndPassword(String email, String password, List<ObraSocial> obrasSociales) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -47,6 +52,7 @@ class Database {
         'id': userId,
         'email': email,
         'es_medico': false,
+        'es_admin' : false,
         'obras_sociales': obras_sociales
       });
 
@@ -72,7 +78,10 @@ class Database {
         'nombre': nombre,
         'obras_sociales': obras_sociales,
         'especialidades': especialidades,
-        'es_medico': true
+        'hora_apertura': TimeOfDay(hour: 8, minute:0 ).toString(),
+        'hora_cierre': TimeOfDay(hour: 18, minute:0 ).toString(),
+        'es_medico': true,
+        'es_admin' : false
       });
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
@@ -202,20 +211,23 @@ class Database {
 
 
   Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
+    print(especialidad);
     Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
     QuerySnapshot querySnapshot = await medicosQuery.get();
     List<Medic> medicos = [];
+    print('==========================================');
     for (DocumentSnapshot doc in querySnapshot.docs) {
       Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      print(data);
       try {
         Medic medic = Medic.fromMap(data);
+        print(medic);
         medicos.add(medic);
       } catch (e) {
         print(e);
         continue;
       }
     }
-    print(medicos);
     return medicos;
   }
 
@@ -259,8 +271,8 @@ class Database {
       throw e;
     }
   }
-
-  void agendarTurnoMedico(String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado) async {
+// String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado
+  Future<void> agendarTurnoMedico(SacarTurnoEntity turno) async {
     try {
       String? userId = getCurrentUserId();
 
@@ -268,18 +280,15 @@ class Database {
 
         DocumentReference nuevoTurnoRef = _firestore.collection('turnos').doc();
 
-
         Map<String, dynamic> nuevoTurno = {
           'id': nuevoTurnoRef.id, // Usar el id del documento
-          'especialidad': especialidadSeleccionada,
-          'fecha_hora': fechaSeleccionada,
-          'razon_consulta': inputUsuarioRazonConsulta,
+          'especialidad': turno.especialidadSeleccionada,
+          'fecha_hora': turno.fechaSeleccionada,
+          'razon_consulta': turno.inputUsuarioRazonConsulta,
           'estado': EstadoTurno.pendiente.toString(),
           'paciente_id': userId,
-          'medico_id': medicoSeleccionado.id,
-          'medico_name':  medicoSeleccionado.nombre,
-          'hora_apertura': TimeOfDay(hour: 8, minute:0 ).toString(),
-          'hora_cierre': TimeOfDay(hour: 18, minute:0 ).toString(),
+          'medico_id': turno.medicoSeleccionado.id,
+          'medico_name':  turno.medicoSeleccionado.nombre,
           'duracion_turno': 30
         };
 
@@ -338,8 +347,7 @@ class Database {
 
       for (DocumentSnapshot doc in snapshot.docs) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        print("==============");
-        print(data);
+
         try {
           Turno turno = Turno.fromMap(data, doc.id);
           turnos.add(turno);
