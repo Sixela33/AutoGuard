@@ -1,3 +1,4 @@
+import 'package:autoguard/core/repository/TurnoRepository.dart';
 import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/providers/userProvider.dart';
@@ -21,12 +22,7 @@ class _TurnosMedicoState extends ConsumerState<TurnosMedico> {
   @override
   Widget build(BuildContext context) {
     final dateFormat = ref.read(dateFormatProvider);
-    final user = ref.read(userProvider);
-  var turnosQuery = FirebaseFirestore.instance.collection("turnos").withConverter<Turno>(fromFirestore: (snapshot, _) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
-  .where("medico_id", isEqualTo: user!.id!);
-  if (filters.isNotEmpty) {
-    turnosQuery = turnosQuery.where("estado", whereIn: filters.map((e) => e.toString()));
-  }
+  var turnosQuery = ref.watch(turnosQueryProvider(filters));
   
 
     return Scaffold(
@@ -63,6 +59,7 @@ class _TurnosMedicoState extends ConsumerState<TurnosMedico> {
                     } else {
                       filters.remove(estado);
                     }
+                    ref.refresh(turnosQueryProvider(filters));
                   });
                 },
               );

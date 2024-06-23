@@ -2,6 +2,8 @@ import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/entities/DetalleClinico.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
+import 'package:autoguard/presentation/providers/utilProviders.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,3 +42,24 @@ Future<void> nuevoTurno(DateTime fecha, String medico) {
 }
 
 final turnoRepositoryProvider = Provider((ref) => Turnorepository(ref.read(firebaseFirestoreProvider)));
+
+final turnosQueryProvider = Provider.family<Query<Turno>, Set<EstadoTurno>>((ref, filters) {
+  final firestore = ref.read(firebaseFirestoreProvider);
+  final user = ref.read(userProvider);
+  var turnosQuery = firestore.collection("turnos").withConverter<Turno>(fromFirestore: (snapshot, _) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
+  .where("medico_id", isEqualTo: user!.id);
+  if (filters.isNotEmpty) {
+    turnosQuery = turnosQuery.where("estado", whereIn: filters.map((e) => e.toString()));
+  }
+  turnosQuery = turnosQuery.orderBy("fecha_hora", descending: false);
+
+  return turnosQuery;
+} );
+
+final getDiasDisponiblesProvider = FutureProvider<List<String>>((ref) {
+  final firestore = ref.read(firebaseFirestoreProvider);
+  final dateFormat = ref.read(dateFormatProvider);
+  return firestore.collection("turnos")
+  .withConverter(fromFirestore: (snapshot,_) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
+  .get().then((value) => value.docs.map((e) => dateFormat.format(e.data().fechaHora)).toSet().toList());
+});

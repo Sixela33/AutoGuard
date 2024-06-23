@@ -5,6 +5,7 @@ import 'package:autoguard/presentation/screens/MisTurnosUser.dart';
 import 'package:autoguard/presentation/screens/PerfilScreen.dart';
 import 'package:autoguard/presentation/screens/RegisterScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
+import 'package:autoguard/presentation/screens/SacarTurnoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoMedico.dart';
 import 'package:autoguard/presentation/screens/TurnosMedico.dart';
@@ -41,7 +42,7 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
             builder: (context, state) => SeleccionarMedico()),
         GoRoute(
             path: 'seleccionarFecha',
-            builder: (context, state) => SeleccionarFecha()),
+            builder: (context, state) => SacarTurno()),
         GoRoute(
           path: 'seleccionarHora',
           builder: (context, state) => SeleccionarHora(),
