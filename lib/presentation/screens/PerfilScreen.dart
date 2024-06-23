@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PerfilScreen extends ConsumerWidget {
+  const PerfilScreen({super.key});
+
   @override
   Widget build(BuildContext context, ref) {
 
@@ -41,6 +43,7 @@ class PerfilScreen extends ConsumerWidget {
                     decoration: const InputDecoration(
                       labelText: 'Email',
                     ),
+                    readOnly: true,
                         ),
                         const SizedBox(height: 10),
                         TextField(

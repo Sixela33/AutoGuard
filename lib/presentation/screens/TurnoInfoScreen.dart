@@ -1,5 +1,7 @@
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class TurnoInfoScreen extends StatelessWidget {
   final Turno turno;

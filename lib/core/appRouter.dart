@@ -1,9 +1,11 @@
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
+import 'package:autoguard/presentation/screens/AdminScreen.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
 import 'package:autoguard/presentation/screens/MenuScreen.dart';
 import 'package:autoguard/presentation/screens/MisTurnosUser.dart';
 import 'package:autoguard/presentation/screens/PerfilScreen.dart';
 import 'package:autoguard/presentation/screens/RegisterScreen.dart';
+import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/SacarTurnoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
@@ -74,5 +76,13 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
   GoRoute(
     path: "/agenda",
     builder: (context, state) => AgendaScreen(),
-  )
+  ),
+    GoRoute(
+      path: "/admin",
+      builder: (context, state) => AdminScreen(),
+    ),
+    GoRoute(
+      path: "/registroMedico",
+      builder: (context, state) => RegistroMedicoScreen(),
+    ),
 ]);
