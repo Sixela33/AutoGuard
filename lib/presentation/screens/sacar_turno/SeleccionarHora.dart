@@ -104,7 +104,7 @@ class _SeleccionarHoraState extends ConsumerState<SeleccionarHora> {
                 child: FilledButton(
                   onPressed: () async {
                     turnoNotifier.setTime(_selectedTime);
-                    await databaseNotifier.agendarTurnoMedico(turnoNotifier.state);
+                    //await databaseNotifier.agendarTurnoMedico(turnoNotifier.state);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Turno reservado con éxito')),
                     );

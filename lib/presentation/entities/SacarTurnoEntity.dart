@@ -11,7 +11,6 @@ final databaseProvider = Provider<Database>((ref) {
 class SacarTurnoEntity {
   late String especialidadSeleccionada;
   late String inputUsuarioRazonConsulta;
-  late DateTime fechaSeleccionada;
   late Medic medicoSeleccionado;
   List<Medic> medicosDisponibles = [];
   Database database = new Database();
@@ -25,7 +24,7 @@ class SacarTurnoEntity {
   }
 
   void setFechaSeleccionada(DateTime fecha) {
-    this.fechaSeleccionada = fecha;
+    
   }
 
   Future<void> getMedicosOfespecialidad() async {
@@ -39,18 +38,10 @@ class SacarTurnoEntity {
   }
 
   void setTime (TimeOfDay time) {
-    fechaSeleccionada = DateTime(
-      fechaSeleccionada.year,
-      fechaSeleccionada.month,
-      fechaSeleccionada.day,
-      time.hour,
-      time.minute,
-      fechaSeleccionada.second,
-      fechaSeleccionada.millisecond,
-      fechaSeleccionada.microsecond,
-    );
+    
   }
 
+  get fechaSeleccionada => null;
 }
 
 

@@ -32,6 +32,11 @@ class MenuMedico extends ConsumerWidget {
                 icono: Icons.medical_services,
               ),
               const BotonMenu(
+                texto: 'Agenda',
+                ruta: '/agenda',
+                icono: Icons.calendar_today,
+              ),
+              const BotonMenu(
                 texto: 'Perfil',
                 ruta: '/perfil',
                 icono: Icons.person,

@@ -79,7 +79,7 @@ Usuario _user;
       if (state.days![day.weekday - 1]) {
         var fromTime = state.fromTime;
         while(fromTime! < state.toTime!) {
-        _turnoRepository.nuevoTurno(day.add(Duration(minutes: fromTime)), _user.id);
+        _turnoRepository.nuevoTurno(day.add(Duration(minutes: fromTime)), _user);
         fromTime += state.interval!;
       }
       }

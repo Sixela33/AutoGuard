@@ -9,24 +9,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class Turno {
   final String id;
   final DateTime fechaHora;
-  final String razonConsulta;
+  final String? razonConsulta;
   final EstadoTurno estado;
-  final String especialidadSeleccionada;
+  final String? especialidadSeleccionada;
   final String medicoName;
   final String medicoID;
-  final String pacienteID;
+  final String? pacienteID;
   final String? diagnostico;
   final String? tratamiento;
 
   Turno({
     required this.id,
     required this.fechaHora,
-    required this.razonConsulta,
+    this.razonConsulta,
     required this.estado,
     required this.medicoName,
     required this.medicoID,
-    required this.pacienteID,
-    required this.especialidadSeleccionada,
+    this.pacienteID,
+    this.especialidadSeleccionada,
     this.diagnostico,
     this.tratamiento
   });
@@ -65,14 +65,14 @@ final detalleTurnoProvider = FutureProvider.autoDispose.family<DetalleTurno, Str
   final UserRepository = ref.watch(userRepositoryProvider);
   final Turnorepository = ref.watch(turnoRepositoryProvider);
   final turno = await Turnorepository.getTurno(turnoId);
-  final usuario = await UserRepository.getUsuario(turno.pacienteID);
+  final usuario = await UserRepository.getUsuario(turno.pacienteID!);
   return DetalleTurno.fromUserAndTurno(usuario, turno);
 });
 
 class DetalleTurno {
   final String id;
   final DateTime fechaHora;
-  final String razonConsulta;
+  final String? razonConsulta;
   final EstadoTurno estado;
   final String especialidadSeleccionada;
   final String medicoName;
@@ -85,7 +85,7 @@ class DetalleTurno {
   DetalleTurno({
     required this.id,
     required this.fechaHora,
-    required this.razonConsulta,
+    this.razonConsulta,
     required this.estado,
     required this.medicoName,
     required this.emailPaciente,
@@ -104,7 +104,7 @@ class DetalleTurno {
       estado: turno.estado,
       medicoName: turno.medicoName,
       emailPaciente: user.email!,
-      especialidadSeleccionada: turno.especialidadSeleccionada,
+      especialidadSeleccionada: turno.especialidadSeleccionada!,
       diagnostico: turno.diagnostico,
       tratamiento: turno.tratamiento
     );

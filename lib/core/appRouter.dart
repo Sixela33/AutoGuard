@@ -10,7 +10,9 @@ import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
 import 'package:autoguard/presentation/screens/SacarTurnoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoMedico.dart';
+import 'package:autoguard/presentation/screens/TurnoPaciente.dart';
 import 'package:autoguard/presentation/screens/TurnosMedico.dart';
+import 'package:autoguard/presentation/screens/TurnosPaciente.dart';
 import 'package:autoguard/presentation/screens/agenda/AgendaScreen.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/ConsultarEspecialista.dart';
 import 'package:autoguard/presentation/screens/sacar_turno/SeleccionarFecha.dart';
@@ -70,8 +72,12 @@ final appRouter = GoRouter(initialLocation: "/login", routes: [
     builder: (context, state) => TurnoMedico(turno: state.extra as String),
   ),
   GoRoute(
+    path: "/detalleTurnoPaciente",
+    builder: (context, state) => TurnoPaciente(turno: state.extra as String),
+  ),
+  GoRoute(
     path: "/consultas",
-    builder: (context, state) => MisTurnosUser(),
+    builder: (context, state) => TurnosPaciente(),
   ),
   GoRoute(
     path: "/agenda",

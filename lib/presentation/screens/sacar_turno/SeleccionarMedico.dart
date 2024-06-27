@@ -1,5 +1,7 @@
 import 'package:autoguard/presentation/entities/ThemeProvider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';
@@ -62,14 +64,24 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: ListTile(
-                  title: Text(medico.nombre),
-                  subtitle: Text(medico.especialidades.join(', ')),
-                  leading: Icon(Icons.person, color: themeProvider.primaryColorLight),
-                  onTap: () {
-                    turnoNotifier.setMedicoSeleccionado(medico);
-                    context.pushReplacement('/sacarTurno/seleccionarFecha');
-                  },
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: 
+                        ListTile(
+                          title: Text(medico.nombre),
+                          subtitle: Text(medico.especialidades.join(', ')),
+                          leading: Icon(Icons.person, color: themeProvider.primaryColorLight),
+                          onTap: () {
+                            turnoNotifier.setMedicoSeleccionado(medico);
+                            context.pushReplacement('/sacarTurno/seleccionarFecha');
+                          },
+                        ),
+                    ),
+                    medico.rating != null
+                        ? RatingBarIndicator(itemBuilder: (context,_) => const Icon(Icons.star, color: Colors.amber), rating: medico.rating!.puntaje / medico.rating!.cantidad,)
+                        : const SizedBox.shrink(),
+                  ],
                 ),
               );
             },

@@ -272,27 +272,18 @@ class Database {
     }
   }
 // String especialidadSeleccionada, DateTime fechaSeleccionada, String inputUsuarioRazonConsulta, Medic medicoSeleccionado
-  Future<void> agendarTurnoMedico(SacarTurnoEntity turno) async {
+  Future<void> agendarTurnoMedico(SacarTurnoEntity turno, Turno entity) async {
     try {
       String? userId = getCurrentUserId();
 
       if (userId != null) {
 
-        DocumentReference nuevoTurnoRef = _firestore.collection('turnos').doc();
-
-        Map<String, dynamic> nuevoTurno = {
-          'id': nuevoTurnoRef.id, // Usar el id del documento
-          'especialidad': turno.especialidadSeleccionada,
-          'fecha_hora': turno.fechaSeleccionada,
-          'razon_consulta': turno.inputUsuarioRazonConsulta,
-          'estado': EstadoTurno.pendiente.toString(),
-          'paciente_id': userId,
-          'medico_id': turno.medicoSeleccionado.id,
-          'medico_name':  turno.medicoSeleccionado.nombre,
-          'duracion_turno': 30
-        };
-
-        nuevoTurnoRef.set(nuevoTurno);
+      await _firestore.collection('turnos').doc(entity.id).set({
+        'estado': EstadoTurno.pendiente.toString(),
+        'paciente_id': userId,
+        'especialidad': turno.especialidadSeleccionada,
+        'razon_consulta': turno.inputUsuarioRazonConsulta,
+      }, SetOptions(merge: true));
 
         print("Turno agendado exitosamente en ambas colecciones.");
       } else {

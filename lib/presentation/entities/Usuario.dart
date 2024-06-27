@@ -1,5 +1,6 @@
 import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
+import 'package:autoguard/presentation/entities/Rating.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Usuario {
@@ -11,6 +12,7 @@ class Usuario {
   final String id;
   final bool? esMedico;
   final List<String>? obrasSociales;
+  final Rating? rating;
   final DateTime? fecha_nacimiento;
 
   Usuario(
@@ -21,6 +23,7 @@ class Usuario {
       this.esMedico,
       this.obrasSociales,
       this.fecha_nacimiento,
+      this.rating,
       this.apellido,
       this.dni});
 
@@ -54,5 +57,6 @@ class Usuario {
         fecha_nacimiento: data['fecha_nacimiento'] == null ? null : (data['fecha_nacimiento'] as Timestamp).toDate(),
         apellido: data['apellido'] as String?,
         dni: data['dni'] as String?,
+        rating: data['rating'] == null ? null : Rating.fromMap(data['rating']),
       );
 }

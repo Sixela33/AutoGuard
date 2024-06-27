@@ -61,7 +61,7 @@ class InputTimeWidget extends ConsumerWidget {
             items: _interval == null || _fromTime == null ? [] : List.generate(getLengthTo(_fromTime! ,_interval!), (index) {
               return DropdownMenuItem(
                 child: Text(getHourTo(_fromTime!, _interval!, index)),
-                value: index * (_interval!),
+                value: _fromTime + index * (_interval!),
               );
             }),
             onChanged: (value) {
@@ -73,10 +73,10 @@ class InputTimeWidget extends ConsumerWidget {
         ),
         ElevatedButton(
           child: Text('Guardar'),
-          onPressed: (){
-            
+          onPressed: () {
+            ref.read(agendaProvider.notifier).save();
             ref.read(agendaProvider.notifier).reset();
-            context.go("/");
+            context.go("/home");
           },
         )
       ],

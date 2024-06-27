@@ -2,6 +2,8 @@ import 'package:autoguard/presentation/entities/DataEntities/EstadoTurno.dart';
 import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/entities/DetalleClinico.dart';
 import 'package:autoguard/presentation/entities/Firebase.dart';
+import 'package:autoguard/presentation/entities/Usuario.dart';
+import 'package:autoguard/presentation/providers/turnoProvider.dart';
 import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:autoguard/presentation/providers/utilProviders.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,13 +34,33 @@ class Turnorepository {
     .get().then((value) => value.docs.map((e) => e.data()).toList());
 }
 
-Future<void> nuevoTurno(DateTime fecha, String medico) {
+Future<void> cancelarTurno(String id) {
+  return _firestore.collection('turnos').doc(id).update({'estado': EstadoTurno.cancelado.toString()});
+
+}
+
+Future<void> nuevoTurno(DateTime fecha, Usuario medico) {
   return _firestore.collection('turnos').add({
     'fecha_hora': fecha,
-    'medico_id': medico,
-    'estado': EstadoTurno.pendiente.toString()
+    'medico_id': medico.id,
+    'medico_name': medico.nombre,
+    'estado': EstadoTurno.libre.toString()
   });
 }
+
+  Future<void> calificarTurno(String turnoId, double puntaje) async{
+
+    final turno = await _firestore.collection('turnos').withConverter(fromFirestore: (snapshot, _) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap()).doc(turnoId).get();
+    final medico = await _firestore.collection('users').withConverter(fromFirestore: (snapshot, _) => Usuario.fromMap(snapshot.data()!), toFirestore: (usuario, _) => Map()).doc(turno.data()?.medicoID).get();
+
+    await _firestore.collection("users").doc(medico.id).update( {
+      "rating": {
+        "puntaje": medico.data()!.rating != null ? (medico.data()?.rating!.puntaje)! + puntaje : puntaje,
+        "cantidad": medico.data()!.rating != null ? (medico.data()!.rating!.cantidad) + 1 : 1
+      }
+    });
+
+  }
 }
 
 final turnoRepositoryProvider = Provider((ref) => Turnorepository(ref.read(firebaseFirestoreProvider)));
@@ -59,7 +81,37 @@ final turnosQueryProvider = Provider.family<Query<Turno>, Set<EstadoTurno>>((ref
 final getDiasDisponiblesProvider = FutureProvider<List<String>>((ref) {
   final firestore = ref.read(firebaseFirestoreProvider);
   final dateFormat = ref.read(dateFormatProvider);
+  final input = ref.read(turnoProvider);
   return firestore.collection("turnos")
   .withConverter(fromFirestore: (snapshot,_) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
+  .where("estado", isEqualTo: EstadoTurno.libre.toString())
+  .where("medico_id", isEqualTo: input.medicoSeleccionado!.id)
   .get().then((value) => value.docs.map((e) => dateFormat.format(e.data().fechaHora)).toSet().toList());
 });
+
+final getTurnosDisponiblesDia = FutureProvider.family<List<Turno>, DateTime>((ref, fecha) {
+  final firestore = ref.read(firebaseFirestoreProvider);
+  final input = ref.read(turnoProvider);
+  return firestore.collection("turnos")
+  .withConverter(fromFirestore: (snapshot,_) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
+  .where("fecha_hora", isGreaterThanOrEqualTo: fecha)
+  .where("fecha_hora", isLessThan: fecha.add(Duration(days: 1)))
+  .where("medico_id", isEqualTo: input.medicoSeleccionado!.id)
+  .where("estado", isEqualTo: EstadoTurno.libre.toString())
+  .get().then((value) => value.docs.map((e) => e.data()).toList());
+});
+
+final turnosPacienteQueryProvider = Provider.family<Query<Turno>, Set<EstadoTurno>>((ref, filtros) {
+  final firestore = ref.read(firebaseFirestoreProvider);
+  final user = ref.read(userProvider);
+  var turnosQuery =  firestore.collection("turnos").withConverter<Turno>(fromFirestore: (snapshot, _) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
+  .where("paciente_id", isEqualTo: user!.id);
+  
+  if (filtros.isNotEmpty) {
+    turnosQuery = turnosQuery.where("estado", whereIn: filtros.map((e) => e.toString()));
+  }
+
+  turnosQuery = turnosQuery.orderBy("fecha_hora", descending: false);
+
+  return turnosQuery;
+} );
