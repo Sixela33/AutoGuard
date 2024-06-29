@@ -1,9 +1,14 @@
+import 'package:autoguard/presentation/entities/DataEntities/Turno.dart';
 import 'package:autoguard/presentation/providers/registrationProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
+
+final obraSocialProvider = FutureProvider<List<ObraSocial>>((ref) {
+  return ref.read(databaseNotifierProvider).getObrasSociales();
+});
 
 class RegistrationScreen extends ConsumerStatefulWidget {
   static String name = "Registrar usuario";

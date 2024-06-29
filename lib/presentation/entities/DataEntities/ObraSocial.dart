@@ -1,4 +1,3 @@
-import 'package:autoguard/core/repository/ObraSocialRepository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ObraSocial {
@@ -19,6 +18,3 @@ class ObraSocial {
     };
   }
 }
-
-final obraSocialProvider = FutureProvider<List<ObraSocial>>((ref) async =>
-    ref.read(obraSocialRepositoryProvider).getObrasSociales());

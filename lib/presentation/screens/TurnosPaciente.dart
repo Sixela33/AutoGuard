@@ -48,7 +48,7 @@ class _TurnosMedicoState extends ConsumerState<TurnosPaciente> {
         children: [
             showFilters ? Wrap(
             spacing: 5.0,
-            children: estadosPaciente.map((EstadoTurno estado) {
+            children: EstadoTurno.values.map((EstadoTurno estado) {
               return FilterChip(
                 label: Text(estado.name),
                 selected: filters.contains(estado),
