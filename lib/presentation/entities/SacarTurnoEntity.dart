@@ -4,16 +4,12 @@ import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final databaseProvider = Provider<Database>((ref) {
-  return ref.watch(databaseNotifierProvider);
-});
-
 class SacarTurnoEntity {
   late String especialidadSeleccionada;
   late String inputUsuarioRazonConsulta;
   late Medic medicoSeleccionado;
+  late DateTime fechaSeleccionada;
   List<Medic> medicosDisponibles = [];
-  Database database = new Database();
 
   void setEspecialidadSeleccionada(String id) async {
     this.especialidadSeleccionada = id;
@@ -24,12 +20,7 @@ class SacarTurnoEntity {
   }
 
   void setFechaSeleccionada(DateTime fecha) {
-    
-  }
-
-  Future<void> getMedicosOfespecialidad() async {
-    this.medicosDisponibles = await this.database.getMedicosOfEspecialidad(especialidadSeleccionada);
-    return;
+    this.fechaSeleccionada = fecha;
   }
 
   Future<void> setMedicoSeleccionado(Medic medico) async {
@@ -38,10 +29,18 @@ class SacarTurnoEntity {
   }
 
   void setTime (TimeOfDay time) {
-    
+     fechaSeleccionada = DateTime(
+      fechaSeleccionada.year,
+      fechaSeleccionada.month,
+      fechaSeleccionada.day,
+      time.hour,
+      time.minute,
+      fechaSeleccionada.second,
+      fechaSeleccionada.millisecond,
+      fechaSeleccionada.microsecond,
+    );
   }
 
-  get fechaSeleccionada => null;
 }
 
 

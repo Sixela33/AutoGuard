@@ -22,11 +22,6 @@ class turnoNotifier extends StateNotifier<SacarTurnoEntity> {
     state = state;
   }
 
-  Future<void> getMedicosOfEspecialidad() async {
-    await state.getMedicosOfespecialidad();
-    return;
-  }
-
   Future<void> setMedicoSeleccionado(Medic medico) async {
     await state.setMedicoSeleccionado(medico);
     return;
@@ -34,6 +29,10 @@ class turnoNotifier extends StateNotifier<SacarTurnoEntity> {
 
   void setTime (time) {
     state.setTime(time);
+  }
+
+  SacarTurnoEntity getState() {
+    return state;
   }
 
 }
