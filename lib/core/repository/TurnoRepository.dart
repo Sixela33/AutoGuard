@@ -84,8 +84,8 @@ final getDiasDisponiblesProvider = FutureProvider<List<String>>((ref) {
   final input = ref.read(turnoProvider);
   return firestore.collection("turnos")
   .withConverter(fromFirestore: (snapshot,_) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
-  .where("estado", isEqualTo: EstadoTurno.libre.toString())
   .where("medico_id", isEqualTo: input.medicoSeleccionado!.id)
+  .where("estado", isEqualTo: EstadoTurno.libre.toString())
   .get().then((value) => value.docs.map((e) => dateFormat.format(e.data().fechaHora)).toSet().toList());
 });
 

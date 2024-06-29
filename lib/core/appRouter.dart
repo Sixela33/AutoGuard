@@ -7,7 +7,7 @@ import 'package:autoguard/presentation/screens/PerfilScreen.dart';
 import 'package:autoguard/presentation/screens/RegisterScreen.dart';
 import 'package:autoguard/presentation/screens/RegistrarMedico.dart';
 import 'package:autoguard/presentation/screens/RegistrationScreen.dart';
-import 'package:autoguard/presentation/screens/SacarTurnoScreen.dart';
+import 'package:autoguard/presentation/screens/sacar_turno/SacarTurnoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoInfoScreen.dart';
 import 'package:autoguard/presentation/screens/TurnoMedico.dart';
 import 'package:autoguard/presentation/screens/TurnoPaciente.dart';

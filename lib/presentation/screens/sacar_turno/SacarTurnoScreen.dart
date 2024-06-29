@@ -43,7 +43,7 @@ class _SacarTurnoState extends ConsumerState<SacarTurno> {
           diasDisponibles.when(
             data: (data) {
               var _fecha;
-              data.sort();
+              data.sort((a,b) => b.compareTo(a));
                 return Container(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(
@@ -64,7 +64,9 @@ class _SacarTurnoState extends ConsumerState<SacarTurno> {
                     );
                     setState(() {
                       fecha = _fecha;
+                      if (fecha != null) {
                       _fechaController.text = dateFormat.format(fecha!);
+                      }
                     });
                     },
                   ),
@@ -123,7 +125,7 @@ class _SacarTurnoState extends ConsumerState<SacarTurno> {
                 padding: const EdgeInsets.all(16.0),
                 child: FilledButton(
                   onPressed: () async {
-                    await databaseNotifier.agendarTurnoMedico(turnoNotifier.state, _selectedTurno!);
+                    await databaseNotifier.agendarTurnoMedico(turnoNotifier.getState(), _selectedTurno!);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Turno reservado con éxito')),
                     );
