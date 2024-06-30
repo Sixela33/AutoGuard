@@ -29,7 +29,7 @@ class DetalleTurnoScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final dateFormat = ref.read(dateFormatProvider);
+    final dateFormat = ref.read(dateTimeFormatProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -48,7 +48,7 @@ class DetalleTurnoScreen extends ConsumerWidget {
           child: Column(
         children: [
           ListTile(
-            title: Text('Paciente: ${detalleTurno.emailPaciente}'),
+            title: Text('Paciente: ${detalleTurno.nombrePaciente}'),
             subtitle:
             Text('Fecha: ${dateFormat.format(detalleTurno.fechaHora)}'),
           ),

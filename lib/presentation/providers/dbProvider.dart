@@ -38,8 +38,8 @@ class DatabaseNotifier extends StateNotifier<Database> {
     return state.getEspecialidades();
   }
 
-  Future<List<Medic>> getMedicosByEspecialidad(String especialidad) async {
-    return state.getMedicosOfEspecialidad(especialidad);
+  Future<List<Medic>> getMedicosByEspecialidad(String especialidad, String obraSocial) async {
+    return state.getMedicosOfEspecialidad(especialidad, obraSocial);
   }
 
   Future<List<Turno>> getTurnosUsuario() async {

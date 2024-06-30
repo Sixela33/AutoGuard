@@ -1,4 +1,5 @@
 import 'package:autoguard/presentation/entities/ThemeProvider.dart';
+import 'package:autoguard/presentation/providers/userProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,7 +10,8 @@ import 'package:go_router/go_router.dart';
 
 final medicosDisponiblesProvider = FutureProvider<List<Medic>>((ref) {
   final turnoState = ref.watch(turnoProvider);
-  return ref.read(databaseNotifierProvider).getMedicosOfEspecialidad(turnoState.especialidadSeleccionada);
+  final user = ref.watch(userProvider);
+  return ref.read(databaseNotifierProvider).getMedicosOfEspecialidad(turnoState.especialidadSeleccionada, user!.obrasSociales![0]);
 });
 
 class SeleccionarMedico extends StatelessWidget {
@@ -54,7 +56,30 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
         data: (medicos) {
-          return ListView.builder(
+          return medicos.isEmpty
+              ? 
+              const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.sentiment_dissatisfied,
+                      size: 48,
+                      color: Colors.grey,
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'No se encontraron médicos disponibles.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              : 
+           ListView.builder(
             itemCount: medicos.length,
             itemBuilder: (context, index) {
               final medico = medicos[index];

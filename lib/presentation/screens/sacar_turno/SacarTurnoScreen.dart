@@ -43,7 +43,6 @@ class _SacarTurnoState extends ConsumerState<SacarTurno> {
           diasDisponibles.when(
             data: (data) {
               var _fecha;
-              data.sort((a,b) => b.compareTo(a));
                 return Container(
                 padding: const EdgeInsets.all(16.0),
                 child: TextField(

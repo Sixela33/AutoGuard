@@ -1,4 +1,5 @@
 import 'package:autoguard/presentation/components/functions/consultarEspecialista.dart';
+import 'package:autoguard/presentation/entities/DataEntities/EspecialidadMedica.dart';
 import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/providers/turnoProvider.dart';

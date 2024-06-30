@@ -80,6 +80,7 @@ class DetalleTurno {
   final String idPaciente;
   final String? diagnostico;
   final String? tratamiento;
+  final String? nombrePaciente;
 
 
   DetalleTurno({
@@ -92,7 +93,8 @@ class DetalleTurno {
     required this.especialidadSeleccionada,
     required this.idPaciente,
     this.diagnostico,
-     this.tratamiento
+     this.tratamiento,
+    this.nombrePaciente
   });
 
  factory DetalleTurno.fromUserAndTurno(Usuario user, Turno turno) {
@@ -106,7 +108,8 @@ class DetalleTurno {
       emailPaciente: user.email!,
       especialidadSeleccionada: turno.especialidadSeleccionada!,
       diagnostico: turno.diagnostico,
-      tratamiento: turno.tratamiento
+      tratamiento: turno.tratamiento,
+      nombrePaciente: user.nombre
     );
   }
 }

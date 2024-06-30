@@ -21,7 +21,7 @@ class _TurnosMedicoState extends ConsumerState<TurnosPaciente> {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormat = ref.read(dateFormatProvider);
+    final dateFormat = ref.read(dateTimeFormatProvider);
   var turnosQuery = ref.watch(turnosPacienteQueryProvider(filters));
   
 
@@ -77,12 +77,27 @@ class _TurnosMedicoState extends ConsumerState<TurnosPaciente> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: ListTile(
-                    title: Text('${turno.medicoName} - ${turno.especialidadSeleccionada}'),
+                    title: Text('${turno.medicoName}${turno.especialidadSeleccionada != null ?  "-${turno.especialidadSeleccionada!}" : ''}'),
                     subtitle: Text('Fecha: ${dateFormat.format(turno.fechaHora)}'),
                     trailing: Text(doc["estado"].toString().split('.').last),
                     onTap: () {
                       context.push("/detalleTurnoPaciente", extra: turno.id);
                     },
+                  ),
+                );
+              },
+              emptyBuilder: (context) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.calendar_today, size: 100, color: Colors.grey[400]),
+                      const SizedBox(height: 20),
+                      const Text(
+                        'No se encontraron turnos',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 );
               },

@@ -6,7 +6,7 @@ import 'package:autoguard/presentation/entities/DataEntities/ObraSocial.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:autoguard/presentation/screens/LoginScreen.dart';
 
-final obraSocialProvider = FutureProvider<List<ObraSocial>>((ref) {
+final obraSocialProvider = FutureProvider.autoDispose<List<ObraSocial>>((ref) {
   return ref.read(databaseNotifierProvider).getObrasSociales();
 });
 
@@ -65,9 +65,10 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
               const SizedBox(height: 20),
               const Text("Seleccioná tus obras sociales:"),
               obrasSocialesProvider.when(
-                data: (data) => DropdownButton<ObraSocial>(
+                data: (data) => DropdownButtonFormField<ObraSocial>(
                 hint: const Text('Seleccionar obra social'),
                 value: null,
+                validator: (value) => obrasSocialesSeleccionadas.isEmpty ? 'Por favor, selecciona al menos una obra social' : null,
                 onChanged: (selectedObraSocial) {
                   if (selectedObraSocial != null) {
                     setState(() {
@@ -108,6 +109,9 @@ class _RegistrationScreenState extends ConsumerState<RegistrationScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  if (!formKey.currentState!.validate()) {
+                    return;
+                  }
                   try {
                      ref.read(registrationProvider.notifier).setDatosCuenta(
                       controllerEmail.text,

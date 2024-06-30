@@ -1,3 +1,4 @@
+import 'package:autoguard/presentation/entities/ThemeProvider.dart';
 import 'package:autoguard/presentation/providers/dbProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +24,7 @@ class _AdminScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final databaseNotifier = ref.watch(databaseNotifierProvider);
+    final theme = ref.watch(themeNotifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -57,6 +59,9 @@ class _AdminScreen extends ConsumerWidget {
                 }
               },
               child: const Text("Guardar Obra Social"),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(theme.primaryColor),
+              )
             ),
             const SizedBox(height: 10),
             const Text("Insertar nombre de la especialidad: "),
@@ -84,6 +89,9 @@ class _AdminScreen extends ConsumerWidget {
                   
                 },
                 child: const Text("Guardar Especialidad"),
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(theme.primaryColor),
+                )
             ),
             const SizedBox(height: 10),
             FilledButton(
@@ -91,7 +99,11 @@ class _AdminScreen extends ConsumerWidget {
               onPressed: () {
                 context.push('/registroMedico');
               }, 
-              child: Text('Añadir Medico'))
+              child: Text('Añadir Medico'),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(theme.primaryColor),
+              ),
+            ),
           ],
         ),
       ),

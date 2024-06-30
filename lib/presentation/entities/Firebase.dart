@@ -117,7 +117,7 @@ class Database {
         throw Exception('el nombre de la obra social no puede estar vacio');
       }
       
-      if (userId != null) {
+      // if (userId != null) {
         DocumentReference docRef = _firestore.collection('obraSocial').doc();
         await docRef.set({
           'id': docRef.id, 
@@ -125,9 +125,9 @@ class Database {
       });
 
       return;
-      } else {
+      /* } else {
         throw Exception("Usuario no autenticado");
-      }
+      } */
 
     } catch (e) {
       rethrow;
@@ -210,26 +210,18 @@ class Database {
   ///////////////////////////////////
 
 
-  Future<List<Medic>> getMedicosOfEspecialidad(String especialidad) async {
+  Future<List<Medic>> getMedicosOfEspecialidad(String especialidad, String obraSocial) async {
     print(especialidad);
+
     Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
     QuerySnapshot querySnapshot = await medicosQuery.get();
-    List<Medic> medicos = [];
     print('==========================================');
-    for (DocumentSnapshot doc in querySnapshot.docs) {
-      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-      print(data);
-      try {
-        Medic medic = Medic.fromMap(data);
-        print(medic);
-        medicos.add(medic);
-      } catch (e) {
-        print(e);
-        continue;
-      }
+    return querySnapshot.docs.map((doc) {
+      return Medic.fromMap(doc.data() as Map<String, dynamic>);
+    })
+    .where((medico) => medico.obras_sociales.contains(obraSocial)) // Filtrar por obra social
+    .toList();
     }
-    return medicos;
-  }
 
   Future<Medic> getMedicoByID(String id) async {
     Query medicoQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('id', isEqualTo: id);

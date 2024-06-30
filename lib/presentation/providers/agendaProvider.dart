@@ -71,14 +71,19 @@ Usuario _user;
   }
 
   Future<void> save() async {
+
+    if (!validate()) {
+      return;
+    }
+
     var day = state.dateFrom;
     var until = state.dateTo;
     
     
-    while(day!.isBefore(until!)) {
+    while(day!.isBefore(until!) || day.isAtSameMomentAs(until)) {
       if (state.days![day.weekday - 1]) {
         var fromTime = state.fromTime;
-        while(fromTime! < state.toTime!) {
+        while(fromTime! <= state.toTime!) {
         _turnoRepository.nuevoTurno(day.add(Duration(minutes: fromTime)), _user);
         fromTime += state.interval!;
       }
@@ -88,6 +93,10 @@ Usuario _user;
   }
   void reset() {
     state = AgendaInput();
+  }
+
+  bool validate() {
+    return state.fromTime != null && state.toTime != null && state.interval != null && state.dateFrom != null && state.dateTo != null && state.days!.contains(true);
   }
 
 }

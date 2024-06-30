@@ -74,10 +74,10 @@ class RegistrationDto {
       'name': name,
       'apellido': surname,
       'es_medico': false,
-      'id': "id",
+      'id': id,
       'dni': dni,
       'email': email,
-      'obrasSocialesSeleccionadas': obrasSocialesSeleccionadas,
+      'obras_sociales': obrasSocialesSeleccionadas,
       'fecha_nacimiento': birthDate,
     };
   }

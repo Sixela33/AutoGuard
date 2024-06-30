@@ -65,7 +65,7 @@ Future<void> nuevoTurno(DateTime fecha, Usuario medico) {
 
 final turnoRepositoryProvider = Provider((ref) => Turnorepository(ref.read(firebaseFirestoreProvider)));
 
-final turnosQueryProvider = Provider.family<Query<Turno>, Set<EstadoTurno>>((ref, filters) {
+final turnosQueryProvider = Provider.autoDispose.family<Query<Turno>, Set<EstadoTurno>>((ref, filters) {
   final firestore = ref.read(firebaseFirestoreProvider);
   final user = ref.read(userProvider);
   var turnosQuery = firestore.collection("turnos").withConverter<Turno>(fromFirestore: (snapshot, _) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
@@ -78,7 +78,7 @@ final turnosQueryProvider = Provider.family<Query<Turno>, Set<EstadoTurno>>((ref
   return turnosQuery;
 } );
 
-final getDiasDisponiblesProvider = FutureProvider<List<String>>((ref) {
+final getDiasDisponiblesProvider = FutureProvider.autoDispose<List<String>>((ref) {
   final firestore = ref.read(firebaseFirestoreProvider);
   final dateFormat = ref.read(dateFormatProvider);
   final input = ref.read(turnoProvider);
@@ -86,10 +86,11 @@ final getDiasDisponiblesProvider = FutureProvider<List<String>>((ref) {
   .withConverter(fromFirestore: (snapshot,_) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
   .where("medico_id", isEqualTo: input.medicoSeleccionado!.id)
   .where("estado", isEqualTo: EstadoTurno.libre.toString())
+  .orderBy("fecha_hora", descending: false)
   .get().then((value) => value.docs.map((e) => dateFormat.format(e.data().fechaHora)).toSet().toList());
 });
 
-final getTurnosDisponiblesDia = FutureProvider.family<List<Turno>, DateTime>((ref, fecha) {
+final getTurnosDisponiblesDia = FutureProvider.autoDispose.family<List<Turno>, DateTime>((ref, fecha) {
   final firestore = ref.read(firebaseFirestoreProvider);
   final input = ref.read(turnoProvider);
   return firestore.collection("turnos")
@@ -101,7 +102,7 @@ final getTurnosDisponiblesDia = FutureProvider.family<List<Turno>, DateTime>((re
   .get().then((value) => value.docs.map((e) => e.data()).toList());
 });
 
-final turnosPacienteQueryProvider = Provider.family<Query<Turno>, Set<EstadoTurno>>((ref, filtros) {
+final turnosPacienteQueryProvider = Provider.autoDispose.family<Query<Turno>, Set<EstadoTurno>>((ref, filtros) {
   final firestore = ref.read(firebaseFirestoreProvider);
   final user = ref.read(userProvider);
   var turnosQuery =  firestore.collection("turnos").withConverter<Turno>(fromFirestore: (snapshot, _) => Turno.fromMap(snapshot.data()!, snapshot.id), toFirestore: (turno, _) => turno.toMap())
