@@ -210,13 +210,18 @@ class Database {
   ///////////////////////////////////
 
 
-  Future<List<Medic>> getMedicosOfEspecialidad(String especialidad, String obraSocial) async {
-    print(especialidad);
+Future<List<Medic>> getMedicosOfEspecialidad(String especialidad, String obraSocial) async {
 
-    Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad);
-    QuerySnapshot querySnapshot = await medicosQuery.get();
-    print('==========================================');
-    return querySnapshot.docs.map((doc) {
+  Query openTurnsQuery = _firestore.collection('turnos').where('estado', isEqualTo: EstadoTurno.libre.toString());
+  QuerySnapshot openTurnsSnapshot = await openTurnsQuery.get();
+
+  Set<String> medicoIdsWithOpenTurns = openTurnsSnapshot.docs.map((doc) => doc['medico_id'] as String).toSet();
+
+  Query medicosQuery = _firestore.collection('users').where('es_medico', isEqualTo: true).where('especialidades', arrayContains: especialidad).where(FieldPath.documentId, whereIn: medicoIdsWithOpenTurns.toList());
+
+  QuerySnapshot querySnapshot = await medicosQuery.get();
+
+   return querySnapshot.docs.map((doc) {
       return Medic.fromMap(doc.data() as Map<String, dynamic>);
     })
     .where((medico) => medico.obras_sociales.contains(obraSocial)) // Filtrar por obra social
