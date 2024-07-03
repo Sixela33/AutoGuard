@@ -117,9 +117,9 @@ class _PersonalDataState extends ConsumerState<_PersonalData> {
           onTap: () async {
             await showDatePicker(
               context: context,
-              initialDate: DateTime.now().subtract(const Duration(days: 18 * 365)),
+              initialDate: DateTime.now(),
               firstDate: DateTime(1914),
-              lastDate: DateTime.now().subtract(const Duration(days: 18 * 365)),
+              lastDate: DateTime.now(),
             ).then((value) {
               if (value != null) {
                 controllerBirthDate.text = dateFormat.format(value);
@@ -167,7 +167,7 @@ String? validarCampoAlfa(String? value, String nombreCampo) {
 
 String? validarCampoNumerico(String? value, String nombreCampo) {
   if (value == null || value.isEmpty) {
-    return 'Por favor ingrese su $nombreCampo';
+    return null;
   } else if (value.length < 7) {
     return 'El $nombreCampo debe tener al menos 7 caracteres';
   } else if (value.length > 8) {

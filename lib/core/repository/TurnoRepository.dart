@@ -34,8 +34,11 @@ class Turnorepository {
     .get().then((value) => value.docs.map((e) => e.data()).toList());
 }
 
-Future<void> cancelarTurno(String id) {
-  return _firestore.collection('turnos').doc(id).update({'estado': EstadoTurno.cancelado.toString()});
+Future<void> cancelarTurno(DetalleTurno detalle) async {
+
+  _firestore.collection('turnos').doc(detalle.id).update({'estado': EstadoTurno.cancelado.toString()})
+  .then((value) => nuevoTurnoFromDetalle(detalle));
+  
 
 }
 
@@ -44,6 +47,15 @@ Future<void> nuevoTurno(DateTime fecha, Usuario medico) {
     'fecha_hora': fecha,
     'medico_id': medico.id,
     'medico_name': medico.nombre,
+    'estado': EstadoTurno.libre.toString()
+  });
+}
+
+Future<void> nuevoTurnoFromDetalle(DetalleTurno detalle) {
+  return _firestore.collection('turnos').add({
+    'fecha_hora': detalle.fechaHora,
+    'medico_id': detalle.medicoId,
+    'medico_name': detalle.medicoName,
     'estado': EstadoTurno.libre.toString()
   });
 }

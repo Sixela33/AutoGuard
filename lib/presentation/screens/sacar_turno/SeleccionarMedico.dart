@@ -103,7 +103,10 @@ class _SeleccionarMedicoState extends ConsumerState<_SeleccionarMedico> {
                         ),
                     ),
                     medico.rating != null
-                        ? RatingBarIndicator(itemBuilder: (context,_) => const Icon(Icons.star, color: Colors.amber), rating: medico.rating!.puntaje / medico.rating!.cantidad,)
+                        ? RatingBarIndicator(itemBuilder: (context,_) => const Icon(Icons.star, color: Colors.amber), 
+                        rating: medico.rating!.puntaje / medico.rating!.cantidad,
+                        itemSize: 20.0,
+                        )
                         : const SizedBox.shrink(),
                   ],
                 ),

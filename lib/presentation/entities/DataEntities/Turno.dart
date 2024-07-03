@@ -76,6 +76,7 @@ class DetalleTurno {
   final EstadoTurno estado;
   final String especialidadSeleccionada;
   final String medicoName;
+  final String medicoId;
   final String emailPaciente;
   final String idPaciente;
   final String? diagnostico;
@@ -92,6 +93,7 @@ class DetalleTurno {
     required this.emailPaciente,
     required this.especialidadSeleccionada,
     required this.idPaciente,
+    required this.medicoId,
     this.diagnostico,
      this.tratamiento,
     this.nombrePaciente
@@ -100,6 +102,7 @@ class DetalleTurno {
  factory DetalleTurno.fromUserAndTurno(Usuario user, Turno turno) {
     return DetalleTurno(
       idPaciente: user.id,
+      medicoId: turno.medicoID,
       id: turno.id,
       fechaHora: turno.fechaHora,
       razonConsulta: turno.razonConsulta,

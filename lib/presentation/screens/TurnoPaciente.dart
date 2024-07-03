@@ -82,7 +82,7 @@ class DetalleTurnoPaciente extends ConsumerWidget {
                     onPressed: () async {
                       await ref
                           .read(turnoRepositoryProvider)
-                          .cancelarTurno(turnoId);
+                          .cancelarTurno(detalleTurno);
                       Navigator.of(context).pop();
                       Navigator.of(context).pop();
                     },
